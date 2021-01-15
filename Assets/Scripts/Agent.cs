@@ -8,6 +8,16 @@ public class Agent : MonoBehaviour
 
     public void Move(Vector2Int direction)
     {
-       // Logic for moving   
+        // Logic for moving   
+        Vector2 start = transform.position;
+
+        Vector2 end = start + direction;
+
+        /*for the coordination of the obstacle (hole,enemy)
+        if (end == )
+        {
+            
+        }
+        */
     } 
 }

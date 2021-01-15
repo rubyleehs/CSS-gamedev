@@ -5,7 +5,7 @@ GameManager (Thomas)
 Agent
  - logic for moving the thing itself
  - anything that needs to know regarding its surrounding, inherit from this
-  - Move();
+ - Move();
 Move(direction){
   // check if possible to move in that direction
   // if can then move to that direction
