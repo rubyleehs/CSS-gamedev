@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IPlayerInteractable
 {
-    //bool CanInteract(Agent agent);
-    //bool Interact(Agent agent);
+    bool CanInteract(Agent agent);
+    bool Interact(Agent agent);
 }
