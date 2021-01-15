@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    public GameObject go;
+    public GameObject go2;
     // Start is called before the first frame update
     void Start()
     {
-        go = new GameObject();
+        go2 = new GameObject();
     }
 
     // Update is called once per frame
