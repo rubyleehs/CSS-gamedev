@@ -1,35 +1,76 @@
-GameManager
+GameManager (Thomas)
  - Highscore
- - Game State (start game/end game/Paused etc)
+ - Game State (start game/end game/Paused etc) -> enum
+
+Agent
+ - logic for moving the thing itself
+ - anything that needs to know regarding its surrounding, inherit from this
+  - Move();
+Move(direction){
+  // check if possible to move in that direction
+  // if can then move to that direction
+  // if not prevent
+}
  
-Player
+Player < Agent (Chales)
  - Controls (movement)
  - Stats (Hp, speed etc)
  - Animations
  - Interact
+ - Update(){ CheckInput(); Move();}
 
-World
- - Generation -> Instantiate Prefabs
+ - CheckInput();
+
+public void Update(){
+	GetInput();
+	//calculate direction to move
+	Move(direction);
+}
+
+World (Thomas/Ruby)
+ - Generation -> Instantiate Prefabs 
  - keep track of things in the world currently
  - Destruction
 
-UI
+UI (Whatever)
  - HP, score
 
 
-IPlayerInteractable
+IPlayerInteractable (Ruby)
  - Interacts with Player
  - Logic regarding how an interaction occurs (how to know player pickup ect)
+ - OnPickup()
 
-PickUp implement IPlayerInteractable
+PickUp implement IPlayerInteractable (Min Hao with help from Ruby)
  - Logic regaridng the specific interaction
+ - Code what happens when you pickup
 
-Obstacles implement IPlayerInteractable
+Obstacles implement IPlayerInteractable (Min Hao with help from Ruby)
  - holes (player step on it and die)
+
+ public interface IPlayerInteractable{
+	public bool CanInteract(Agent agent);
+ }
+
+public class Holes: MonoBehavior implments IPlayerInteractable{
+	public bool CanInteract(Agent agent){
+		// check whather agent can interact
+		// if can return true, else false
+	}
+
+	public void Interact(Agent agent){
+		// hole obstacle.
+		if(agent is player){
+			Player player = (Player) agent;
+			Agent agent2 = (Agent) player;
+			player.hp = 0;
+		}
+	}
+}
  - walls
  - traps
 
-Enemies implement IPlayerInteractable
+Enemies < Agent implement IPlayerInteractable (Chales guided by Ruby or Thomas)
  - AI (Move, attack etc)
  - Chase player/ whatever attack style
 
