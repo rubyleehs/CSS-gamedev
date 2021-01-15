@@ -1,0 +1,44 @@
+GameManager
+ - Highscore
+ - Game State (start game/end game/Paused etc)
+ 
+Player
+ - Controls (movement)
+ - Stats (Hp, speed etc)
+ - Animations
+ - Interact
+
+World
+ - Generation -> Instantiate Prefabs
+ - keep track of things in the world currently
+ - Destruction
+
+UI
+ - HP, score
+
+
+IPlayerInteractable
+ - Interacts with Player
+ - Logic regarding how an interaction occurs (how to know player pickup ect)
+
+PickUp implement IPlayerInteractable
+ - Logic regaridng the specific interaction
+
+Obstacles implement IPlayerInteractable
+ - holes (player step on it and die)
+ - walls
+ - traps
+
+Enemies implement IPlayerInteractable
+ - AI (Move, attack etc)
+ - Chase player/ whatever attack style
+
+Genreation Stuff:
+- Generate row by row.
+- chunk by chunk. -> each chunk is a prefab.
+- left/right edges are the void (player fall into it instant death?) 
+
+Player Movement:
+- WASD / Arrow keys
+- Tile by Tile
+- No player/enemy turns.
