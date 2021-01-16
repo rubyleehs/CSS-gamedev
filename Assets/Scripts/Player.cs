@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class Player : Agent
 {
+    public int pointsPerAmmo = 1;
+    public int pointsPerHealthKit = 1;
+    public Text healthText;
+    public Text ammoText;
+    public int hp = 10, ammo = 5;
 
     private Animator animator;
-    private int hp, ammo;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +26,10 @@ public class Player : Agent
         if (Input.GetKeyDown("k") && ammo != 0)
         {
             animator = GetComponent<Animator>();
+
             ammo--;
+
+            ammoText.text = "Ammo: " + ammo + " - 1";
         }
 
         int horizontal = (int) (Input.GetAxisRaw("Horizontal"));
@@ -40,14 +48,18 @@ public class Player : Agent
     {
         if (collision.tag == "Ammo")
         {
-            ammo++;
+            ammo += pointsPerAmmo;
+
+            ammoText.text = "Ammo: " + ammo + "+ " + pointsPerAmmo;
 
             collision.gameObject.SetActive(false);
         }
 
         if (collision.tag == "HealthKit")
         {
-            hp++;
+            hp += pointsPerHealthKit;
+
+            healthText.text = "Health: " + hp + " + " + pointsPerHealthKit;
 
             collision.gameObject.SetActive(false);
         }
@@ -60,7 +72,7 @@ public class Player : Agent
     {
         if (hp <= 0)
         {
-            
+
         }
     }
 }
