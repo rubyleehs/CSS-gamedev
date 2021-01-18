@@ -1,6 +1,8 @@
 GameManager (Thomas)
  - Highscore
  - Game State (start game/end game/Paused etc) -> enum
+ - Pause function complete. 
+ 
 
 Agent
  - logic for moving the thing itself

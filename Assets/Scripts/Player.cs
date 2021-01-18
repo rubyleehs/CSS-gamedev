@@ -22,6 +22,10 @@ public class Player : Agent
     // Update is called once per frame
     void Update()
     {
+        // Pause Game
+        if (Input.GetKeyDown("p"))
+            GameManager.instance.TogglePause();
+
         // shooting projectile
         if (Input.GetKeyDown("k") && ammo != 0)
         {
