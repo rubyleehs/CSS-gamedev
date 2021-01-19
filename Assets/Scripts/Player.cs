@@ -72,6 +72,12 @@ public class Player : Agent
             hp = 0;
     }
 
+    private void ChangeAmmoAmount(int delta)
+    {
+        ammo += delta;
+        ammoText.text = "Ammo: " + ammo;
+    }
+
     private void Lost()
     {
         if (hp <= 0)

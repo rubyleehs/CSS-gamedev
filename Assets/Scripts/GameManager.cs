@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour {
         levelGen = GetComponent<LevelGenerator>();
 
         InitGame();
+        Time.timeScale = 0;
     }
 
     private void InitGame() {
