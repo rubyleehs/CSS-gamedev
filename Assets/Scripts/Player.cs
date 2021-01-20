@@ -137,7 +137,7 @@ public class Player : Agent
         m_FacingUp = false;
         m_FacingDown = false;
 
-        transform.Rotate(0f, 180f, 0f);
+        transform.Rotate(0f, 0f, 180f);
     }
 
     private void VFlip()
@@ -156,7 +156,7 @@ public class Player : Agent
         m_FacingRight = false;
         m_FacingLeft = false;
 
-        transform.Rotate(0f, 180f, 0f);
+        transform.Rotate(0f, 0f, 180f);
     }
 
     private void rotateLeft()
@@ -182,7 +182,7 @@ public class Player : Agent
             m_FacingRight = true;
         }
 
-        transform.Rotate(0f, -90f, 0f);
+        transform.Rotate(0f, 0f, 90f);
     }
 
     private void rotateRight()
@@ -208,6 +208,6 @@ public class Player : Agent
             m_FacingLeft = true;
         }
 
-        transform.Rotate(0f, 90f, 0f);
+        transform.Rotate(0f, 0f, -90f);
     }
 }
