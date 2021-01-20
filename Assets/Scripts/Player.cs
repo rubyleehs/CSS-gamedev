@@ -9,6 +9,8 @@ public class Player : Agent
     public int pointsPerHealthKit = 1;
     public Text healthText;
     public Text ammoText;
+    public Text addingAmmo;
+    public Text addingHealth;
     public int hp = 10, ammo = 5;
 
     private Animator animator;
@@ -33,11 +35,7 @@ public class Player : Agent
         // shooting projectile
         if (Input.GetButtonDown("Fire1") && ammo != 0)
         {
-            animator = GetComponent<Animator>();
-
-            ammo--;
-
-            ammoText.text = "Ammo: " + ammo;
+            Shoot();
         }
 
         int horizontal = 0;
@@ -63,38 +61,59 @@ public class Player : Agent
         if(vertical != 0 || horizontal != 0) {
             base.Move(direction);
         }
+
+        healthText.text = "Health: " + hp;
+        ammoText.text = "Ammo: " + ammo;
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Ammo")
+        if(collision.tag == "Interactable")
         {
-            ammo += pointsPerAmmo;
-
-            ammoText.text = "Ammo: " + ammo;
-
-            collision.gameObject.SetActive(false);
+            IPlayerInteractable playerInteractable = collision.gameObject.GetComponent<IPlayerInteractable>();
+            if (playerInteractable != null)
+            {
+                playerInteractable.Interact(this);
+            }
         }
-
-        if (collision.tag == "HealthKit")
-        {
-            hp += pointsPerHealthKit;
-
-            healthText.text = "Health: " + hp;
-
-            collision.gameObject.SetActive(false);
-        }
-
-        if (collision.tag == "Hole")
-            hp = 0;
     }
 
     public void ChangeAmmoAmount(int delta)
     {
         ammo += delta;
         ammoText.text = "Ammo: " + ammo;
+
+        addingAmmo.text = "+ " + delta;
     }
 
-    private void Lost()
+    public void ChangeHealthAmount(int delta)
+    {
+        hp += delta;
+        healthText.text = "Health: " + hp;
+
+        addingHealth.text = "+ " + delta;
+    }
+
+    public void Damaged (int delta)
+    {
+        hp -= delta;
+
+        healthText.text = "Health: " + hp;
+        addingHealth.text = "- " + delta;
+    }
+
+    public void Shoot()
+    {
+        animator = GetComponent<Animator>();
+
+        ammo--;
+
+        ammoText.text = "Ammo: " + ammo;
+
+        addingAmmo.text = "- 1";
+    }
+
+    private void GameOver()
     {
         if (hp <= 0)
         {
