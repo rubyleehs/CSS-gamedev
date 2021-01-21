@@ -5,11 +5,13 @@ using Random = UnityEngine.Random;
 
 public class LevelGenerator : MonoBehaviour
 {
-    public GameObject floorTiles[];
-    public GameObject wallTiles[];
+    public GameObject[] floorTiles;
+    public GameObject[] wallTiles;
 
-
+    // Stores the level
     private Transform level;
+
+    
 
 
 

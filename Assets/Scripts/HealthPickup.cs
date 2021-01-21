@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pickups : MonoBehaviour, IPlayerInteractable {
+public class HealthPickup : MonoBehaviour, IPlayerInteractable
+{
     bool isStillDangerous = true;
 
-    public bool CanInteract(Agent agent) {
+    public bool CanInteract(Agent agent)
+    {
         return isStillDangerous;
     }
 
-    public void Interact(Agent agent) {
+    public void Interact(Agent agent)
+    {
         if (!CanInteract(agent))
-            return;
+            return; 
 
-        if (agent is Player) {
+        if (agent is Player)
+        {
             Player player = (Player)agent;
             player.ChangeAmmoAmount(10);
             //change player hp
         }
     }
 }
-
