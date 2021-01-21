@@ -148,7 +148,7 @@ public class Player : Agent
 
         lineRenderer.enabled = true;
 
-        yield return new WaitForSeconds(.02f);
+        yield return new WaitForSeconds(0.02f);
 
         lineRenderer.enabled = false;
     }
