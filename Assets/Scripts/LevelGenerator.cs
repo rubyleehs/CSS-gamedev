@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class LevelGenerator : MonoBehaviour
 {
-    // This whole script is TODO
-    void InitializeChunk()
-    {
-        
-    }
+    public GameObject floorTiles[];
+    public GameObject wallTiles[];
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+    private Transform level;
+
+
+
+    
+
+
 }
