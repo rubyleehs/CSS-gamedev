@@ -128,8 +128,8 @@ public class Player : Agent
         addingHealth.text = "- " + delta;
     }
 
-    IEnumerator Shoot()
-
+    IEnumerator Shoot() 
+    { 
         ammo--;
 
         ammoText.text = "Ammo: " + ammo;
