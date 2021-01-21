@@ -11,6 +11,8 @@ public class Player : Agent
     public Text ammoText;
     public Text addingAmmo;
     public Text addingHealth;
+    public LineRenderer lineRenderer;
+    public Transform firePoint;
     public int hp = 10, ammo = 5;
 
     private Animator animator;
@@ -35,7 +37,7 @@ public class Player : Agent
         // shooting projectile
         if (Input.GetButtonDown("Fire1") && ammo != 0)
         {
-            Shoot();
+            StartCoroutine(Shoot());
         }
 
         int horizontal = 0;
@@ -102,7 +104,7 @@ public class Player : Agent
         addingHealth.text = "- " + delta;
     }
 
-    public void Shoot()
+    IEnumerator Shoot()
     {
         animator = GetComponent<Animator>();
 
@@ -111,6 +113,25 @@ public class Player : Agent
         ammoText.text = "Ammo: " + ammo;
 
         addingAmmo.text = "- 1";
+
+        RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
+
+        if (hitInfo)
+        {
+            lineRenderer.SetPosition(0, firePoint.position);
+            lineRenderer.SetPosition(1, hitInfo.point);
+        }
+        else
+        {
+            lineRenderer.SetPosition(0, firePoint.position);
+            lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
+        }
+
+        lineRenderer.enabled = true;
+
+        yield return new WaitForSeconds(.02f);
+
+        lineRenderer.enabled = false;
     }
 
     private void GameOver()
