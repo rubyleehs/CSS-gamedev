@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour {
         pauseText.gameObject.SetActive(paused); // paused is always false here
 
         // TODO: Sets up the level
-        levelGen.AddChunk();
     }
 
     // Pause and resume. Input will be handled by the Player instead.
