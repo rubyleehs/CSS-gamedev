@@ -1,21 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
-guid: 27a9706abe972054bafa936ca08147fa
-=======
-<<<<<<< HEAD:Assets/Sprites/Floors/granit grass.tga.meta
-<<<<<<< HEAD
-<<<<<<< HEAD:Assets/Sprites/Floors/granit grass.tga.meta
-guid: e33cdf6d879647e469d1d29d26281015
-=======
-guid: e6ca35869293260418e39a4c814aec14
->>>>>>> parent of 6be0e2f... Chaning some assets around.:Assets/Sprites/Floors/dirt stones eary yellow.tga.meta
-=======
-guid: e33cdf6d879647e469d1d29d26281015
->>>>>>> parent of 6be0e2f... Chaning some assets around.
-=======
-guid: 27a9706abe972054bafa936ca08147fa
->>>>>>> parent of 6be0e2f... Chaning some assets around.:Assets/Sprites/Floors/dirt stones.tga.meta
->>>>>>> parent of 6be0e2f... Chaning some assets around.
+guid: 4343e17bad3f50f498df1631e7af602f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

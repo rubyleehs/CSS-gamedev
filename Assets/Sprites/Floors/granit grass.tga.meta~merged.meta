@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Sprites/Floors/granit grass.tga.meta~merged.meta
 guid: 17ca7f9d1a6af3943ab1becdb2184049
+=======
+guid: 0de0260547522fe4e96f8ad1f2792e38
+folderAsset: yes
+>>>>>>> parent of 6be0e2f... Chaning some assets around.:Assets/Sprites/Animation.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

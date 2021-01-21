@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Sprites/Floors/granit grass.tga.meta~merged
 <<<<<<< HEAD
 <<<<<<< HEAD:Assets/Sprites/Floors/granit grass.tga.meta
 guid: e33cdf6d879647e469d1d29d26281015
@@ -8,6 +9,9 @@ guid: e6ca35869293260418e39a4c814aec14
 =======
 guid: e33cdf6d879647e469d1d29d26281015
 >>>>>>> parent of 6be0e2f... Chaning some assets around.
+=======
+guid: 4343e17bad3f50f498df1631e7af602f
+>>>>>>> parent of 6be0e2f... Chaning some assets around.:Assets/Sprites/Floors/dirt stones leafs more.tga.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
