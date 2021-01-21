@@ -52,14 +52,71 @@ public class Player : Agent
     {
         if (collision.tag == "Ammo")
         {
+<<<<<<< HEAD
             ammo += pointsPerAmmo;
+=======
+            IPlayerInteractable playerInteractable = collision.gameObject.GetComponent<IPlayerInteractable>();
+            if (playerInteractable != null)
+            {
+                playerInteractable.Interact(this);
+            }
+        }
+    }
+
+    public void ChangeAmmoAmount(int delta)
+    {
+        ammo += delta;
+        ammoText.text = "Ammo: " + ammo;
+
+        addingAmmo.text = "+ " + delta;
+    }
+
+    public void ChangeHealthAmount(int delta)
+    {
+        hp += delta;
+        healthText.text = "Health: " + hp;
+
+        addingHealth.text = "+ " + delta;
+    }
+
+    public void Damaged (int delta)
+    {
+        hp -= delta;
+
+        healthText.text = "Health: " + hp;
+        addingHealth.text = "- " + delta;
+    }
+
+    IEnumerator Shoot()
+    {
+        animator = GetComponent<Animator>();
+
+        ammo--;
+
+        ammoText.text = "Ammo: " + ammo;
+
+        addingAmmo.text = "- 1";
+>>>>>>> parent of 6be0e2f... Chaning some assets around.
 
             ammoText.text = "Ammo: " + ammo + "+ " + pointsPerAmmo;
 
             collision.gameObject.SetActive(false);
         }
 
+<<<<<<< HEAD
         if (collision.tag == "HealthKit")
+=======
+        lineRenderer.enabled = true;
+
+        yield return new WaitForSeconds(.02f);
+
+        lineRenderer.enabled = false;
+    }
+
+    private void GameOver()
+    {
+        if (hp <= 0)
+>>>>>>> parent of 6be0e2f... Chaning some assets around.
         {
             hp += pointsPerHealthKit;
 
