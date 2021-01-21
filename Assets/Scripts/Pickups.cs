@@ -26,13 +26,15 @@ public class HealthPickup : MonoBehaviour, IPlayerInteractable
 }
 
 
-public class HealthPickup : MonoBehaviour, IPlayerInteractable
+public class HealthPickup : MonoBehaviour, IAgentInteractable
 {
     bool isFromPlayer = true; //check if is picked up by player
 
-    public bool CanInteract(Player player) => isFromPlayer;
-
-    public void Interact(Player player)
+    public bool CanInteract(Agent agent);
+    {
+     return (agent is Player);
+    }
+   public void Interact(Player player)
     {
         if (!CanInteract(player))
             return;
