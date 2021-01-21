@@ -16,10 +16,14 @@ public class Player : Agent
     public int hp = 10, ammo = 5;
 
     private Animator animator;
+    private int Facing = 1;
+    private int dirFacing;
+    /*
     private bool m_FacingRight = true;
-    private bool m_FacingUp = false;
     private bool m_FacingLeft = false;
+    private bool m_FacingUp = false;
     private bool m_FacingDown = false;
+    */
 
     // Start is called before the first frame update
     void Start()
@@ -49,14 +53,31 @@ public class Player : Agent
         if (vertical != 0)
             horizontal = 0;
 
-        if ((m_FacingRight == true && horizontal == -1) || (m_FacingLeft == true && horizontal == 1))
-            HFlip();
-        else if ((m_FacingDown == true && vertical == 1) || m_FacingUp == true && vertical == -1)
-            VFlip();
-        else if ((m_FacingRight == true && vertical == 1) || (m_FacingUp == true && horizontal == -1) || (m_FacingLeft == true && vertical == -1) || (m_FacingDown == true && horizontal == 1))
-            rotateLeft();
-        else if ((m_FacingUp == true && horizontal == 1) || (m_FacingRight == true && vertical == -1) || (m_FacingDown == true && horizontal == -1) || (m_FacingLeft == true && vertical == 1))
-            rotateRight();
+        if (horizontal == 1)
+            dirFacing = 1;
+        else if (vertical == 1)
+            dirFacing = 2;
+        else if (horizontal == -1)
+            dirFacing = 3;
+        else if (vertical == -1)
+            dirFacing = 4;
+
+        if (Facing > dirFacing)
+        {
+            for (int x = 0; x != Facing - dirFacing; x++)
+            {
+                RevRotation();
+            }
+        }
+        else if(Facing < dirFacing)
+        {
+            for (int x = 0; x != dirFacing - Facing ; x++)
+            {
+                Rotation();
+            }
+        }
+
+        Facing = dirFacing;
 
         Vector2Int direction = new Vector2Int(horizontal, vertical);
 
@@ -106,7 +127,7 @@ public class Player : Agent
 
     IEnumerator Shoot()
     {
-        animator = GetComponent<Animator>();
+        // animator = GetComponent<Animator>();
 
         ammo--;
 
@@ -142,6 +163,17 @@ public class Player : Agent
         }
     }
 
+    private void Rotation()
+    {
+        transform.Rotate(0f, 0f, 90f);
+    }
+
+    private void RevRotation()
+    {
+        transform.Rotate(0f, 0f, -90f);
+    }
+
+    /*
     private void HFlip()
     {
         if (m_FacingRight)
@@ -231,4 +263,5 @@ public class Player : Agent
 
         transform.Rotate(0f, 0f, -90f);
     }
+    */
 }
