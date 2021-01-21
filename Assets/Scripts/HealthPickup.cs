@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 public class HealthPickup : MonoBehaviour, IPlayerInteractable
 {
     bool isStillDangerous = true;
@@ -24,3 +25,4 @@ public class HealthPickup : MonoBehaviour, IPlayerInteractable
         }
     }
 }
+    */
