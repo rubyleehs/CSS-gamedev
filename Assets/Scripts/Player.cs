@@ -93,6 +93,9 @@ public class Player : Agent
     {
         if(collision.tag == "Interactable")
         {
+
+            ammo += pointsPerAmmo;
+
             IPlayerInteractable playerInteractable = collision.gameObject.GetComponent<IPlayerInteractable>();
             if (playerInteractable != null)
             {
@@ -126,8 +129,6 @@ public class Player : Agent
     }
 
     IEnumerator Shoot()
-    {
-        // animator = GetComponent<Animator>();
 
         ammo--;
 
@@ -152,12 +153,15 @@ public class Player : Agent
 
         yield return new WaitForSeconds(.02f);
 
+
         lineRenderer.enabled = false;
+
     }
 
     private void GameOver()
     {
         if (hp <= 0)
+
         {
 
         }

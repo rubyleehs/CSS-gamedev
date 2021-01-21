@@ -24,3 +24,44 @@ public class HealthPickup : MonoBehaviour, IPlayerInteractable
         }
     }
 }
+
+
+public class HealthPickup : MonoBehaviour, IPlayerInteractable
+{
+    bool isFromPlayer = true; //check if is picked up by player?
+
+    public bool CanInteract(Agent player)
+
+    {
+        return isFromPlayer;
+    }
+
+    public void Interact(Agent player)
+
+    {
+        if (!CanInteract(player))
+            return;
+
+        if (player is Player)
+        {
+            Player player = (Player)player;
+            player.Changehp(10);
+            //change player hp
+
+        }
+    }
+}
+
+
+
+
+
+        }
+    }
+    void Awake()
+    {
+        player
+    }
+}
+
+
