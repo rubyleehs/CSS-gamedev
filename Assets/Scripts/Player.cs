@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
+public enum Direction
+{
+    East = 0, North = 1, West = 2, South = 3
+}
+
 public class Player : Agent
 {
     public int pointsPerAmmo = 1;
@@ -16,8 +21,10 @@ public class Player : Agent
     public int hp = 10, ammo = 5;
 
     private Animator animator;
-    private int Facing = 1;
-    private int dirFacing;
+    private Vector2Int inputDir = new Vector2Int(0,0);
+    private Direction faceDir = Direction.East;
+
+    private bool inputChanged = false;
     /*
     private bool m_FacingRight = true;
     private bool m_FacingLeft = false;
@@ -44,45 +51,27 @@ public class Player : Agent
             StartCoroutine(Shoot());
         }
 
-        int horizontal = 0;
-        int vertical = 0;
+        Vector2Int curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
+        inputChanged = (inputDir != curInputDir);
+        inputDir = curInputDir;
 
-        vertical = (int) (Input.GetAxisRaw("Vertical"));
-        horizontal = (int) (Input.GetAxisRaw("Horizontal"));
-
-        if (vertical != 0)
-            horizontal = 0;
-
-        if (horizontal == 1)
-            dirFacing = 1;
-        else if (vertical == 1)
-            dirFacing = 2;
-        else if (horizontal == -1)
-            dirFacing = 3;
-        else if (vertical == -1)
-            dirFacing = 4;
-
-        if (Facing > dirFacing)
+        if (inputChanged)
         {
-            for (int x = 0; x != Facing - dirFacing; x++)
+            if (inputDir.y > 0)
+                faceDir = Direction.North;
+            else if (inputDir.y < 0)
+                faceDir = Direction.South;
+            else if (inputDir.x > 0)
+                faceDir = Direction.East;
+            else if (inputDir.x < 0)
+                faceDir = Direction.West;
+
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)faceDir));
+
+            if (inputDir != Vector2Int.zero)
             {
-                RevRotation();
+                base.Move(inputDir);
             }
-        }
-        else if(Facing < dirFacing)
-        {
-            for (int x = 0; x != dirFacing - Facing ; x++)
-            {
-                Rotation();
-            }
-        }
-
-        Facing = dirFacing;
-
-        Vector2Int direction = new Vector2Int(horizontal, vertical);
-
-        if(vertical != 0 || horizontal != 0) {
-            base.Move(direction);
         }
 
         healthText.text = "Health: " + hp;
@@ -93,7 +82,7 @@ public class Player : Agent
     {
         if(collision.tag == "Interactable")
         {
-            IPlayerInteractable playerInteractable = collision.gameObject.GetComponent<IPlayerInteractable>();
+            IAgentInteractable playerInteractable = collision.gameObject.GetComponent<IAgentInteractable>();
             if (playerInteractable != null)
             {
                 playerInteractable.Interact(this);
@@ -106,7 +95,10 @@ public class Player : Agent
         ammo += delta;
         ammoText.text = "Ammo: " + ammo;
 
-        addingAmmo.text = "+ " + delta;
+        if (delta > 0)
+            addingAmmo.text = "+ " + delta;
+        else if (delta < 0)
+            addingAmmo.text = "- " + delta;
     }
 
     public void ChangeHealthAmount(int delta)
@@ -114,41 +106,32 @@ public class Player : Agent
         hp += delta;
         healthText.text = "Health: " + hp;
 
-        addingHealth.text = "+ " + delta;
-    }
-
-    public void Damaged (int delta)
-    {
-        hp -= delta;
-
-        healthText.text = "Health: " + hp;
-        addingHealth.text = "- " + delta;
+        if(delta > 0)
+            addingHealth.text = "+ " + delta;
+        else if(delta < 0)
+            addingHealth.text = "- " + delta;   
     }
 
     IEnumerator Shoot() 
-    { 
-        ammo--;
-
-        ammoText.text = "Ammo: " + ammo;
-
-        addingAmmo.text = "- 1";
+    {
+        //Try to seperate logic and animation
+        ChangeAmmoAmount(-1);
 
         RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
+        lineRenderer.SetPosition(0, firePoint.position);
 
         if (hitInfo)
         {
-            lineRenderer.SetPosition(0, firePoint.position);
             lineRenderer.SetPosition(1, hitInfo.point);
         }
         else
         {
-            lineRenderer.SetPosition(0, firePoint.position);
             lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
         }
 
         lineRenderer.enabled = true;
 
-        yield return new WaitForSeconds(.02f);
+        yield return new WaitForSeconds(0.02f);
 
         lineRenderer.enabled = false;
     }
@@ -159,16 +142,6 @@ public class Player : Agent
         {
 
         }
-    }
-
-    private void Rotation()
-    {
-        transform.Rotate(0f, 0f, 90f);
-    }
-
-    private void RevRotation()
-    {
-        transform.Rotate(0f, 0f, -90f);
     }
 
     /*

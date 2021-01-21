@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour {
-
+public class GameManager : MonoBehaviour 
+{
     // Enum of game states
     public enum GameState {
         Play,
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
     // private List<Enemy> enemyList;
     private bool paused = false;
     private Text pauseText;
-    
+
     // Code to ensure only one GameManager exists
     public static GameManager instance;
 
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour {
         levelGen = GetComponent<LevelGenerator>();
 
         InitGame();
-        Time.timeScale = 0;
+        Time.timeScale = 1;
     }
 
     private void InitGame() {
@@ -76,5 +76,4 @@ public class GameManager : MonoBehaviour {
     private void GameOver() {
         // TODO
     }
-
 }
