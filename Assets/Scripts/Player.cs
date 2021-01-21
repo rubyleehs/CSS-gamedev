@@ -106,7 +106,6 @@ public class Player : Agent
 
     IEnumerator Shoot()
     {
-        animator = GetComponent<Animator>();
 
         ammo--;
 
@@ -131,7 +130,7 @@ public class Player : Agent
 
         yield return new WaitForSeconds(.02f);
 
-        lineRenderer.enabled = false;
+        lineRenderer.SetVertexCount(0);
     }
 
     private void GameOver()
