@@ -10,13 +10,13 @@ public class LevelGenerator : MonoBehaviour
     public GameObject[] floorTiles;
     public GameObject[] wallTiles;
 
-    private chunkCount = 0;
+    private int chunkCount = 0;
 
     // This whole script is TODO
     void AddChunk(){
 
         GameObject newChunk = chunkList[Random.Range(0, chunkList.Length)];
-        GameObject newChunkInstance = Instantiate(newChunk, new Vector3())
+        // GameObject newChunkInstance = Instantiate(newChunk, new Vector3());
 
     }
 

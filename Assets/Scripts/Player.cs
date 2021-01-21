@@ -72,12 +72,9 @@ public class Player : Agent
     {
         if(collision.tag == "Interactable")
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
+
             ammo += pointsPerAmmo;
-=======
-=======
->>>>>>> parent of 5720c8b... Revert "Additions in Health Pickup"
+
             IPlayerInteractable playerInteractable = collision.gameObject.GetComponent<IPlayerInteractable>();
             if (playerInteractable != null)
             {
@@ -112,20 +109,12 @@ public class Player : Agent
 
     IEnumerator Shoot()
     {
-<<<<<<< HEAD
-        animator = GetComponent<Animator>();
-=======
->>>>>>> parent of 5720c8b... Revert "Additions in Health Pickup"
 
         ammo--;
 
         ammoText.text = "Ammo: " + ammo;
 
         addingAmmo.text = "- 1";
-<<<<<<< HEAD
->>>>>>> parent of 6be0e2f... Chaning some assets around.
-=======
->>>>>>> parent of 5720c8b... Revert "Additions in Health Pickup"
 
         RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
 
@@ -140,30 +129,19 @@ public class Player : Agent
             lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        if (collision.tag == "HealthKit")
-=======
-=======
->>>>>>> parent of 5720c8b... Revert "Additions in Health Pickup"
         lineRenderer.enabled = true;
 
         yield return new WaitForSeconds(.02f);
 
-<<<<<<< HEAD
+
         lineRenderer.enabled = false;
-=======
-        lineRenderer.SetVertexCount(0);
->>>>>>> parent of 5720c8b... Revert "Additions in Health Pickup"
+
     }
 
     private void GameOver()
     {
         if (hp <= 0)
-<<<<<<< HEAD
->>>>>>> parent of 6be0e2f... Chaning some assets around.
-=======
->>>>>>> parent of 5720c8b... Revert "Additions in Health Pickup"
+
         {
 
         }

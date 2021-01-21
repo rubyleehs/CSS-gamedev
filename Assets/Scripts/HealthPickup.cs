@@ -26,28 +26,18 @@ public class HealthPickup : MonoBehaviour, IPlayerInteractable
 }
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of 5720c8b... Revert "Additions in Health Pickup"
 public class HealthPickup : MonoBehaviour, IPlayerInteractable
 {
     bool isFromPlayer = true; //check if is picked up by player?
 
-<<<<<<< HEAD
-    public bool CanInteract(Player player)
-=======
     public bool CanInteract(Agent player)
->>>>>>> parent of 5720c8b... Revert "Additions in Health Pickup"
+
     {
         return isFromPlayer;
     }
 
-<<<<<<< HEAD
-    public void Interact(Player player)
-=======
     public void Interact(Agent player)
->>>>>>> parent of 5720c8b... Revert "Additions in Health Pickup"
+
     {
         if (!CanInteract(player))
             return;
@@ -57,11 +47,11 @@ public class HealthPickup : MonoBehaviour, IPlayerInteractable
             Player player = (Player)player;
             player.Changehp(10);
             //change player hp
-<<<<<<< HEAD
+
         }
     }
 }
-=======
+
 
 
 
@@ -74,4 +64,4 @@ public class HealthPickup : MonoBehaviour, IPlayerInteractable
     }
 }
 
->>>>>>> parent of 5720c8b... Revert "Additions in Health Pickup"
+
