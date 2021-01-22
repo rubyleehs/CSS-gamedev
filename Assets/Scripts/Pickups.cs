@@ -47,21 +47,21 @@ public class HealthPickup2 : MonoBehaviour, IAgentInteractable
 }
 
 
-public class AmmoPickup : MonoBehaviour, IPlayerInteractable
+public class AmmoPickup : MonoBehaviour, IAgentInteractable
 {
     bool isFromPlayer = true; //check if is picked up by player
 
-    public bool CanInteract(Player player) => isFromPlayer;
+    public bool CanInteract(Agent agent) => isFromPlayer;
 
-    public void Interact(Player player)
+    public void Interact(Agent agent)
     {
-        if (!CanInteract(player))
+        if (!CanInteract(agent))
             return;
 
-        if (player is Player)
+        if (agent is Player)
         {
-            Player player = (Player)player;
-            player.Changeammo(5);
+            Player player = (Player)agent;
+            player.ChangeAmmoAmount(5);
             //change player ammo
         }
     }
