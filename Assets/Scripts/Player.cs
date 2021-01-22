@@ -120,6 +120,8 @@ public class Player : Agent
         RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
         lineRenderer.SetPosition(0, firePoint.position);
 
+        animator.SetTrigger("Shooting");
+
         if (hitInfo)
         {
             lineRenderer.SetPosition(1, hitInfo.point);
@@ -143,96 +145,4 @@ public class Player : Agent
 
         }
     }
-
-    /*
-    private void HFlip()
-    {
-        if (m_FacingRight)
-        {
-            m_FacingRight = !m_FacingRight;
-            m_FacingLeft = !m_FacingLeft;
-        }
-        else if (m_FacingLeft)
-        {
-            m_FacingLeft = !m_FacingLeft;
-            m_FacingRight = !m_FacingRight;
-        }
-
-        m_FacingUp = false;
-        m_FacingDown = false;
-
-        transform.Rotate(0f, 0f, 180f);
-    }
-
-    private void VFlip()
-    {
-        if (m_FacingUp)
-        {
-            m_FacingUp = !m_FacingUp;
-            m_FacingDown = !m_FacingDown;
-        }
-        else if (m_FacingDown)
-        {
-            m_FacingDown = !m_FacingDown;
-            m_FacingUp = !m_FacingUp;
-        }
-
-        m_FacingRight = false;
-        m_FacingLeft = false;
-
-        transform.Rotate(0f, 0f, 180f);
-    }
-
-    private void rotateLeft()
-    {
-        if (m_FacingRight == true)
-        {
-            m_FacingRight = !m_FacingRight;
-            m_FacingUp = true;
-        }
-        else if (m_FacingUp == true)
-        {
-            m_FacingUp = !m_FacingUp;
-            m_FacingLeft = true;
-        }
-        else if (m_FacingLeft == true)
-        {
-            m_FacingLeft = !m_FacingLeft;
-            m_FacingDown = true;
-        }
-        else if (m_FacingDown == true)
-        {
-            m_FacingDown = !m_FacingDown;
-            m_FacingRight = true;
-        }
-
-        transform.Rotate(0f, 0f, 90f);
-    }
-
-    private void rotateRight()
-    {
-        if (m_FacingRight == true)
-        {
-            m_FacingRight = !m_FacingRight;
-            m_FacingDown = true;
-        }
-        else if (m_FacingUp == true)
-        {
-            m_FacingUp = !m_FacingUp;
-            m_FacingRight = true;
-        }
-        else if (m_FacingLeft == true)
-        {
-            m_FacingLeft = !m_FacingLeft;
-            m_FacingUp = true;
-        }
-        else if (m_FacingDown == true)
-        {
-            m_FacingDown = !m_FacingDown;
-            m_FacingLeft = true;
-        }
-
-        transform.Rotate(0f, 0f, -90f);
-    }
-    */
 }
