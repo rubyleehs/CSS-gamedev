@@ -9,7 +9,7 @@ public class LevelGenerator : MonoBehaviour
     public GameObject[] floorTiles;
     public GameObject[] wallTiles;
     public GameObject[] arenaChunks;
-    public GameObject[] traversalChunks;
+    public GameObject[] obstacleChunks;
 
     private int chunkCount = 0;
     private int chunksBeforeArena = 3;
@@ -25,12 +25,18 @@ public class LevelGenerator : MonoBehaviour
     public void InitLevel() {
 
         level = new GameObject("Level").transform;
-        SpawnArenaChunk();
+        SpawnChunk();
+        SpawnChunk();
+        SpawnChunk();
+        SpawnChunk();
     }
 
-    public void SpawnArenaChunk() {
+    public void SpawnChunk() {
 
-        GameObject spawnChunk = arenaChunks[Random.Range(0, arenaChunks.Length)];
+        GameObject spawnChunk;
+        if (chunkCount % chunksBeforeArena == 0)
+            spawnChunk = arenaChunks[Random.Range(0, arenaChunks.Length)];
+        else spawnChunk = obstacleChunks[Random.Range(0, obstacleChunks.Length)];
 
         // Generates a new grid of available tiles
         GenerateTilePositions();
@@ -52,8 +58,11 @@ public class LevelGenerator : MonoBehaviour
         for (int i = 0; i < availableTiles.Count; i++) {
 
             Vector3 tilePos = availableTiles[i];
-            GameObject tileInstance;
 
+            // Offsets the y value by number of chunks
+            tilePos.y += (chunkCount * CHUNK_ROWS);
+
+            GameObject tileInstance;
             // Checks if its a wall, instantiates a wall if so
             if (tilePos.x < 1 || tilePos.x > 9) {
                 tileInstance = Instantiate(spawnedWall, tilePos, Quaternion.identity) as GameObject;
@@ -75,7 +84,7 @@ public class LevelGenerator : MonoBehaviour
 
         for(int x = 0; x < CHUNK_COLUMNS; x++) {
             for (int y = 0; y < CHUNK_ROWS; y++) {
-                availableTiles.Add(new Vector3(x + (chunkCount * CHUNK_COLUMNS), y + (chunkCount * CHUNK_ROWS), 0f));
+                availableTiles.Add(new Vector3(x, y, 0f));
             }
         }
     }
