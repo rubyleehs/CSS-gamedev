@@ -57,7 +57,14 @@ public class Player : Agent
 
         if (inputChanged)
         {
-            faceDir = base.DirChange(inputDir, faceDir);
+            if (inputDir.y > 0)
+                faceDir = Direction.North;
+            else if (inputDir.y < 0)
+                faceDir = Direction.South;
+            else if (inputDir.x > 0)
+                faceDir = Direction.East;
+            else if (inputDir.x < 0)
+                faceDir = Direction.West;
 
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)faceDir));
 
