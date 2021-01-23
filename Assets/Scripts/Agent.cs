@@ -14,5 +14,19 @@ public class Agent : MonoBehaviour
         //Move towards player
         //check the tile i want to move to
         //if the tile is negative outcome. find 2nd closest tile?     
-    } 
+    }
+    
+    internal Direction DirChange(Vector2Int inputDir, Direction dir)
+    {
+        if (inputDir.y > 0)
+            return Direction.North;
+        else if (inputDir.y < 0)
+            return Direction.South;
+        else if (inputDir.x < 0)
+            return Direction.West;
+        else if (inputDir.x > 0)
+            return Direction.East;
+
+        return dir;
+    }
 }
