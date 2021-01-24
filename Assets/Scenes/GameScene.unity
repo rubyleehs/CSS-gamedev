@@ -448,7 +448,7 @@ MonoBehaviour:
   firePoint: {fileID: 1151637694}
   hp: 10
   ammo: 5
-  camera: {fileID: 437907135}
+  camera: {fileID: 437907138}
   cameraSpeed: 10
 --- !u!50 &414700072
 Rigidbody2D:
@@ -864,6 +864,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   levelGen: {fileID: 471558605}
+  camera: {fileID: 0}
+  player: {fileID: 0}
 --- !u!114 &471558605 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1815856328595984638, guid: 9323e4c66949c894b8e8b337448976fd,
