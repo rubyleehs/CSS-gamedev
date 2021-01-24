@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Player
+public class Enemy : Agent
 {
     public int playerDamage = -1;
 
@@ -12,6 +13,7 @@ public class Enemy : Player
     private Vector2Int curInputDir;
     private Direction faceDir;
     private Vector2Int inputDir;
+    public int hp = 3;
 
     int xDir;
     int yDir;
@@ -25,10 +27,13 @@ public class Enemy : Player
 
         target = GameObject.FindGameObjectWithTag("Player").transform;
 
-        if (Mathf.Abs ((int)target.position.x - (int)transform.position.x) == 1 && Mathf.Abs((int)target.position.y - (int)transform.position.y) == 0 || Mathf.Abs((int)target.position.y - (int)transform.position.y) == 1 && Mathf.Abs((int)target.position.x - (int)transform.position.x) == 0)
+        if (Mathf.Abs((int)target.position.x - (int)transform.position.x + (int)target.position.y - (int)transform.position.y) == 1)
         {
-            ChangeHealthAmount(playerDamage);
+            Player player = GetComponent<Player>();
+
+            player.ChangeHealthAmount(playerDamage);
         }
+
         else if ((int)target.position.x - (int) transform.position.x != 0)
         {
             xDir = (int)target.position.x > (int)transform.position.x ? 1 : -1;
@@ -54,6 +59,16 @@ public class Enemy : Player
 
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)faceDir));
         }
-            base.Move(Moving);
+        
+        base.Move(Moving);
+    }
+
+    internal void TakeDamage(int v)
+    {
+        hp -= 1;
+        if(hp <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

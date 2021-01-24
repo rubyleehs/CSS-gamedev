@@ -117,6 +117,9 @@ public class Player : Agent
 
         if (hitInfo)
         {
+            Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
+            if (enemy != null)
+                enemy.TakeDamage(1);
             lineRenderer.SetPosition(1, hitInfo.point);
         }
         else
