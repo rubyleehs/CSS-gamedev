@@ -9,20 +9,21 @@ public class Enemy : Agent
 
     private Transform target;
     private Animator animator;
-    private bool inputChanged;
-    private Vector2Int Dir;
+    private bool inputChanged;//renamed this pls
+    private Vector2Int dir;
     private Direction faceDir;
     public int hp = 3;
 
     int xDir;
     int yDir;
 
-    // Start is called before the first frame update
+    // Start is called ONCE before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
 
-        target = GameObject.FindGameObjectWithTag("Player").transform;
+        //target = GameObject.FindGameObjectWithTag("Player").transform;
+        target = Player.instance.transform;
 
         if (Mathf.Abs((int)target.position.x - (int)transform.position.x + (int)target.position.y - (int)transform.position.y) == 1)
         {
@@ -46,18 +47,18 @@ public class Enemy : Agent
     // Update is called once per frame
     void Update()
     {
-        Vector2Int Moving = new Vector2Int(xDir, yDir);
-        inputChanged = (Moving != Dir);
-        Dir = Moving;
+        Vector2Int moving = new Vector2Int(xDir, yDir);
+        inputChanged = (moving != dir);
+        dir = moving;
 
         if (inputChanged)
         {
-            faceDir = base.DirChange(Dir, faceDir);
+            faceDir = base.DirChange(dir, faceDir);
 
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)faceDir));
         }
         
-        base.Move(Moving);
+        base.Move(moving);
     }
 
     internal void TakeDamage(int v)

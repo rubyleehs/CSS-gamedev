@@ -10,6 +10,8 @@ public enum Direction
 
 public class Player : Agent
 {
+    public static Player instance;
+
     public int pointsPerAmmo = 1;
     public int pointsPerHealthKit = 1;
     public Text healthText;
@@ -25,6 +27,14 @@ public class Player : Agent
     private Direction faceDir = Direction.East;
 
     private bool inputChanged = false;
+
+    private void Awake()
+    {
+        // this is called a singleton design pattern
+        if (instance != null)
+            Destroy(this);
+        else instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -85,7 +95,7 @@ public class Player : Agent
         if (delta > 0)
             addingAmmo.text = "+ " + delta;
         else if (delta < 0)
-            addingAmmo.text = "- " + delta;
+            addingAmmo.text = "" + delta;
 
         StartCoroutine(WaitUI());
     }

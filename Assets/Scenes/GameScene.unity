@@ -421,7 +421,7 @@ GameObject:
   - component: {fileID: 414700075}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -442,8 +442,8 @@ MonoBehaviour:
   pointsPerHealthKit: 1
   healthText: {fileID: 302917723}
   ammoText: {fileID: 1496119670}
-  addingAmmo: {fileID: 1496119670}
-  addingHealth: {fileID: 302917723}
+  addingAmmo: {fileID: 572017066}
+  addingHealth: {fileID: 1620802740}
   lineRenderer: {fileID: 303861604}
   firePoint: {fileID: 1151637694}
   hp: 10
@@ -836,7 +836,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 466379554}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.119617455, y: -0.1035331, z: 1.1816486}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1009,7 +1009,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: +0
 --- !u!222 &572017067
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1358,7 +1358,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: +0
 --- !u!222 &1620802741
 CanvasRenderer:
   m_ObjectHideFlags: 0
