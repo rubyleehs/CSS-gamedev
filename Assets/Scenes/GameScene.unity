@@ -448,6 +448,8 @@ MonoBehaviour:
   firePoint: {fileID: 1151637694}
   hp: 10
   ammo: 5
+  camera: {fileID: 437907135}
+  cameraSpeed: 10
 --- !u!50 &414700072
 Rigidbody2D:
   serializedVersion: 4
