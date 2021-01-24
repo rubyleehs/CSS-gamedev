@@ -25,12 +25,6 @@ public class Player : Agent
     private Direction faceDir = Direction.East;
 
     private bool inputChanged = false;
-    /*
-    private bool m_FacingRight = true;
-    private bool m_FacingLeft = false;
-    private bool m_FacingUp = false;
-    private bool m_FacingDown = false;
-    */
 
     // Start is called before the first frame update
     void Start()
@@ -92,6 +86,8 @@ public class Player : Agent
             addingAmmo.text = "+ " + delta;
         else if (delta < 0)
             addingAmmo.text = "- " + delta;
+
+        StartCoroutine(WaitUI());
     }
 
     public void ChangeHealthAmount(int delta)
@@ -99,10 +95,20 @@ public class Player : Agent
         hp += delta;
         healthText.text = "Health: " + hp;
 
-        if(delta > 0)
+        if (delta > 0)
             addingHealth.text = "+ " + delta;
-        else if(delta < 0)
-            addingHealth.text = "- " + delta;   
+        else if (delta < 0)
+            addingHealth.text = "- " + delta;
+
+        StartCoroutine(WaitUI());
+    }
+
+    IEnumerator WaitUI()
+    {
+        yield return new WaitForSeconds(2);
+        Debug.Log("Suc");
+        addingHealth.text = "";
+        addingAmmo.text = "";
     }
 
     IEnumerator Shoot() 

@@ -710,17 +710,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7e16826d362582448ec7d758e868baf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointsPerAmmo: 1
-  pointsPerHealthKit: 1
-  healthText: {fileID: 0}
-  ammoText: {fileID: 0}
-  addingAmmo: {fileID: 0}
-  addingHealth: {fileID: 0}
-  lineRenderer: {fileID: 0}
-  firePoint: {fileID: 0}
-  hp: 10
-  ammo: 5
   playerDamage: -1
+  hp: 10
 --- !u!95 &466379556
 Animator:
   serializedVersion: 3
@@ -1018,7 +1009,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ~
+  m_Text: 
 --- !u!222 &572017067
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1367,9 +1358,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '~
-
-'
+  m_Text: 
 --- !u!222 &1620802741
 CanvasRenderer:
   m_ObjectHideFlags: 0

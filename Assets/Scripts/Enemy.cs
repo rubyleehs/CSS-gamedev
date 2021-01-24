@@ -10,15 +10,12 @@ public class Enemy : Agent
     private Transform target;
     private Animator animator;
     private bool inputChanged;
-    private Vector2Int curInputDir;
+    private Vector2Int Dir;
     private Direction faceDir;
-    private Vector2Int inputDir;
     public int hp = 3;
 
     int xDir;
     int yDir;
-    int lastXDir;
-    int lastYDir;
 
     // Start is called before the first frame update
     void Start()
@@ -50,12 +47,12 @@ public class Enemy : Agent
     void Update()
     {
         Vector2Int Moving = new Vector2Int(xDir, yDir);
-        inputChanged = (Moving != curInputDir);
-        inputDir = curInputDir;
+        inputChanged = (Moving != Dir);
+        Dir = Moving;
 
         if (inputChanged)
         {
-            faceDir = base.DirChange(inputDir, faceDir);
+            faceDir = base.DirChange(Dir, faceDir);
 
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)faceDir));
         }
