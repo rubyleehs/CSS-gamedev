@@ -11,23 +11,22 @@ public class LevelGenerator : MonoBehaviour
     public GameObject[] arenaChunks;
     public GameObject[] obstacleChunks;
 
-    private int chunkCount = 0;
+    [HideInInspector] public int chunkCount = 0;
+    [HideInInspector] public int chunksDestroyed = 0;
+
     private int chunksBeforeArena = 3;
     private List<Vector3> availableTiles = new List<Vector3>();
+    private List<GameObject> chunkList = new List<GameObject>();
 
-    private int CHUNK_ROWS = 10;
-    private int CHUNK_COLUMNS = 11;
+    public int CHUNK_ROWS = 10;
+    public int CHUNK_COLUMNS = 11;
     private Vector2 SPAWN_OFFSET = new Vector2(-4, -4);
 
     // Stores the level
     private Transform level;
 
     public void InitLevel() {
-
         level = new GameObject("Level").transform;
-        SpawnChunk();
-        SpawnChunk();
-        SpawnChunk();
         SpawnChunk();
     }
 
@@ -53,6 +52,7 @@ public class LevelGenerator : MonoBehaviour
         // Instantiates the chunk itself
         GameObject chunkInstance = Instantiate(spawnChunk, new Vector3(0, chunkCount * CHUNK_ROWS, 0f), Quaternion.identity) as GameObject;
         chunkInstance.transform.SetParent(level);
+        chunkList.Add(chunkInstance);
 
         // Automatically fills in floor and wall tiles
         for (int i = 0; i < availableTiles.Count; i++) {
@@ -76,6 +76,13 @@ public class LevelGenerator : MonoBehaviour
         }
 
         chunkCount++;
+    }
+
+    // Destroys the earliest chunk in the list.
+    public void DestroyEarliestChunk() {
+        Destroy(chunkList[0]);
+        chunkList.RemoveAt(0);
+        chunksDestroyed++;
     }
 
     void GenerateTilePositions() {

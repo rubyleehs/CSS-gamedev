@@ -14,11 +14,15 @@ public class GameManager : MonoBehaviour
     // Public variables
     public GameState currentState = GameState.Play;
     public LevelGenerator levelGen;
+    public new Transform camera;
+    public GameObject player;
 
     // Private variables
     // private List<Enemy> enemyList;
     private bool paused = false;
     private Text pauseText;
+    private Player playerScript;
+    
 
     // Code to ensure only one GameManager exists
     public static GameManager instance;
@@ -41,7 +45,10 @@ public class GameManager : MonoBehaviour
         pauseText = GameObject.Find("PauseText").GetComponent<Text>();
         pauseText.gameObject.SetActive(paused); // paused is always false here
 
-        // TODO: Sets up the level
+        // Gets a reference to the Player
+        playerScript = player.GetComponent<Player>();
+
+        // Sets up the level
         levelGen.InitLevel();
     }
 
@@ -71,7 +78,23 @@ public class GameManager : MonoBehaviour
     }
 
     private void Play() {
-        // TODO
+
+        // Game Over if player HP is less than 0
+        if (playerScript.hp <= 0) {
+            currentState = GameState.GameOver;
+        }
+
+        // Generates new chunks ahead of the camera
+        if (levelGen.chunkCount * levelGen.CHUNK_ROWS < camera.position.y + levelGen.CHUNK_ROWS) {
+            levelGen.SpawnChunk();
+        }
+
+        // Destroys chunks that go behind the camera
+        // TODO: THIS IS AN MVP METHOD. NOT ELEGANT AT ALL.
+        if (camera.position.y - 18 > levelGen.chunksDestroyed * levelGen.CHUNK_ROWS) {
+            levelGen.DestroyEarliestChunk();
+        }
+
     }
 
     private void GameOver() {

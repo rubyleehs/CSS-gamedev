@@ -23,8 +23,8 @@ public class Player : Agent
     public int hp = 10, ammo = 5;
 
     // Camera control is given to the Player
-    public GameObject camera;
-    public int cameraSpeed = 4;
+    public new Transform camera;
+    public int cameraSpeed = 8;
 
     private Animator animator;
     private Vector2Int inputDir = new Vector2Int(0,0);
@@ -54,10 +54,10 @@ public class Player : Agent
             GameManager.instance.TogglePause();
 
         // Check if the current position of the player is more than 1 higher than that of the camera
-        if (gameObject.transform.position.y > camera.transform.position.y + 1) {
+        if (gameObject.transform.position.y > camera.position.y + 1) {
 
             // Moves the camera by deltatime
-            camera.transform.position += Vector3.up * Time.deltaTime * cameraSpeed;
+            camera.position += Vector3.up * Time.deltaTime * cameraSpeed;
 
         }
 
@@ -80,7 +80,7 @@ public class Player : Agent
             if (inputDir != Vector2Int.zero)
             {
                 // Only allows movement if player does not go below camera
-                if ((gameObject.transform.position + (Vector3Int)inputDir).y > (camera.transform.position.y - 6)) {
+                if ((gameObject.transform.position + (Vector3Int)inputDir).y > (camera.position.y - 6)) {
                     base.Move(inputDir);
                 }
                 
