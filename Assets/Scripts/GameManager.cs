@@ -12,16 +12,17 @@ public class GameManager : MonoBehaviour
     }
 
     // Public variables
-    public GameState currentState = GameState.Play;
+    public GameState currentState;
     public LevelGenerator levelGen;
     public int difficultyLevel = 1;
 
     // Private variables
     // private List<Enemy> enemyList;
     private bool paused = false;
-    private Text pauseText;
-    private Transform camera;
+    private Text infoText;
+    private new Transform camera;
     private Player player;
+    private GameObject menuBackdrop;
 
     // Code to ensure only one GameManager exists
     public static GameManager instance;
@@ -35,26 +36,51 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         levelGen = GetComponent<LevelGenerator>();
 
+        // Inits references
+        infoText = GameObject.Find("InfoText").GetComponent<Text>();
+        menuBackdrop = GameObject.Find("MenuBackdrop");
+        camera = GameObject.Find("Main Camera").GetComponent<Transform>();
+        player = GameObject.Find("Player").GetComponent<Player>();
+
         InitGame();
         Time.timeScale = 1;
     }
 
     private void InitGame() {
-        // Inits and disables pause text
-        pauseText = GameObject.Find("PauseText").GetComponent<Text>();
-        camera = GameObject.Find("Main Camera").GetComponent<Transform>();
-        player = GameObject.Find("Player").GetComponent<Player>();
-        pauseText.gameObject.SetActive(paused); // paused is always false here
+        
+        // Sets up the game
+        infoText.gameObject.SetActive(paused); // paused is always false here
+        menuBackdrop.SetActive(false); // Disables black screen
+        infoText.text = "PAUSED";
 
+        currentState = GameState.Play;
+
+        // Sets up the camera
+        camera.position = new Vector3(5, 4, -10f);
+
+        // Sets up the player
+        player.ResetPlayer();
 
         // Sets up the level
         levelGen.InitLevel(difficultyLevel);
+        
+    }
+
+    private void InitGameOver() {
+
+        // Destroys the level
+        levelGen.DestroyLevel();
+
+        currentState = GameState.GameOver;
+        menuBackdrop.SetActive(true);
+        infoText.text = "Game Over. Play again? [ENTER]";
+        infoText.gameObject.SetActive(true);
     }
 
     // Pause and resume. Input will be handled by the Player instead.
     public void TogglePause() {
         paused = !paused;
-        pauseText.gameObject.SetActive(paused);
+        infoText.gameObject.SetActive(paused);
         Time.timeScale = paused ? 0 : 1;
     }
 
@@ -80,13 +106,12 @@ public class GameManager : MonoBehaviour
 
         // Game Over if player HP is less than 0
         if (player.hp <= 0) {
-            currentState = GameState.GameOver;
+            InitGameOver();
         }
 
         // Generates new chunks ahead of the camera
         if (levelGen.chunkCount * levelGen.CHUNK_ROWS < camera.position.y + levelGen.CHUNK_ROWS) {
             levelGen.SpawnChunk(difficultyLevel);
-
         }
 
         // Destroys chunks that go behind the camera
@@ -96,11 +121,12 @@ public class GameManager : MonoBehaviour
         }
 
         // Updates difficulty level
-        difficultyLevel = (int)Mathf.Ceil(levelGen.chunkCount / 8);
+        difficultyLevel = (int)Mathf.Max(2, Mathf.Ceil(levelGen.chunkCount / 8));
 
     }
 
     private void GameOver() {
-        // TODO
+        if (Input.GetKeyDown("return"))
+            InitGame();
     }
 }

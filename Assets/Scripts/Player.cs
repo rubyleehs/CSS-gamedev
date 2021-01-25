@@ -128,6 +128,12 @@ public class Player : Agent
         StartCoroutine(WaitUI());
     }
 
+    public void ResetPlayer() {
+        hp = 10;
+        ammo = 200;
+        gameObject.transform.position = new Vector3(5, 0, 0f);
+    }
+
     IEnumerator WaitUI()
     {
         yield return new WaitForSeconds(2);

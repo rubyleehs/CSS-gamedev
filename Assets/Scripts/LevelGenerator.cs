@@ -29,6 +29,8 @@ public class LevelGenerator : MonoBehaviour
 
     public void InitLevel(int difficultyLevel) {
         level = new GameObject("Level").transform;
+        chunkCount = 0;
+        chunksDestroyed = 0;
         SpawnChunk(difficultyLevel);
     }
 
@@ -108,6 +110,11 @@ public class LevelGenerator : MonoBehaviour
         Destroy(chunkList[0]);
         chunkList.RemoveAt(0);
         chunksDestroyed++;
+    }
+
+    // Destroys its level
+    public void DestroyLevel() {
+        Destroy(level.gameObject);
     }
 
     // Generates tile positions for generation in chunks
