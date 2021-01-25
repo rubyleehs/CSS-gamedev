@@ -109,7 +109,7 @@ public class Player : Agent
         ammoText.text = "Ammo: " + ammo;
 
         if (delta > 0)
-            addingAmmo.text = "+ " + delta;
+            addingAmmo.text = "" + delta;
         else if (delta < 0)
             addingAmmo.text = "" + delta;
 
@@ -122,9 +122,9 @@ public class Player : Agent
         healthText.text = "Health: " + hp;
 
         if (delta > 0)
-            addingHealth.text = "+ " + delta;
+            addingHealth.text = "" + delta;
         else if (delta < 0)
-            addingHealth.text = "- " + delta;
+            addingHealth.text = "" + delta;
 
         StartCoroutine(WaitUI());
     }
@@ -132,7 +132,6 @@ public class Player : Agent
     IEnumerator WaitUI()
     {
         yield return new WaitForSeconds(2);
-        Debug.Log("Suc");
         addingHealth.text = "";
         addingAmmo.text = "";
     }
@@ -170,7 +169,7 @@ public class Player : Agent
     {
         if (hp <= 0)
         {
-
+            gameObject.SetActive(false);
         }
     }
 }

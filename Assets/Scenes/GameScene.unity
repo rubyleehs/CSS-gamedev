@@ -713,7 +713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDamage: -1
-  hp: 10
+  hp: 3
 --- !u!95 &466379556
 Animator:
   serializedVersion: 3
@@ -865,7 +865,7 @@ MonoBehaviour:
   currentState: 0
   levelGen: {fileID: 471558605}
   camera: {fileID: 0}
-  player: {fileID: 0}
+  player: {fileID: 414700070}
 --- !u!114 &471558605 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1815856328595984638, guid: 9323e4c66949c894b8e8b337448976fd,

@@ -6,16 +6,17 @@ using UnityEngine;
 public class Enemy : Agent
 {
     public int playerDamage = -1;
+    public int hp = 3;
 
     private Transform target;
     private Animator animator;
-    private bool inputChanged;//renamed this pls
+    private bool dirChanged;
     private Vector2Int dir;
     private Direction faceDir;
-    public int hp = 3;
-
-    int xDir;
-    int yDir;
+    private int xDir;
+    private int yDir;
+    private float timer;
+    private float waitTime = 1.0f;
 
     // Start is called ONCE before the first frame update
     void Start()
@@ -24,46 +25,48 @@ public class Enemy : Agent
 
         //target = GameObject.FindGameObjectWithTag("Player").transform;
         target = Player.instance.transform;
-
-        if (Mathf.Abs((int)target.position.x - (int)transform.position.x + (int)target.position.y - (int)transform.position.y) == 1)
-        {
-            Player player = GetComponent<Player>();
-
-            player.ChangeHealthAmount(playerDamage);
-        }
-
-        else if ((int)target.position.x - (int) transform.position.x != 0)
-        {
-            xDir = (int)target.position.x > (int)transform.position.x ? 1 : -1;
-            yDir = 0;
-        }
-        else
-        {
-            yDir = (int)target.position.y > (int)transform.position.y ? 1 : -1;
-            xDir = 0;
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2Int moving = new Vector2Int(xDir, yDir);
-        inputChanged = (moving != dir);
-        dir = moving;
+        timer += Time.deltaTime;
+        if (timer > waitTime) {
+            if (Mathf.Abs((int)target.position.x - (int)transform.position.x + (int)target.position.y - (int)transform.position.y) == 1)
+            {
+                Player player = GetComponent<Player>();
 
-        if (inputChanged)
-        {
-            faceDir = base.DirChange(dir, faceDir);
+                player.ChangeHealthAmount(playerDamage);
+            }
+            else if ((int)target.position.x - (int)transform.position.x != 0)
+            {
+                xDir = (int)target.position.x > (int)transform.position.x ? 1 : -1;
+                yDir = 0;
+            }
+            else
+            {
+                yDir = (int)target.position.y > (int)transform.position.y ? 1 : -1;
+                xDir = 0;
+            }
 
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)faceDir));
+            Vector2Int moving = new Vector2Int(xDir, yDir);
+            dirChanged = (moving != dir);
+            dir = moving;
+
+            if (dirChanged)
+            {
+                faceDir = base.DirChange(dir, faceDir);
+
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)faceDir));
+            }
+            base.Move(moving);
+            timer = 0;
         }
-        
-        base.Move(moving);
     }
 
     internal void TakeDamage(int v)
     {
-        hp -= 1;
+        hp -= v;
         if(hp <= 0)
         {
             gameObject.SetActive(false);
