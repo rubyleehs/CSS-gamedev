@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
         // Generates new chunks ahead of the camera
         if (levelGen.chunkCount * levelGen.CHUNK_ROWS < camera.position.y + levelGen.CHUNK_ROWS) {
             levelGen.SpawnChunk(difficultyLevel);
+
         }
 
         // Destroys chunks that go behind the camera
@@ -94,6 +95,9 @@ public class GameManager : MonoBehaviour
         if (camera.position.y - 18 > levelGen.chunksDestroyed * levelGen.CHUNK_ROWS) {
             levelGen.DestroyEarliestChunk();
         }
+
+        // Updates difficulty level
+        difficultyLevel = (int)Mathf.Ceil(levelGen.chunkCount / 8);
 
     }
 
