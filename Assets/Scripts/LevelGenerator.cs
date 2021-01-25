@@ -126,7 +126,7 @@ public class LevelGenerator : MonoBehaviour
     void GenerateEnemyPositions(int enemiesToSpawn) {
 
         enemyTiles.Clear();
-        Debug.Log(enemiesToSpawn.ToString() + " enemies to spawn");
+ 
         for(int i = 0; i < enemiesToSpawn; i++) {
 
             // Gets a random tile that's not a wall tile
