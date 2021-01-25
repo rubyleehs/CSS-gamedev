@@ -16,13 +16,13 @@ public class GameManager : MonoBehaviour
     public LevelGenerator levelGen;
     public new Transform camera;
     public GameObject player;
+    public int difficultyLevel = 1;
 
     // Private variables
     // private List<Enemy> enemyList;
     private bool paused = false;
     private Text pauseText;
     private Player playerScript;
-    
 
     // Code to ensure only one GameManager exists
     public static GameManager instance;
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         playerScript = player.GetComponent<Player>();
 
         // Sets up the level
-        levelGen.InitLevel();
+        levelGen.InitLevel(difficultyLevel);
     }
 
     // Pause and resume. Input will be handled by the Player instead.
@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
 
         // Generates new chunks ahead of the camera
         if (levelGen.chunkCount * levelGen.CHUNK_ROWS < camera.position.y + levelGen.CHUNK_ROWS) {
-            levelGen.SpawnChunk();
+            levelGen.SpawnChunk(difficultyLevel);
         }
 
         // Destroys chunks that go behind the camera
