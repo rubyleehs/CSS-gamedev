@@ -58,7 +58,6 @@ public class Player : Agent
 
             // Moves the camera by deltatime
             camera.position += Vector3.up * Time.deltaTime * cameraSpeed;
-
         }
 
         // shooting projectile
@@ -109,7 +108,7 @@ public class Player : Agent
         ammoText.text = "Ammo: " + ammo;
 
         if (delta > 0)
-            addingAmmo.text = "" + delta;
+            addingAmmo.text = "+" + delta;
         else if (delta < 0)
             addingAmmo.text = "" + delta;
 
@@ -122,7 +121,7 @@ public class Player : Agent
         healthText.text = "Health: " + hp;
 
         if (delta > 0)
-            addingHealth.text = "" + delta;
+            addingHealth.text = "+" + delta;
         else if (delta < 0)
             addingHealth.text = "" + delta;
 
