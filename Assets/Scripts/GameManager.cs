@@ -14,15 +14,14 @@ public class GameManager : MonoBehaviour
     // Public variables
     public GameState currentState = GameState.Play;
     public LevelGenerator levelGen;
-    public new Transform camera;
-    public GameObject player;
     public int difficultyLevel = 1;
 
     // Private variables
     // private List<Enemy> enemyList;
     private bool paused = false;
     private Text pauseText;
-    private Player playerScript;
+    private Transform camera;
+    private Player player;
 
     // Code to ensure only one GameManager exists
     public static GameManager instance;
@@ -43,10 +42,10 @@ public class GameManager : MonoBehaviour
     private void InitGame() {
         // Inits and disables pause text
         pauseText = GameObject.Find("PauseText").GetComponent<Text>();
+        camera = GameObject.Find("Main Camera").GetComponent<Transform>();
+        player = GameObject.Find("Player").GetComponent<Player>();
         pauseText.gameObject.SetActive(paused); // paused is always false here
 
-        // Gets a reference to the Player
-        playerScript = player.GetComponent<Player>();
 
         // Sets up the level
         levelGen.InitLevel(difficultyLevel);
@@ -80,7 +79,7 @@ public class GameManager : MonoBehaviour
     private void Play() {
 
         // Game Over if player HP is less than 0
-        if (playerScript.hp <= 0) {
+        if (player.hp <= 0) {
             currentState = GameState.GameOver;
         }
 
