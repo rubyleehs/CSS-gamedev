@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     // Public variables
     public GameState currentState;
     public LevelGenerator levelGen;
-    public int difficultyLevel = 1;
+    public int difficultyLevel = 2;
 
     // Private variables
     // private List<Enemy> enemyList;
@@ -70,6 +70,9 @@ public class GameManager : MonoBehaviour
 
         // Destroys the level
         levelGen.DestroyLevel();
+
+        // Resets difficulty
+        difficultyLevel = 2;
 
         currentState = GameState.GameOver;
         menuBackdrop.SetActive(true);
