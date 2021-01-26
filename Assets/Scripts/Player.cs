@@ -31,6 +31,8 @@ public class Player : Agent
     private Direction faceDir = Direction.East;
 
     private bool inputChanged = false;
+    private float timer;
+    private float waitTime = .1f;
 
     private void Awake()
     {
@@ -70,6 +72,8 @@ public class Player : Agent
         inputChanged = (inputDir != curInputDir);
         inputDir = curInputDir;
 
+        timer += Time.deltaTime;
+
         if (inputChanged)
         {
             faceDir = base.DirChange(inputDir, faceDir);
@@ -79,10 +83,10 @@ public class Player : Agent
             if (inputDir != Vector2Int.zero)
             {
                 // Only allows movement if player does not go below camera
-                if ((gameObject.transform.position + (Vector3Int)inputDir).y > (camera.position.y - 6)) {
+                if ((gameObject.transform.position + (Vector3Int)inputDir).y > (camera.position.y - 6) && timer > waitTime) {
                     base.Move(inputDir);
+                    timer = 0;
                 }
-                
             }
         }
 
@@ -168,13 +172,5 @@ public class Player : Agent
         yield return new WaitForSeconds(0.02f);
 
         lineRenderer.enabled = false;
-    }
-
-    private void GameOver()
-    {
-        if (hp <= 0)
-        {
-            gameObject.SetActive(false);
-        }
     }
 }
