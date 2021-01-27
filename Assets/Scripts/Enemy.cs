@@ -34,6 +34,7 @@ public class Enemy : Agent
         if (timer > waitTime) {
             if (Mathf.Abs((int)target.position.x - (int)transform.position.x + (int)target.position.y - (int)transform.position.y) == 1)
             {
+                animator.SetTrigger("Attacking");
                 Player player = target.transform.GetComponent<Player>();
 
                 player.ChangeHealthAmount(playerDamage);
