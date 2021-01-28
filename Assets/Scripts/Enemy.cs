@@ -11,6 +11,7 @@ public class Enemy : Agent
     private Transform target;
     private Animator animator;
     private bool dirChanged;
+    private bool attacking;
     private Vector2Int dir;
     private Direction faceDir;
     private int xDir;
@@ -38,8 +39,10 @@ public class Enemy : Agent
                 Player player = target.transform.GetComponent<Player>();
 
                 player.ChangeHealthAmount(playerDamage);
+                attacking = true;
             }
-            else if ((int)target.position.x - (int)transform.position.x != 0)
+
+            if ((int)target.position.x - (int)transform.position.x != 0)
             {
                 xDir = (int)target.position.x > (int)transform.position.x ? 1 : -1;
                 yDir = 0;
@@ -60,7 +63,11 @@ public class Enemy : Agent
 
                 transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)faceDir));
             }
-            base.Move(moving);
+
+            if (!attacking)
+                base.Move(moving);
+
+            attacking = false;
             timer = 0;
         }
     }
