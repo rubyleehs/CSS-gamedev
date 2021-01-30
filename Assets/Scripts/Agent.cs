@@ -9,11 +9,23 @@ public class Agent : MonoBehaviour
 
     public void Move(Vector2Int direction)
     {
-        transform.position += (Vector3Int)direction;
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 1, ~9);
+
+        if (hits.Length > 0)
+        {
+            for (int x = 0; x < hits.Length; x++)
+            {
+                if (hits[x].transform != this.transform)
+                {
+                    return;
+                }
+            }
+        }
+            transform.position += (Vector3Int)direction;
 
         //Move towards player
         //check the tile i want to move to
-        //if the tile is negative outcome. find 2nd closest tile?     
+        //if the tile is negative outcome. find 2nd closest tile?
     }
     
     internal Direction DirChange(Vector2Int inputDir, Direction dir)
