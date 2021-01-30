@@ -10,12 +10,6 @@ public class Enemy : Agent
 
     private Transform target;
     private Animator animator;
-    private bool dirChanged;
-    private bool attacking;
-    private Vector2Int dir;
-    private Direction faceDir;
-    private int xDir;
-    private int yDir;
     private float timer;
     private float waitTime = 1.0f;
 
@@ -33,43 +27,39 @@ public class Enemy : Agent
     {
         timer += Time.deltaTime;
         if (timer > waitTime) {
-            if (Mathf.Abs((int)target.position.x - (int)transform.position.x + (int)target.position.y - (int)transform.position.y) == 1)
+            
+            Vector2Int delta = new Vector2Int ((int) (target.position.x - transform.position.x), (int) (target.position.y - transform.position.y));
+
+            Vector2Int faceDirection = Vector2Int.zero;
+
+            if (delta.x != 0 && CanMove(Vector2Int.right * (delta.x > 0 ? 1 : -1)))
+            {
+                faceDirection.x = (int)target.position.x > (int)transform.position.x ? 1 : -1;
+            }
+            else if (delta.y != 0 && CanMove(Vector2Int.up * (delta.y > 0 ? 1 : -1)))
+            {
+                faceDirection.y = (int)target.position.y > (int)transform.position.y ? 1 : -1;
+            }
+
+            if (CanAttack(target))
             {
                 animator.SetTrigger("Attacking");
                 Player player = target.transform.GetComponent<Player>();
 
                 player.ChangeHealthAmount(playerDamage);
-                attacking = true;
-            }
 
-            if ((int)target.position.x - (int)transform.position.x != 0)
-            {
-                xDir = (int)target.position.x > (int)transform.position.x ? 1 : -1;
-                yDir = 0;
+                Face(GetFaceDirection(faceDirection, currentFaceDir));
             }
             else
-            {
-                yDir = (int)target.position.y > (int)transform.position.y ? 1 : -1;
-                xDir = 0;
-            }
+                Move(faceDirection);
 
-            Vector2Int moving = new Vector2Int(xDir, yDir);
-            dirChanged = (moving != dir);
-            dir = moving;
-
-            if (dirChanged)
-            {
-                faceDir = base.DirChange(dir, faceDir);
-
-                transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)faceDir));
-            }
-
-            if (!attacking)
-                base.Move(moving);
-
-            attacking = false;
             timer = 0;
         }
+    }
+
+    internal bool CanAttack(Transform target)
+    {
+        return Mathf.Abs((int)target.position.x - (int)transform.position.x) + Mathf.Abs((int)target.position.y - (int)transform.position.y) == 1;
     }
 
     internal void TakeDamage(int v)

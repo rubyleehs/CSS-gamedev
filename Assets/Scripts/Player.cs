@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public enum Direction
-{
-    East = 0, North = 1, West = 2, South = 3
-}
-
 public class Player : Agent
 {
     public static Player instance;
@@ -76,15 +71,11 @@ public class Player : Agent
 
         if (inputChanged)
         {
-            faceDir = base.DirChange(inputDir, faceDir);
-
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)faceDir));
-
             if (inputDir != Vector2Int.zero)
             {
                 // Only allows movement if player does not go below camera
                 if ((gameObject.transform.position + (Vector3Int)inputDir).y > (camera.position.y - 6) && timer > waitTime) {
-                    base.Move(inputDir);
+                    Move(inputDir);
                     timer = 0;
                 }
             }
