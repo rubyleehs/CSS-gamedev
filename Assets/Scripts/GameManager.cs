@@ -61,6 +61,9 @@ public class GameManager : MonoBehaviour
         // Sets up the player
         player.ResetPlayer();
 
+        // Resets difficulty
+        difficultyLevel = 2;
+
         // Sets up the level
         levelGen.InitLevel(difficultyLevel);
         
@@ -70,9 +73,6 @@ public class GameManager : MonoBehaviour
 
         // Destroys the level
         levelGen.DestroyLevel();
-
-        // Resets difficulty
-        difficultyLevel = 2;
 
         currentState = GameState.GameOver;
         menuBackdrop.SetActive(true);
