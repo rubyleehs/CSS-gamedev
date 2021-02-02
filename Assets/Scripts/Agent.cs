@@ -16,10 +16,11 @@ public class Agent : MonoBehaviour
 
     public void Move(Vector2Int direction)
     {
+        currentFaceDir = GetFaceDirection(direction, currentFaceDir);
+        Face(currentFaceDir);
+
         if (CanMove(direction))
         {
-            currentFaceDir = GetFaceDirection(direction, currentFaceDir);
-            Face(currentFaceDir);
 
             transform.position += (Vector3Int)direction;
         }
