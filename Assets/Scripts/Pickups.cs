@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class HealthPickup : MonoBehaviour, IAgentInteractable
 {
+   
     public bool CanInteract (Agent agent)
     {
         return (agent is Player);
@@ -18,8 +19,17 @@ public class HealthPickup : MonoBehaviour, IAgentInteractable
 
         if (agent is Player)
         {
-            Player player = (Player) agent;
-            player.ChangeHealthAmount (10);
+            Player player = (Player)agent;
+            void OnTriggerEnter2D(Collider2D col)
+            { 
+                if(player.hp<10)
+                {
+                    player.ChangeHealthAmount(10);
+                    Destroy(this);
+;               }
+            }
+            
+            
         }
     }
 }
@@ -39,8 +49,18 @@ public class AmmoPickup : MonoBehaviour, IAgentInteractable
         if (agent is Player)
         {
             Player player = (Player)agent;
-            player.ChangeAmmoAmount(5);
-            //change player ammo
+            void OnTriggerEnter2D(Collider2D col)
+            {
+
+                if(player.ammo<5)
+                {
+                    player.ChangeAmmoAmount(5); //change player ammo
+                    Destroy(this);
+                }
+                    
+                
+            }
+
         }
     }
 }
