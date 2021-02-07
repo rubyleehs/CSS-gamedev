@@ -118,7 +118,10 @@ public class Player : Agent
         if (delta > 0)
             addingHealth.text = "+" + delta;
         else if (delta < 0)
+        {
             addingHealth.text = "" + delta;
+            animator.SetTrigger("Damaged");
+        }
 
         StartCoroutine(WaitUI());
     }
