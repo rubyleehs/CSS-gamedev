@@ -59,9 +59,13 @@ public class LevelGenerator : MonoBehaviour
         GameObject spawnedWallRight = wallTilesRight[0];
 
         // Removes all preset tiles in the new Chunk from the available tiles
+        int tilesRemoved = 0;
         foreach (Transform preset in spawnChunk.transform) {
+            tilesRemoved++;
             availableTiles.Remove(preset.position);
         }
+
+        Debug.Log(tilesRemoved.ToString() + " tiles removed.");
 
         // Instantiates the chunk itself
         GameObject chunkInstance = Instantiate(spawnChunk, new Vector3(0, chunkCount * CHUNK_ROWS, 0f), Quaternion.identity) as GameObject;
@@ -124,19 +128,15 @@ public class LevelGenerator : MonoBehaviour
 
     // Generates tile positions for generation in chunks
     void GenerateTilePositions() {
-
-        int tiles = 0;
         
         availableTiles.Clear();
 
         for(int x = 0; x < CHUNK_COLUMNS; x++) {
             for (int y = 0; y < CHUNK_ROWS; y++) {
                 availableTiles.Add(new Vector3(x, y, 0f));
-                tiles++;
             }
         }
 
-        Debug.Log("Generated " + tiles.ToString() + " Tiles");
     }
 
     // Generates enemy positions from available tiles

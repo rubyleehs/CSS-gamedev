@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3330990245213035103}
   - component: {fileID: 3330990245213035096}
   m_Layer: 8
-  m_Name: floorA_dock
+  m_Name: floor_dock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
