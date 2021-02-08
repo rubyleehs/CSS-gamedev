@@ -7,7 +7,8 @@ public class LevelGenerator : MonoBehaviour
 {
 
     public GameObject[] floorTiles;
-    public GameObject[] wallTiles;
+    public GameObject[] wallTilesLeft;
+    public GameObject[] wallTilesRight;
     public GameObject[] arenaChunks;
     public GameObject[] obstacleChunks;
     public GameObject[] enemies;
@@ -20,8 +21,8 @@ public class LevelGenerator : MonoBehaviour
     private List<Vector3> enemyTiles = new List<Vector3>();
     private List<GameObject> chunkList = new List<GameObject>();
 
-    public int CHUNK_ROWS = 10;
-    public int CHUNK_COLUMNS = 11;
+    public int CHUNK_ROWS = 15;
+    public int CHUNK_COLUMNS = 15;
     private Vector2 SPAWN_OFFSET = new Vector2(-4, -4);
 
     // Stores the level
@@ -53,8 +54,9 @@ public class LevelGenerator : MonoBehaviour
         GenerateTilePositions();
 
         // Randomly selects a tile or wall to use for this chunk
-        GameObject spawnedTile = floorTiles[Random.Range(0, floorTiles.Length)];
-        GameObject spawnedWall = wallTiles[Random.Range(0, floorTiles.Length)];
+        GameObject spawnedTile = floorTiles[0];
+        GameObject spawnedWallLeft = wallTilesLeft[0];
+        GameObject spawnedWallRight = wallTilesRight[0];
 
         // Removes all preset tiles in the new Chunk from the available tiles
         foreach (Transform preset in spawnChunk.transform) {
@@ -76,9 +78,12 @@ public class LevelGenerator : MonoBehaviour
 
             GameObject tileInstance;
             // Checks if its a wall, instantiates a wall if so
-            if (tilePos.x < 1 || tilePos.x > 9) {
-                tileInstance = Instantiate(spawnedWall, tilePos, Quaternion.identity) as GameObject;
+            if (tilePos.x < 1) {
+                tileInstance = Instantiate(spawnedWallLeft, tilePos, Quaternion.identity) as GameObject;
             }
+            else if (tilePos.x > CHUNK_COLUMNS - 2) {
+                tileInstance = Instantiate(spawnedWallRight, tilePos, Quaternion.identity) as GameObject;
+            } 
             // Otherwise spawns a floor in
             else {
                 tileInstance = Instantiate(spawnedTile, tilePos, Quaternion.identity) as GameObject;
@@ -120,13 +125,18 @@ public class LevelGenerator : MonoBehaviour
     // Generates tile positions for generation in chunks
     void GenerateTilePositions() {
 
+        int tiles = 0;
+        
         availableTiles.Clear();
 
         for(int x = 0; x < CHUNK_COLUMNS; x++) {
             for (int y = 0; y < CHUNK_ROWS; y++) {
                 availableTiles.Add(new Vector3(x, y, 0f));
+                tiles++;
             }
         }
+
+        Debug.Log("Generated " + tiles.ToString() + " Tiles");
     }
 
     // Generates enemy positions from available tiles

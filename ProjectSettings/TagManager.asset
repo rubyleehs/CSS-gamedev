@@ -41,11 +41,11 @@ TagManager:
   - name: Floor
     uniqueID: 4225895059
     locked: 0
-  - name: Entity
-    uniqueID: 679218707
-    locked: 0
   - name: Wall
     uniqueID: 1015612967
+    locked: 0
+  - name: Entity
+    uniqueID: 679218707
     locked: 0
   - name: Default
     uniqueID: 0

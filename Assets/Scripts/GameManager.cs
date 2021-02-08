@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         currentState = GameState.Play;
 
         // Sets up the camera
-        camera.position = new Vector3(5, 4, -10f);
+        camera.position = new Vector3(7, 4, -10f);
 
         // Sets up the player
         player.ResetPlayer();
@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
 
         // Destroys chunks that go behind the camera
         // TODO: THIS IS AN MVP METHOD. NOT ELEGANT AT ALL.
-        if (camera.position.y - 18 > levelGen.chunksDestroyed * levelGen.CHUNK_ROWS) {
+        if (camera.position.y - (levelGen.CHUNK_ROWS * 2) > levelGen.chunksDestroyed * levelGen.CHUNK_ROWS) {
             levelGen.DestroyEarliestChunk();
         }
 
