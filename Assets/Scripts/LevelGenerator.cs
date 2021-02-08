@@ -7,7 +7,8 @@ public class LevelGenerator : MonoBehaviour
 {
 
     public GameObject[] floorTiles;
-    public GameObject[] wallTiles;
+    public GameObject[] wallTilesLeft;
+    public GameObject[] wallTilesRight;
     public GameObject[] arenaChunks;
     public GameObject[] obstacleChunks;
     public GameObject[] enemies;
@@ -53,8 +54,9 @@ public class LevelGenerator : MonoBehaviour
         GenerateTilePositions();
 
         // Randomly selects a tile or wall to use for this chunk
-        GameObject spawnedTile = floorTiles[Random.Range(0, floorTiles.Length)];
-        GameObject spawnedWall = wallTiles[Random.Range(0, floorTiles.Length)];
+        GameObject spawnedTile = floorTiles[0];
+        GameObject spawnedWallLeft = wallTilesLeft[0];
+        GameObject spawnedWallRight = wallTilesRight[0];
 
         // Removes all preset tiles in the new Chunk from the available tiles
         foreach (Transform preset in spawnChunk.transform) {
@@ -76,8 +78,11 @@ public class LevelGenerator : MonoBehaviour
 
             GameObject tileInstance;
             // Checks if its a wall, instantiates a wall if so
-            if (tilePos.x < 1 || tilePos.x > 9) {
-                tileInstance = Instantiate(spawnedWall, tilePos, Quaternion.identity) as GameObject;
+            if (tilePos.x < 1) {
+                tileInstance = Instantiate(spawnedWallLeft, tilePos, Quaternion.identity) as GameObject;
+            }
+            else if (tilePos.x > 9) {
+                tileInstance = Instantiate(spawnedWallRight, tilePos, Quaternion.identity) as GameObject;
             }
             // Otherwise spawns a floor in
             else {
