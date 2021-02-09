@@ -2,34 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.Tilemaps;
 
 public class LevelGenerator : MonoBehaviour
 {
-
-    public GameObject[] floorTiles;
-    public GameObject[] wallTilesLeft;
-    public GameObject[] wallTilesRight;
-    public GameObject[] arenaChunks;
+    public GameObject[] battleChunks;
     public GameObject[] obstacleChunks;
     public GameObject[] enemies;
 
     [HideInInspector] public int chunkCount = 0;
     [HideInInspector] public int chunksDestroyed = 0;
 
-    private int chunksBeforeArena = 3;
+    private int chunksBeforeBattle = 3;
     private List<Vector3> availableTiles = new List<Vector3>();
     private List<Vector3> enemyTiles = new List<Vector3>();
     private List<GameObject> chunkList = new List<GameObject>();
 
     public int CHUNK_ROWS = 15;
     public int CHUNK_COLUMNS = 15;
-    private Vector2 SPAWN_OFFSET = new Vector2(-4, -4);
 
     // Stores the level
-    private Transform level;
+    public Transform level;
 
     public void InitLevel(int difficultyLevel) {
-        level = new GameObject("Level").transform;
         chunkCount = 0;
         chunksDestroyed = 0;
         SpawnChunk(difficultyLevel);
@@ -41,8 +36,8 @@ public class LevelGenerator : MonoBehaviour
         GameObject spawnChunk;
 
         // Determines type of chunk to spawn and enemy count
-        if (chunkCount % chunksBeforeArena == 0) {
-            spawnChunk = arenaChunks[Random.Range(0, arenaChunks.Length)];
+        if (chunkCount % chunksBeforeBattle == 0) {
+            spawnChunk = battleChunks[Random.Range(0, battleChunks.Length)];
             enemiesToSpawn = difficultyLevel;
         }
         else {
@@ -50,51 +45,16 @@ public class LevelGenerator : MonoBehaviour
             enemiesToSpawn = (int)Mathf.Ceil(Mathf.Log(difficultyLevel, 2));
         }
 
-        // Generates a new grid of available tiles
-        GenerateTilePositions();
-
-        // Randomly selects a tile or wall to use for this chunk
-        GameObject spawnedTile = floorTiles[0];
-        GameObject spawnedWallLeft = wallTilesLeft[0];
-        GameObject spawnedWallRight = wallTilesRight[0];
-
-        // Removes all preset tiles in the new Chunk from the available tiles
-        int tilesRemoved = 0;
-        foreach (Transform preset in spawnChunk.transform) {
-            tilesRemoved++;
-            availableTiles.Remove(preset.position);
-        }
-
-        Debug.Log(tilesRemoved.ToString() + " tiles removed.");
+        // Generates a new grid of available tiles minus the wall tiles
+        GenerateTilePositions(spawnChunk);
 
         // Instantiates the chunk itself
         GameObject chunkInstance = Instantiate(spawnChunk, new Vector3(0, chunkCount * CHUNK_ROWS, 0f), Quaternion.identity) as GameObject;
         chunkInstance.transform.SetParent(level);
         chunkList.Add(chunkInstance);
 
-        // Automatically fills in floor and wall tiles
-        for (int i = 0; i < availableTiles.Count; i++) {
-
-            Vector3 tilePos = availableTiles[i];
-
-            // Offsets the y value by number of chunks
-            tilePos.y += (chunkCount * CHUNK_ROWS);
-
-            GameObject tileInstance;
-            // Checks if its a wall, instantiates a wall if so
-            if (tilePos.x < 1) {
-                tileInstance = Instantiate(spawnedWallLeft, tilePos, Quaternion.identity) as GameObject;
-            }
-            else if (tilePos.x > CHUNK_COLUMNS - 2) {
-                tileInstance = Instantiate(spawnedWallRight, tilePos, Quaternion.identity) as GameObject;
-            } 
-            // Otherwise spawns a floor in
-            else {
-                tileInstance = Instantiate(spawnedTile, tilePos, Quaternion.identity) as GameObject;
-            }
-
-            tileInstance.transform.SetParent(chunkInstance.transform);
-        }
+        // Gets the entity list of the spawned chunk
+        Transform entityList = chunkInstance.transform.Find("Entities");
 
         // Spawns in enemies
         GenerateEnemyPositions(enemiesToSpawn);
@@ -107,7 +67,7 @@ public class LevelGenerator : MonoBehaviour
 
             GameObject enemyInstance = Instantiate(spawnedEnemy, enemyPos, Quaternion.identity) as GameObject;
 
-            enemyInstance.transform.SetParent(chunkInstance.transform);
+            enemyInstance.transform.SetParent(entityList);
             
         }
 
@@ -121,19 +81,28 @@ public class LevelGenerator : MonoBehaviour
         chunksDestroyed++;
     }
 
-    // Destroys its level
+    // Destroys everything in the level GameObject
     public void DestroyLevel() {
-        Destroy(level.gameObject);
+        foreach (Transform child in level) {
+            GameObject.Destroy(child.gameObject);
+        }
     }
 
     // Generates tile positions for generation in chunks
-    void GenerateTilePositions() {
+    void GenerateTilePositions(GameObject spawnChunk) {
         
         availableTiles.Clear();
 
-        for(int x = 0; x < CHUNK_COLUMNS; x++) {
+        // Gets the walls from the chunk to be spawned
+        GameObject walls= spawnChunk.transform.Find("Walls").gameObject;
+        Tilemap wallTilemap = walls.GetComponent<Tilemap>();
+
+        for (int x = 0; x < CHUNK_COLUMNS; x++) {
             for (int y = 0; y < CHUNK_ROWS; y++) {
-                availableTiles.Add(new Vector3(x, y, 0f));
+                // If the tile does not exist in the wall tilemap, add it into list of available tiles
+                Vector3Int tileTBAdded = new Vector3Int(x, y, 0);
+                if (!wallTilemap.HasTile(tileTBAdded))
+                    availableTiles.Add((Vector3)tileTBAdded);
             }
         }
 
@@ -146,17 +115,11 @@ public class LevelGenerator : MonoBehaviour
  
         for(int i = 0; i < enemiesToSpawn; i++) {
 
-            // Gets a random tile that's not a wall tile
-            Vector3 enemySpawnLocation = new Vector3();
-            while (true) {
-                enemySpawnLocation = availableTiles[Random.Range(0, availableTiles.Count)];
-                if (enemySpawnLocation.x > 0 && enemySpawnLocation.x < 10)
-                    break;
-            }
+            // Gets a random tile 
+            Vector3 enemySpawnLocation = availableTiles[Random.Range(0, availableTiles.Count)];
             
             enemyTiles.Add(enemySpawnLocation);
-            
-
+           
             // Removes tile from pool
             availableTiles.Remove(enemySpawnLocation);
         }

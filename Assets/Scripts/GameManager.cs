@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         currentState = GameState.Play;
 
         // Sets up the camera
-        camera.position = new Vector3(7, 4, -10f);
+        camera.position = new Vector3(7, 5, -10f);
 
         // Sets up the player
         player.ResetPlayer();

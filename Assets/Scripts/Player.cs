@@ -129,7 +129,7 @@ public class Player : Agent
     public void ResetPlayer() {
         hp = 10;
         ammo = 200;
-        gameObject.transform.position = new Vector3(7, 0, 0f);
+        gameObject.transform.position = new Vector3(7, 2, 0f);
     }
 
     IEnumerator WaitUI()
