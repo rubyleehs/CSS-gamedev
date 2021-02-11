@@ -54,13 +54,15 @@ public class Sentry : Agent
 
         if (CanAttack(target) && loaded)
         {
-            animator.SetTrigger("Firing");
+            animator.SetTrigger("Shooting");
 
             loaded = false;
 
             Player player = target.transform.GetComponent<Player>();
 
             player.ChangeHealthAmount(playerDamage);
+
+            animator.SetTrigger("Shot");
         }
     }
 
