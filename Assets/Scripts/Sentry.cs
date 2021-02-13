@@ -6,6 +6,8 @@ using UnityEngine;
 public class Sentry : Agent
 {
     public int playerDamage = -2;
+    public Transform firePoint;
+    public LineRenderer lineRenderer;
 
     private Transform target;
     private Animator animator;
@@ -43,6 +45,7 @@ public class Sentry : Agent
         Face(currentFaceDir);
 
         timer += Time.deltaTime;
+
         if (timer > waitTime && !loaded)
         {
             animator.SetTrigger("Loading");
@@ -52,22 +55,43 @@ public class Sentry : Agent
             timer = 0;
         }
 
-        if (CanAttack(target) && loaded)
+        if (loaded)
         {
-            animator.SetTrigger("Shooting");
-
-            loaded = false;
-
-            Player player = target.transform.GetComponent<Player>();
-
-            player.ChangeHealthAmount(playerDamage);
-
-            animator.SetTrigger("Shot");
+            animator.SetTrigger("Shooting");    
+            Shoot();
         }
+
+        loaded = false;
     }
 
     internal bool CanAttack(Transform target)
     {
         return Mathf.Abs((int)target.position.x - (int)transform.position.x) == 0 || Mathf.Abs((int)target.position.y - (int)transform.position.y) == 0;
+    }
+
+    IEnumerator Shoot()
+    {
+        RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
+        lineRenderer.SetPosition(0, firePoint.position);
+
+        animator.SetTrigger("Shooting");
+
+        if (hitInfo)
+        {
+            Player player = hitInfo.transform.GetComponent<Player>();
+            if (player != null)
+                player.ChangeHealthAmount(playerDamage);
+            lineRenderer.SetPosition(1, hitInfo.point);
+        }
+        else
+        {
+            lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
+        }
+
+        lineRenderer.enabled = true;
+
+        yield return new WaitForSeconds(0.02f);
+
+        lineRenderer.enabled = false;
     }
 }
