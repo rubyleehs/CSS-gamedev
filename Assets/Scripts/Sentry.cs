@@ -56,17 +56,9 @@ public class Sentry : Agent
         }
 
         if (loaded)
-        {
-            animator.SetTrigger("Shooting");    
             Shoot();
-        }
 
         loaded = false;
-    }
-
-    internal bool CanAttack(Transform target)
-    {
-        return Mathf.Abs((int)target.position.x - (int)transform.position.x) == 0 || Mathf.Abs((int)target.position.y - (int)transform.position.y) == 0;
     }
 
     IEnumerator Shoot()
