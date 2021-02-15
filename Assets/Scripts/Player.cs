@@ -15,6 +15,7 @@ public class Player : Agent
     public Text addingHealth;
     public LineRenderer lineRenderer;
     public Transform firePoint;
+    public int defaultHp = 10;
     public int hp = 10, ammo = 5;
 
     // Camera control is given to the Player
@@ -127,7 +128,7 @@ public class Player : Agent
     }
 
     public void ResetPlayer() {
-        hp = 10;
+        hp = defaultHp;
         ammo = 200;
         gameObject.transform.position = new Vector3(7, 2, 0f);
     }

@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Direction
-{
-    East = 0, North = 1, West = 2, South = 3
-}
-
 //Anythign that can move or have Ai
 public class Agent : MonoBehaviour
 {
@@ -16,20 +11,18 @@ public class Agent : MonoBehaviour
 
     public virtual void Move(Vector2Int direction)
     {
-        currentFaceDir = GetFaceDirection(direction, currentFaceDir);
+        if (direction != Vector2Int.zero)
+            currentFaceDir = direction.ToEnum();
+
         Face(currentFaceDir);
 
         if (CanMove(direction))
         {
-
             transform.position += (Vector3Int)direction;
         }
-
-        //Move towards player
-        //check the tile i want to move to
-        //if the tile is negative outcome. find 2nd closest tile?
     }
-    internal bool CanMove(Vector2Int direction)
+
+    protected bool CanMove(Vector2Int direction)
     {
         lock (moveLock)
         {
@@ -47,20 +40,6 @@ public class Agent : MonoBehaviour
             }
             return true;
         }
-    }
-
-    protected Direction GetFaceDirection(Vector2Int targetDirection, Direction defaultDirection)
-    {
-        if (targetDirection.y > 0)
-            return Direction.North;
-        else if (targetDirection.y < 0)
-            return Direction.South;
-        else if (targetDirection.x < 0)
-            return Direction.West;
-        else if (targetDirection.x > 0)
-            return Direction.East;
-        else
-            return defaultDirection;
     }
 
     public void Face(Direction direction)

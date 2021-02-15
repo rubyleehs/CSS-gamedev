@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8066433794486936734}
   - component: {fileID: 8066433794486936721}
+  - component: {fileID: 8066433794486936725}
   - component: {fileID: 8066433794486936720}
   - component: {fileID: 8066433794486936723}
   - component: {fileID: 8066433794486936722}
-  - component: {fileID: 8066433794486936725}
   m_Layer: 9
-  m_Name: Enemy
+  m_Name: Zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,6 +85,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8066433794486936725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8066433794486936724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7d6b9972b6c5464c8cce35c1fe73bb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerDamage: -1
+  hp: 3
+  actionWaitPeriod: 1.2
+  actionTimeRemaining: 1
 --- !u!50 &8066433794486936720
 Rigidbody2D:
   serializedVersion: 4
@@ -151,17 +167,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8066433794486936725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8066433794486936724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7e16826d362582448ec7d758e868baf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerDamage: -1
-  hp: 3

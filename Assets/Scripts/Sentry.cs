@@ -67,33 +67,51 @@ public class Sentry : Enemy
     public Transform firePoint;
     public LineRenderer lineRenderer;
 
+    public float attackRadius = 15f;
+    public float loadTime = 3f;
+
     public void Start()
     {
-        playerDamage = -2;
-    }
-
-    public override void Move(Vector2Int direction)
-    {
-        return;
+        playerDamage = -1;
     }
 
     public override bool CanAttack(Transform target)
     {
-        return target != null;
+        return (Vector2.Distance(target.position , this.transform.position) < attackRadius);
     }
 
-    public override IEnumerator AttackAnim()
+    public override void Attack(Transform target)
     {
+        Face(CalculateFaceDirection(target).ToEnum());
+        StartCoroutine(AttackAnim());
+    }
+
+    public override void Move(Transform target)
+    {
+        return;
+    }
+
+    public override void TakeDamage(int delta)
+    {
+        return;
+    }
+
+    public IEnumerator AttackAnim()
+    {
+        animator.SetTrigger("Loading");
+        yield return new WaitForSeconds(loadTime);
+
         RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
         lineRenderer.SetPosition(0, firePoint.position);
 
         animator.SetTrigger("Shooting");
-
-        if (hitInfo)
+        if (hitInfo.transform)
         {
             Player player = hitInfo.transform.GetComponent<Player>();
             if (player != null)
+            {
                 player.ChangeHealthAmount(playerDamage);
+            }
             lineRenderer.SetPosition(1, hitInfo.point);
         }
         else
@@ -103,7 +121,7 @@ public class Sentry : Enemy
 
         lineRenderer.enabled = true;
 
-        yield return new WaitForSeconds(0.02f);
+        yield return new WaitForSeconds(2f);
 
         lineRenderer.enabled = false;
     }
