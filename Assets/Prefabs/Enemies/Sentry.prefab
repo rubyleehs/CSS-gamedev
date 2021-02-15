@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6807464381513308281}
   - component: {fileID: 6807464381513308262}
   - component: {fileID: 6807464381513308263}
+  - component: {fileID: 3196707855210016094}
   m_Layer: 0
   m_Name: Sentry
   m_TagString: Untagged
@@ -151,6 +152,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3196707855210016094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6807464381513308260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e23079db8b2b14141b131715d03c8c7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerDamage: -2
+  firePoint: {fileID: 0}
+  lineRenderer: {fileID: 0}
 --- !u!1 &6807464383058475213
 GameObject:
   m_ObjectHideFlags: 0
