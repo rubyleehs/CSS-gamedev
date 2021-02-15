@@ -27,7 +27,7 @@ public class LevelGenerator : MonoBehaviour
     public void InitLevel(int difficultyLevel) {
         chunkCount = 0;
         chunksDestroyed = 0;
-        SpawnChunk(difficultyLevel);
+        SpawnChunk(0);
     }
 
     public void SpawnChunk(int difficultyLevel) {

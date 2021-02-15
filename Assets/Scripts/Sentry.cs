@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/**
 public class Sentry : Agent
 {
     public int playerDamage = -2;
@@ -60,8 +60,29 @@ public class Sentry : Agent
 
         loaded = false;
     }
+    **/
 
-    IEnumerator Shoot()
+public class Sentry : Enemy
+{
+    public Transform firePoint;
+    public LineRenderer lineRenderer;
+
+    public void Start()
+    {
+        playerDamage = -2;
+    }
+
+    public override void Move(Vector2Int direction)
+    {
+        return;
+    }
+
+    public override bool CanAttack(Transform target)
+    {
+        return target != null;
+    }
+
+    public override IEnumerator AttackAnim()
     {
         RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
         lineRenderer.SetPosition(0, firePoint.position);

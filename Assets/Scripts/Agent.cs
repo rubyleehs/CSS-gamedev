@@ -14,7 +14,7 @@ public class Agent : MonoBehaviour
     //A bunch of code you bring over form player once you start making Enemy class
     protected Direction currentFaceDir = Direction.East;
 
-    public void Move(Vector2Int direction)
+    public virtual void Move(Vector2Int direction)
     {
         currentFaceDir = GetFaceDirection(direction, currentFaceDir);
         Face(currentFaceDir);

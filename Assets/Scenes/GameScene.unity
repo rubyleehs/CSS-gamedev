@@ -1447,6 +1447,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
+      propertyPath: enemies.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
+        type: 3}
+      propertyPath: enemies.Array.data[1]
+      value: 
+      objectReference: {fileID: 8305296094202067444, guid: bc6a2e2151640724a9aed6c62e406846,
+        type: 3}
+    - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
+        type: 3}
       propertyPath: floorTiles.Array.size
       value: 4
       objectReference: {fileID: 0}
