@@ -88,7 +88,7 @@ public class Sentry : Enemy
 
     public override void Move(Transform target)
     {
-        return;
+        Face(CalculateFaceDirection(target).ToEnum());
     }
 
     public override void TakeDamage(int delta)
