@@ -20,7 +20,34 @@ public class Zombie : Enemy
 
     public override void Move(Transform target)
     {
-        Move(CalculateFaceDirection(target));
+        Vector2Int delta = new Vector2Int((int)(target.position.x - transform.position.x), (int)(target.position.y - transform.position.y));
+
+        Vector2Int direction = Vector2Int.zero;
+
+        if (delta.y > delta.x)
+        {
+            if (delta.x != 0 && CanMove(Vector2Int.right * (delta.x > 0 ? 1 : -1)))
+            {
+                direction.x = (int)target.position.x > (int)transform.position.x ? 1 : -1;
+            }
+            else if (delta.y != 0 && CanMove(Vector2Int.up * (delta.y > 0 ? 1 : -1)))
+            {
+                direction.y = (int)target.position.y > (int)transform.position.y ? 1 : -1;
+            }
+        }
+        else
+        {
+            if (delta.y != 0 && CanMove(Vector2Int.up * (delta.y > 0 ? 1 : -1)))
+            {
+                direction.y = (int)target.position.y > (int)transform.position.y ? 1 : -1;
+            }
+            else if (delta.x != 0 && CanMove(Vector2Int.right * (delta.x > 0 ? 1 : -1)))
+            {
+                direction.x = (int)target.position.x > (int)transform.position.x ? 1 : -1;
+            }
+        }
+
+        Move(direction);
     }
 
     public override bool CanAttack(Transform target)

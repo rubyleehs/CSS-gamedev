@@ -41,7 +41,7 @@ public abstract class Enemy : Agent
         }
     }
 
-    public Vector2Int CalculateFaceDirection(Transform target)
+    /*public Vector2Int CalculateFaceDirection(Transform target)
     {
         Vector2Int delta = new Vector2Int((int)(target.position.x - transform.position.x), (int)(target.position.y - transform.position.y));
 
@@ -65,6 +65,38 @@ public abstract class Enemy : Agent
                 faceDirection.y = (int)target.position.y > (int)transform.position.y ? 1 : -1;
             }
             else if (delta.x != 0 && CanMove(Vector2Int.right * (delta.x > 0 ? 1 : -1)))
+            {
+                faceDirection.x = (int)target.position.x > (int)transform.position.x ? 1 : -1;
+            }
+        }
+        return faceDirection;
+    }
+    */
+    public Vector2Int CalculateFaceDirection(Transform target)
+    {
+        Vector2Int delta = new Vector2Int((int)(target.position.x - transform.position.x), (int)(target.position.y - transform.position.y));
+        Debug.Log(delta.x + "," + delta.y);
+
+        Vector2Int faceDirection = Vector2Int.zero;
+
+        if (delta.y > delta.x)
+        {
+            if (delta.x != 0)
+            {
+                faceDirection.x = (int)target.position.x > (int)transform.position.x ? 1 : -1;
+            }
+            else if (delta.y != 0)
+            {
+                faceDirection.y = (int)target.position.y > (int)transform.position.y ? 1 : -1;
+            }
+        }
+        else
+        {
+            if (delta.y != 0)
+            {
+                faceDirection.y = (int)target.position.y > (int)transform.position.y ? 1 : -1;
+            }
+            else if (delta.x != 0)
             {
                 faceDirection.x = (int)target.position.x > (int)transform.position.x ? 1 : -1;
             }
