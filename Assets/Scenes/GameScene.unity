@@ -398,12 +398,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303861603}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.9056463, y: 3.787939, z: -41.258118}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.0943537, y: 3.787939, z: -41.0144}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 414700074}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &345673733
 GameObject:
@@ -446,7 +446,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &414700070
 GameObject:
@@ -553,6 +553,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1151637694}
+  - {fileID: 303861605}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -707,7 +708,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &437907139
 MonoBehaviour:
@@ -1342,7 +1343,7 @@ PrefabInstance:
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
       propertyPath: battleChunks.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
@@ -1403,6 +1404,12 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
+      propertyPath: battleChunks.Array.data[1]
+      value: 
+      objectReference: {fileID: 7130461465308966455, guid: 95ccddeca1828304cb2f2af4128bddff,
+        type: 3}
+    - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
+        type: 3}
       propertyPath: wallTilesLeft.Array.data[0]
       value: 
       objectReference: {fileID: 3924957213669413957, guid: 290821012b009f146a52c110e1f5f0b0,
@@ -1441,7 +1448,7 @@ PrefabInstance:
         type: 3}
       propertyPath: obstacleChunks.Array.data[2]
       value: 
-      objectReference: {fileID: 9216388721485773532, guid: c6ba035e0e93bdc4785f234d2ab33e8c,
+      objectReference: {fileID: 928240759522550169, guid: c6ba035e0e93bdc4785f234d2ab33e8c,
         type: 3}
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
@@ -1480,7 +1487,7 @@ PrefabInstance:
     - target: {fileID: 5966617893194608671, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5966617893194608671, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}

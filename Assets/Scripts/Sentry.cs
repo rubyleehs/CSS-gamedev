@@ -70,60 +70,59 @@ public class Sentry : Enemy
     public float attackRadius = 15f;
     public float loadTime = 3f;
 
-    public void Start()
+    public void Start ()
     {
         attackDamage = -1;
     }
 
-    public override bool CanAttack(Agent target)
+    public override bool CanAttack (Agent target)
     {
-        return (Vector2.Distance(target.transform.position , this.transform.position) < attackRadius);
+        return (Vector2.Distance (target.transform.position, this.transform.position) < attackRadius);
     }
 
-    public override void Attack(Agent target)
+    public override void Attack (Agent target)
     {
-        Face(CalculateFaceDirection(target).ToEnum());
-        StartCoroutine(AttackAnim());
+        Face (CalculateFaceDirection (target).ToEnum ());
+        StartCoroutine (AttackAnim ());
     }
 
-    public override void TakeDamage(int delta)
+    public override void TakeDamage (int delta)
     {
-        //Prevent taking damage
-        return;
+        actionTimeRemaining = 0;
     }
 
-    public override void Move(Vector2Int direction)
+    public override void Move (Vector2Int direction)
     {
         //Prevent Moving
         return;
     }
 
-    public IEnumerator AttackAnim()
+    public IEnumerator AttackAnim ()
     {
-        animator.SetTrigger("Loading");
-        yield return new WaitForSeconds(loadTime);
+        animator.SetTrigger ("Loading");
+        yield return new WaitForSeconds (loadTime);
 
-        RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
-        lineRenderer.SetPosition(0, firePoint.position);
+        RaycastHit2D hitInfo = Physics2D.Raycast (firePoint.position, firePoint.right);
+        lineRenderer.SetPosition (0, firePoint.position);
 
-        animator.SetTrigger("Shooting");
+        animator.SetTrigger ("Shooting");
         if (hitInfo.transform)
         {
-            Agent agent = hitInfo.transform.GetComponent<Agent>();
+            Agent agent = hitInfo.transform.GetComponent<Agent> ();
             if (agent != null)
             {
-               agent.TakeDamage(attackDamage);
+                agent.TakeDamage (attackDamage);
             }
-            lineRenderer.SetPosition(1, hitInfo.point);
+            lineRenderer.SetPosition (1, hitInfo.point);
         }
         else
         {
-            lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
+            lineRenderer.SetPosition (1, firePoint.position + firePoint.right * 100);
         }
 
         lineRenderer.enabled = true;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds (2f);
 
         lineRenderer.enabled = false;
     }
