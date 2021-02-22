@@ -5,62 +5,47 @@ using UnityEngine;
 
 public class HealthPickup : MonoBehaviour, IAgentInteractable
 {
-   
+    public int healthRestoreValue = 10;
+
     public bool CanInteract (Agent agent)
     {
         return (agent is Player);
     }
 
     public void Interact (Agent agent)
-
     {
         if (!CanInteract (agent))
             return;
 
-        if (agent is Player)
+        Player player = (Player)agent;
+
+        if(player.currentHp<player.maxHp)
         {
-            Player player = (Player)agent;
-            void OnTriggerEnter2D(Collider2D col)
-            { 
-                if(player.hp<10)
-                {
-                    player.ChangeHealthAmount(10);
-                    Destroy(this);
-;               }
-            }
-            
-            
-        }
+            player.TakeDamage(-healthRestoreValue);
+            Destroy(this);
+        }            
     }
 }
 
 
 public class AmmoPickup : MonoBehaviour, IAgentInteractable
 {
-    bool isFromPlayer = true; //check if is picked up by player
-
-    public bool CanInteract(Agent agent) => isFromPlayer;
+    public bool CanInteract(Agent agent)
+    {
+        return (agent is Player);
+    }
 
     public void Interact(Agent agent)
     {
         if (!CanInteract(agent))
             return;
 
-        if (agent is Player)
+        Player player = (Player)agent;
+
+        if(player.currentAmmo<5)
         {
-            Player player = (Player)agent;
-            void OnTriggerEnter2D(Collider2D col)
-            {
-
-                if(player.ammo<5)
-                {
-                    player.ChangeAmmoAmount(5); //change player ammo
-                    Destroy(this);
-                }
-                    
-                
-            }
-
-        }
+            player.ChangeAmmoAmount(5); //change player ammo
+            Destroy(this);
+        }     
     }
 }

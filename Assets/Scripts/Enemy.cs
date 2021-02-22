@@ -5,10 +5,8 @@ using UnityEngine;
 
 public abstract class Enemy : Agent
 {
-    public int playerDamage = -1;
-    public int hp = 3;
+    public int attackDamage = 1;
 
-    protected Transform target;
     protected Animator animator;
 
     public float actionWaitPeriod = 1f;
@@ -23,7 +21,6 @@ public abstract class Enemy : Agent
 
     void Start()
     {
-        target = Player.instance.transform;
         actionTimeRemaining = actionWaitPeriod;
     }
 
@@ -32,48 +29,36 @@ public abstract class Enemy : Agent
         actionTimeRemaining -= Time.deltaTime;
         if (actionTimeRemaining <= 0)
         {
-            target = Player.instance.transform;
+            Agent target = Player.instance;
 
             if (CanAttack(target)) Attack(target);
-            else Move(target);
+            else Move(CalculateFaceDirection(target));
 
             actionTimeRemaining = actionWaitPeriod;
         }
     }
 
-    public Vector2Int CalculateFaceDirection(Transform target)
+    public Vector2Int CalculateFaceDirection(Agent target)
     {
-        Vector2Int delta = new Vector2Int((int)(target.position.x - transform.position.x), (int)(target.position.y - transform.position.y));
-
-        Vector2Int faceDirection = Vector2Int.zero;
-
-        if (delta.y > delta.x)
+        List<Vector2Int> possibleDirectionsToMove = new List<Vector2Int>() { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };
+        for(int i = 0; i < possibleDirectionsToMove.Count; i++)
         {
-            if (delta.x != 0 && CanMove(Vector2Int.right * (delta.x > 0 ? 1 : -1)))
+            if (!CanMove(possibleDirectionsToMove[i]))
             {
-                faceDirection.x = (int)target.position.x > (int)transform.position.x ? 1 : -1;
-            }
-            else if (delta.y != 0 && CanMove(Vector2Int.up * (delta.y > 0 ? 1 : -1)))
-            {
-                faceDirection.y = (int)target.position.y > (int)transform.position.y ? 1 : -1;
+                possibleDirectionsToMove.RemoveAt(i);
+                i--;
             }
         }
-        else
-        {
-            if (delta.y != 0 && CanMove(Vector2Int.up * (delta.y > 0 ? 1 : -1)))
-            {
-                faceDirection.y = (int)target.position.y > (int)transform.position.y ? 1 : -1;
-            }
-            else if (delta.x != 0 && CanMove(Vector2Int.right * (delta.x > 0 ? 1 : -1)))
-            {
-                faceDirection.x = (int)target.position.x > (int)transform.position.x ? 1 : -1;
-            }
-        }
-        return faceDirection;
+        Vector2Int delta = new Vector2Int((int)(target.transform.position.x - transform.position.x), (int)(target.transform.position.y - transform.position.y));
+        possibleDirectionsToMove.Sort((v1, v2) => (delta - v1).sqrMagnitude.CompareTo((delta - v2).sqrMagnitude));
+        for (int i = 0; i < possibleDirectionsToMove.Count; i++)
+
+        if (possibleDirectionsToMove.Count == 0)
+            return Vector2Int.zero;
+
+        return possibleDirectionsToMove[0];
     }
 
-    public abstract bool CanAttack(Transform target);
-    public abstract void Attack(Transform target);
-    public abstract void Move(Transform target);
-    public abstract void TakeDamage(int delta); 
+    public abstract bool CanAttack(Agent target);
+    public abstract void Attack(Agent target);
 }

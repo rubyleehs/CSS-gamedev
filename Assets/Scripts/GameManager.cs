@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
     private Player player;
     private GameObject menuBackdrop;
 
-    // Code to ensure only one GameManager exists
     public static GameManager instance;
 
     void Awake() {
@@ -47,12 +46,12 @@ public class GameManager : MonoBehaviour
     }
 
     private void InitGame() {
-        
-        // Sets up the game
-        infoText.gameObject.SetActive(paused); // paused is always false here
-        menuBackdrop.SetActive(false); // Disables black screen
-        infoText.text = "PAUSED";
 
+        // Sets up the game
+        paused = false;
+        infoText.gameObject.SetActive(paused); // paused is always false here
+        menuBackdrop.SetActive(paused); // Disables black screen
+        
         currentState = GameState.Play;
 
         // Sets up the camera
@@ -83,12 +82,17 @@ public class GameManager : MonoBehaviour
     // Pause and resume. Input will be handled by the Player instead.
     public void TogglePause() {
         paused = !paused;
+        infoText.text = "PAUSED";
         infoText.gameObject.SetActive(paused);
         Time.timeScale = paused ? 0 : 1;
     }
 
     // Update is called once per frame
     void Update() {
+        // Pause Game
+        if (Input.GetKeyDown("p"))
+            TogglePause();
+
         // Game is simply not updated when paused
         if (paused)
             return;
@@ -108,7 +112,7 @@ public class GameManager : MonoBehaviour
     private void Play() {
 
         // Game Over if player HP is less than 0
-        if (player.hp <= 0) {
+        if (player.currentHp <= 0) {
             InitGameOver();
         }
 

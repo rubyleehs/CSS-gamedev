@@ -15,20 +15,19 @@ public class Player : Agent
     public Text addingHealth;
     public LineRenderer lineRenderer;
     public Transform firePoint;
-    public int defaultHp = 10;
-    public int hp = 10, ammo = 5;
+    public int maxHp = 10, maxAmmo = 5;
+    public int currentAmmo = 5;
 
     // Camera control is given to the Player
     public new Transform camera;
     public int cameraSpeed = 8;
 
     private Animator animator;
-    private Vector2Int inputDir = new Vector2Int(0,0);
+    private Vector2Int prevMoveDir = new Vector2Int(0,0);
     private Direction faceDir = Direction.East;
 
-    private bool inputChanged = false;
-    private float timer;
-    private float waitTime = .1f;
+    private float lastMoveTime;
+    public float moveWaitTime = .3f;
 
     private void Awake()
     {
@@ -41,49 +40,68 @@ public class Player : Agent
     // Start is called before the first frame update
     void Start()
     {
+        ResetPlayer();
         animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Pause Game
-        if (Input.GetKeyDown("p"))
-            GameManager.instance.TogglePause();
-
         // Check if the current position of the player is more than 1 higher than that of the camera
         if (gameObject.transform.position.y > camera.position.y + 1) {
-
             // Moves the camera by deltatime
             camera.position += Vector3.up * Time.deltaTime * cameraSpeed;
         }
 
         // shooting projectile
-        if (Input.GetButtonDown("Fire1") && ammo != 0)
+        if (Input.GetButtonDown("Fire1") && currentAmmo != 0)
         {
             StartCoroutine(Shoot());
         }
 
         Vector2Int curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
-        inputChanged = (inputDir != curInputDir);
-        inputDir = curInputDir;
+        if (CanMove(curInputDir)) Move(curInputDir);
+    }
 
-        timer += Time.deltaTime;
+    public override void Move(Vector2Int direction)
+    {
+        base.Move(direction);
 
-        if (inputChanged)
+        prevMoveDir = direction;
+        if (direction != Vector2Int.zero)
+            lastMoveTime = Time.time;
+    }
+
+    protected override bool CanMove(Vector2Int direction)
+    {
+        //Can hold and move slower or press fast move faster
+        if(direction != prevMoveDir || Time.time - lastMoveTime >= moveWaitTime)
+            if((gameObject.transform.position + (Vector3Int)prevMoveDir).y > (camera.position.y - 6))
+                return base.CanMove(direction);
+        return false;
+    }
+
+    public override void TakeDamage(int delta)
+    {
+        base.TakeDamage(delta);
+
+        healthText.text = "Health: " + currentHp;
+
+        if (delta > 0)
+            addingHealth.text = "+" + delta;
+        else if (delta < 0)
         {
-            if (inputDir != Vector2Int.zero)
-            {
-                // Only allows movement if player does not go below camera
-                if ((gameObject.transform.position + (Vector3Int)inputDir).y > (camera.position.y - 6) && timer > waitTime) {
-                    Move(inputDir);
-                    timer = 0;
-                }
-            }
+            addingHealth.text = "" + delta;
+            animator.SetTrigger("Damaged");
         }
 
-        healthText.text = "Health: " + hp;
-        ammoText.text = "Ammo: " + ammo;
+        StartCoroutine(WaitUI());
+    }
+
+    public override void Die()
+    {
+        //override so player dont get destroyed
+        return;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -100,8 +118,8 @@ public class Player : Agent
 
     public void ChangeAmmoAmount(int delta)
     {
-        ammo += delta;
-        ammoText.text = "Ammo: " + ammo;
+        currentAmmo += delta;
+        ammoText.text = "Ammo: " + currentAmmo;
 
         if (delta > 0)
             addingAmmo.text = "+" + delta;
@@ -111,30 +129,15 @@ public class Player : Agent
         StartCoroutine(WaitUI());
     }
 
-    public void ChangeHealthAmount(int delta)
-    {
-        hp += delta;
-        healthText.text = "Health: " + hp;
-
-        if (delta > 0)
-            addingHealth.text = "+" + delta;
-        else if (delta < 0)
-        {
-            addingHealth.text = "" + delta;
-            animator.SetTrigger("Damaged");
-        }
-
-        StartCoroutine(WaitUI());
-    }
-
     public void ResetPlayer() {
-        hp = defaultHp;
-        ammo = 200;
+        currentHp = maxHp;
+        currentAmmo = maxAmmo;
         gameObject.transform.position = new Vector3(7, 2, 0f);
     }
 
     IEnumerator WaitUI()
     {
+        //????? what is this for?
         yield return new WaitForSeconds(2);
         addingHealth.text = "";
         addingAmmo.text = "";

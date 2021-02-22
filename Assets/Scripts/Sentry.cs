@@ -72,27 +72,29 @@ public class Sentry : Enemy
 
     public void Start()
     {
-        playerDamage = -1;
+        attackDamage = -1;
     }
 
-    public override bool CanAttack(Transform target)
+    public override bool CanAttack(Agent target)
     {
-        return (Vector2.Distance(target.position , this.transform.position) < attackRadius);
+        return (Vector2.Distance(target.transform.position , this.transform.position) < attackRadius);
     }
 
-    public override void Attack(Transform target)
+    public override void Attack(Agent target)
     {
         Face(CalculateFaceDirection(target).ToEnum());
         StartCoroutine(AttackAnim());
     }
 
-    public override void Move(Transform target)
+    public override void TakeDamage(int delta)
     {
+        //Prevent taking damage
         return;
     }
 
-    public override void TakeDamage(int delta)
+    public override void Move(Vector2Int direction)
     {
+        //Prevent Moving
         return;
     }
 
@@ -107,10 +109,10 @@ public class Sentry : Enemy
         animator.SetTrigger("Shooting");
         if (hitInfo.transform)
         {
-            Player player = hitInfo.transform.GetComponent<Player>();
-            if (player != null)
+            Agent agent = hitInfo.transform.GetComponent<Agent>();
+            if (agent != null)
             {
-                player.ChangeHealthAmount(playerDamage);
+               agent.TakeDamage(attackDamage);
             }
             lineRenderer.SetPosition(1, hitInfo.point);
         }

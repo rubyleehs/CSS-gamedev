@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Anythign that can move or have Ai
-public class Agent : MonoBehaviour
+public abstract class Agent : MonoBehaviour
 {
     private static Object moveLock = new Object();
-    //A bunch of code you bring over form player once you start making Enemy class
+
     protected Direction currentFaceDir = Direction.East;
+    public int currentHp = 3;
 
     public virtual void Move(Vector2Int direction)
     {
@@ -22,7 +23,7 @@ public class Agent : MonoBehaviour
         }
     }
 
-    protected bool CanMove(Vector2Int direction)
+    protected virtual bool CanMove(Vector2Int direction)
     {
         lock (moveLock)
         {
@@ -45,5 +46,19 @@ public class Agent : MonoBehaviour
     public void Face(Direction direction)
     {
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)direction));
+    }
+
+    public virtual void TakeDamage(int value)
+    {
+        currentHp -= value;
+        if (currentHp <= 0)
+        {
+            Die();
+        }
+    }
+
+    public virtual void Die()
+    {
+        Destroy(this);
     }
 }
