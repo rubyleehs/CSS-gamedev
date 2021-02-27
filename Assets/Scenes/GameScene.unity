@@ -481,6 +481,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c833d0a7e61ffd4e896149572c48ac6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHp: 3
+  maxHp: 100
   pointsPerAmmo: 1
   pointsPerHealthKit: 1
   healthText: {fileID: 302917723}
@@ -489,11 +491,11 @@ MonoBehaviour:
   addingHealth: {fileID: 1620802740}
   lineRenderer: {fileID: 303861604}
   firePoint: {fileID: 1151637694}
-  defaultHp: 10
-  hp: 10
-  ammo: 500
+  maxAmmo: 5
+  currentAmmo: 5
   camera: {fileID: 437907138}
   cameraSpeed: 10
+  moveWaitTime: 0.3
 --- !u!50 &414700072
 Rigidbody2D:
   serializedVersion: 4
@@ -638,6 +640,7 @@ GameObject:
   - component: {fileID: 437907137}
   - component: {fileID: 437907136}
   - component: {fileID: 437907139}
+  - component: {fileID: 437907140}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -724,6 +727,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 5966617893194608664, guid: 9323e4c66949c894b8e8b337448976fd,
     type: 3}
+--- !u!114 &437907140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437907135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c37dc76191e002e4cb6e13eab2a80a9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &499180733
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +874,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: +0
+  m_Text: 
 --- !u!222 &572017067
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1283,7 +1298,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: +0
+  m_Text: 
 --- !u!222 &1620802741
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -15,7 +15,9 @@ public class Player : Agent
     public Text addingHealth;
     public LineRenderer lineRenderer;
     public Transform firePoint;
-    public int maxHp = 10, maxAmmo = 5;
+    public int maxAmmo = 5;
+
+    [HideInInspector]
     public int currentAmmo = 5;
 
     // Camera control is given to the Player
@@ -38,10 +40,12 @@ public class Player : Agent
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        ResetPlayer();
+        base.Start();
         animator = GetComponent<Animator>();
+        ChangeHpAmount(0);
+        ChangeAmmoAmount(0);
     }
 
     // Update is called once per frame
@@ -81,9 +85,9 @@ public class Player : Agent
         return false;
     }
 
-    public override void TakeDamage(int delta)
+    public override void ChangeHpAmount(int delta)
     {
-        base.TakeDamage(delta);
+        base.ChangeHpAmount(delta);
 
         healthText.text = "Health: " + currentHp;
 
@@ -129,8 +133,8 @@ public class Player : Agent
         StartCoroutine(WaitUI());
     }
 
-    public void ResetPlayer() {
-        currentHp = maxHp;
+    public override void ResetStats() {
+        base.ResetStats();
         currentAmmo = maxAmmo;
         gameObject.transform.position = new Vector3(7, 2, 0f);
     }
@@ -157,7 +161,7 @@ public class Player : Agent
         {
             Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
             if (enemy != null)
-                enemy.TakeDamage(1);
+                enemy.ChangeHpAmount(1);
             lineRenderer.SetPosition(1, hitInfo.point);
         }
         else

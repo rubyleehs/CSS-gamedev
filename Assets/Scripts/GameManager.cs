@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
         camera.position = new Vector3(7, 5, -10f);
 
         // Sets up the player
-        player.ResetPlayer();
+        player.ResetStats();
 
         // Resets difficulty
         difficultyLevel = 2;

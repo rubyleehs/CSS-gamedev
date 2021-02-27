@@ -8,7 +8,19 @@ public abstract class Agent : MonoBehaviour
     private static Object moveLock = new Object();
 
     protected Direction currentFaceDir = Direction.East;
-    public int currentHp = 3;
+    [HideInInspector]
+    public int currentHp = 10;
+    public int maxHp = 10;
+
+    protected virtual void Start()
+    {
+        ResetStats();
+    }
+
+    public virtual void ResetStats()
+    {
+        currentHp = maxHp;
+    }
 
     public virtual void Move(Vector2Int direction)
     {
@@ -48,9 +60,9 @@ public abstract class Agent : MonoBehaviour
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)direction));
     }
 
-    public virtual void TakeDamage(int value)
+    public virtual void ChangeHpAmount(int value)
     {
-        currentHp -= value;
+        currentHp += value;
         if (currentHp <= 0)
         {
             Die();

@@ -69,6 +69,7 @@ public class Sentry : Enemy
 
     public float attackRadius = 15f;
     public float loadTime = 3f;
+    public float fireDuration = 1f;
 
     public void Start ()
     {
@@ -82,11 +83,10 @@ public class Sentry : Enemy
 
     public override void Attack (Agent target)
     {
-        Face (CalculateFaceDirection (target).ToEnum ());
         StartCoroutine (AttackAnim ());
     }
 
-    public override void TakeDamage (int delta)
+    public override void ChangeHpAmount (int delta)
     {
         actionTimeRemaining = 0;
     }
@@ -101,28 +101,33 @@ public class Sentry : Enemy
     {
         animator.SetTrigger ("Loading");
         yield return new WaitForSeconds (loadTime);
+        animator.SetTrigger("Shooting");
 
-        RaycastHit2D hitInfo = Physics2D.Raycast (firePoint.position, firePoint.right);
-        lineRenderer.SetPosition (0, firePoint.position);
-
-        animator.SetTrigger ("Shooting");
-        if (hitInfo.transform)
+        float laserStartTime = Time.time;
+        while (Time.time - laserStartTime < fireDuration)
         {
-            Agent agent = hitInfo.transform.GetComponent<Agent> ();
-            if (agent != null)
+
+            RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, transform.right);//add Contact filter if want go though walls
+            lineRenderer.SetPosition(0, Vector3.zero);
+           
+            if (hitInfo.transform)
             {
-                agent.TakeDamage (attackDamage);
+                Agent agent = hitInfo.transform.GetComponent<Agent>();
+                if (agent != null)
+                {
+                    agent.ChangeHpAmount(attackDamage);
+                }
+                lineRenderer.SetPosition(1, Vector3.right * Vector3.Magnitude(firePoint.position - (Vector3)hitInfo.point));
             }
-            lineRenderer.SetPosition (1, hitInfo.point);
-        }
-        else
-        {
-            lineRenderer.SetPosition (1, firePoint.position + firePoint.right * 100);
-        }
+            else
+            {
+                lineRenderer.SetPosition(1, Vector3.right * 100);
+            }
 
-        lineRenderer.enabled = true;
-
-        yield return new WaitForSeconds (2f);
+            lineRenderer.enabled = true;
+            yield return new WaitForSeconds(0.1f);
+        }
+    
 
         lineRenderer.enabled = false;
     }

@@ -30,8 +30,12 @@ public abstract class Enemy : Agent
         {
             Agent target = Player.instance;
 
-            if (CanAttack (target)) Attack (target);
-            else Move (CalculateFaceDirection (target));
+            if (CanAttack(target))
+            {
+                Face(CalculateFaceDirection(target).ToEnum());
+                Attack(target);
+            }
+            else Move(CalculateMoveDirection(target));
 
             actionTimeRemaining = actionWaitPeriod;
         }
@@ -40,20 +44,28 @@ public abstract class Enemy : Agent
     public Vector2Int CalculateFaceDirection (Agent target)
     {
         List<Vector2Int> possibleDirectionsToMove = new List<Vector2Int> () { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };
+        Vector2Int delta = new Vector2Int ((int) (target.transform.position.x - transform.position.x), (int) (target.transform.position.y - transform.position.y));
+        possibleDirectionsToMove.Sort ((v1, v2) => (delta - v1).sqrMagnitude.CompareTo ((delta - v2).sqrMagnitude));
+
+        return possibleDirectionsToMove[0];
+    }
+
+    public Vector2Int CalculateMoveDirection(Agent target)
+    {
+        List<Vector2Int> possibleDirectionsToMove = new List<Vector2Int>() { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };
         for (int i = 0; i < possibleDirectionsToMove.Count; i++)
         {
-            if (!CanMove (possibleDirectionsToMove[i]))
+            if (!CanMove(possibleDirectionsToMove[i]))
             {
                 possibleDirectionsToMove.RemoveAt (i);
                 i--;
             }
         }
-        Vector2Int delta = new Vector2Int ((int) (target.transform.position.x - transform.position.x), (int) (target.transform.position.y - transform.position.y));
-        possibleDirectionsToMove.Sort ((v1, v2) => (delta - v1).sqrMagnitude.CompareTo ((delta - v2).sqrMagnitude));
-        for (int i = 0; i < possibleDirectionsToMove.Count; i++)
+        Vector2Int delta = new Vector2Int((int)(target.transform.position.x - transform.position.x), (int)(target.transform.position.y - transform.position.y));
+        possibleDirectionsToMove.Sort((v1, v2) => (delta - v1).sqrMagnitude.CompareTo((delta - v2).sqrMagnitude));
 
-            if (possibleDirectionsToMove.Count == 0)
-                return Vector2Int.zero;
+        if (possibleDirectionsToMove.Count == 0)
+            return Vector2Int.zero;
 
         return possibleDirectionsToMove[0];
     }
