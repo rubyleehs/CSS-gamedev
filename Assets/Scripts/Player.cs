@@ -64,7 +64,7 @@ public class Player : Agent
         }
 
         Vector2Int curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
-        if (CanMove(curInputDir)) Move(curInputDir);
+        Move(curInputDir);
     }
 
     public override void Move(Vector2Int direction)

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Zombie : Enemy
 {
+    public void Start()
+    {
+        attackDamage = -1;
+    }
     public override void Attack (Agent target)
     {
         animator.SetTrigger ("Attacking");

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class Enemy : Agent
 {
-    public int attackDamage = 1;
+    public int attackDamage = -1;
 
     protected Animator animator;
 
