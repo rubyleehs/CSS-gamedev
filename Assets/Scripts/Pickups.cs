@@ -63,14 +63,13 @@ public class TrapPickup : MonoBehaviour, IAgentInteractable
         if (!CanInteract(agent))
             return;
 
-        else Player player = (Player)agent;
+        Player player = (Player)agent;
     }
 
-    void OnTriggerEnter(Collision agent)
+    void OnTriggerEnter(Collider2D player)
     {
-        if (agent.tag = "Player")
-            //trapName=true;
-            player.ChangeHpAmount(0);
+        //traps.SetActive(true);
+        player.ChangeHpAmount(0);
     }
 
 }
