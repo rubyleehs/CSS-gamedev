@@ -6,6 +6,7 @@ public class Zombie : Enemy
 {
     public void Start()
     {
+        currentHp = 3;
         attackDamage = -1;
     }
     public override void Attack (Agent target)

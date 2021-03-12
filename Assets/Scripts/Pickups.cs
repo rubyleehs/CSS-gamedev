@@ -50,7 +50,6 @@ public class AmmoPickup : MonoBehaviour, IAgentInteractable
     }
 }
 
-
 public class TrapPickup : MonoBehaviour, IAgentInteractable
 {
     public bool CanInteract(Agent agent)
