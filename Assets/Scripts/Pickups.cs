@@ -50,9 +50,10 @@ public class AmmoPickup : MonoBehaviour, IAgentInteractable
     }
 }
 
-
 public class TrapPickup : MonoBehaviour, IAgentInteractable
 {
+    public int damage;
+
     public bool CanInteract(Agent agent)
     {
         return (agent is Player);
@@ -64,12 +65,8 @@ public class TrapPickup : MonoBehaviour, IAgentInteractable
             return;
 
         Player player = (Player)agent;
+
     }
 
-    void OnTriggerEnter(Collider2D player)
-    {
-        //traps.SetActive(true);
-        player.ChangeHpAmount(0);
-    }
-
+    
 }
