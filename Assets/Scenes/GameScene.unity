@@ -287,7 +287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 303861605}
   - component: {fileID: 303861604}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: LineTracing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -462,7 +462,7 @@ GameObject:
   - component: {fileID: 414700071}
   - component: {fileID: 414700076}
   - component: {fileID: 414700075}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -495,7 +495,9 @@ MonoBehaviour:
   currentAmmo: 5
   camera: {fileID: 437907138}
   cameraSpeed: 10
+  animator: {fileID: 0}
   moveWaitTime: 0.3
+  statChangeAnimationDuration: 2
 --- !u!50 &414700072
 Rigidbody2D:
   serializedVersion: 4
@@ -893,7 +895,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1151637694}
   - component: {fileID: 1151637695}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: firePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
