@@ -56,6 +56,11 @@ public abstract class Enemy : Agent
         return possibleDirectionsToMove[0];
     }
 
+    /// <summary>
+    /// Calculates where the enemy should move next
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns>Vector2Int that represents which direction should the enemy(zombie) move</returns>
     public Vector2Int CalculateMoveDirection(Agent target)
     {
         List<Vector2Int> possibleDirectionsToMove = new List<Vector2Int>() { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };
@@ -76,6 +81,11 @@ public abstract class Enemy : Agent
         return possibleDirectionsToMove[0];
     }
 
+    /// <summary>
+    /// these are just classes that can be overided in the inherited classes.
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
     public abstract bool CanAttack (Agent target);
     public abstract void Attack (Agent target);
 }

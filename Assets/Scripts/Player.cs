@@ -71,6 +71,10 @@ public class Player : Agent
         Move(curInputDir);
     }
 
+    /// <summary>
+    /// this causes the player to move to the direction being inputted via keyboard
+    /// </summary>
+    /// <param name="direction"></param>
     public override void Move(Vector2Int direction)
     {
         base.Move(direction);
@@ -80,6 +84,11 @@ public class Player : Agent
             lastMoveTime = Time.time;
     }
 
+    /// <summary>
+    /// This ensures that the player could not move to a BlockingLayer
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <returns>true or false if it could move to the direction or no</returns>
     protected override bool CanMove(Vector2Int direction)
     {
         if (isDead)
@@ -91,17 +100,25 @@ public class Player : Agent
         return false;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="delta"></param>
     public override void ChangeHpAmount(int delta)
     {
         base.ChangeHpAmount(delta);
         StartCoroutine(AnimateHealthChange(delta));
     }
 
+    /// <summary>
+    /// Game Over
+    /// </summary>
     public override void Die()
     {
         //override so player dont get destroyed
 
         isDead = true;
+
 
         //Show die animation
         //wait for animation to end then show gameover screen
@@ -109,6 +126,10 @@ public class Player : Agent
         return;
     }
 
+    /// <summary>
+    /// for all the pick up items
+    /// </summary>
+    /// <param name="collision"></param>
     //prob move to agent
     private void OnTriggerEnter2D(Collider2D collision)
     {
