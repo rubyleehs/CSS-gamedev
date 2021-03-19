@@ -24,12 +24,16 @@ public class Player : Agent
     public new Transform camera;
     public int cameraSpeed = 8;
 
-    private Animator animator;
+    [HideInInspector]
+    public Animator animator;
     private Vector2Int prevMoveDir = new Vector2Int(0,0);
     private Direction faceDir = Direction.East;
 
     private float lastMoveTime;
     public float moveWaitTime = .3f;
+    public float statChangeAnimationDuration = 2;
+
+    private bool isDead = false;
 
     private void Awake()
     {
@@ -78,6 +82,8 @@ public class Player : Agent
 
     protected override bool CanMove(Vector2Int direction)
     {
+        if (isDead)
+            return false;
         //Can hold and move slower or press fast move faster
         if(direction != prevMoveDir || Time.time - lastMoveTime >= moveWaitTime)
             if((gameObject.transform.position + (Vector3Int)prevMoveDir).y > (camera.position.y - 6))
@@ -88,23 +94,18 @@ public class Player : Agent
     public override void ChangeHpAmount(int delta)
     {
         base.ChangeHpAmount(delta);
-
-        healthText.text = "Health: " + currentHp;
-
-        if (delta > 0)
-            addingHealth.text = "+" + delta;
-        else if (delta < 0)
-        {
-            addingHealth.text = "" + delta;
-            animator.SetTrigger("Damaged");
-        }
-
-        StartCoroutine(WaitUI());
+        StartCoroutine(AnimateHealthChange(delta));
     }
 
     public override void Die()
     {
         //override so player dont get destroyed
+
+        isDead = true;
+
+        //Show die animation
+        //wait for animation to end then show gameover screen
+        
         return;
     }
 
@@ -124,27 +125,40 @@ public class Player : Agent
     public void ChangeAmmoAmount(int delta)
     {
         currentAmmo += delta;
+        StartCoroutine(AnimateAmmoChange(delta));
+    }
+
+    public override void ResetStats() {
+        base.ResetStats();
+        isDead = false;
+        currentAmmo = maxAmmo;
+        gameObject.transform.position = new Vector3(7, 2, 0f);
+    }
+
+    IEnumerator AnimateHealthChange(int delta)
+    {
+        healthText.text = "Health: " + currentHp;
+
+        if (delta > 0)
+            addingHealth.text = "+" + delta;
+        else if (delta < 0)
+        {
+            addingHealth.text = "" + delta;
+            animator.SetTrigger("Damaged");
+        }
+        yield return new WaitForSeconds(statChangeAnimationDuration);
+        addingHealth.text = "";
+    }
+
+    IEnumerator AnimateAmmoChange(int delta)
+    {
         ammoText.text = "Ammo: " + currentAmmo;
 
         if (delta > 0)
             addingAmmo.text = "+" + delta;
         else if (delta < 0)
             addingAmmo.text = "" + delta;
-
-        StartCoroutine(WaitUI());
-    }
-
-    public override void ResetStats() {
-        base.ResetStats();
-        currentAmmo = maxAmmo;
-        gameObject.transform.position = new Vector3(7, 2, 0f);
-    }
-
-    IEnumerator WaitUI()
-    {
-        //????? what is this for?
-        yield return new WaitForSeconds(2);
-        addingHealth.text = "";
+        yield return new WaitForSeconds(statChangeAnimationDuration);
         addingAmmo.text = "";
     }
 

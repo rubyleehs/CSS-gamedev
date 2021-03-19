@@ -20,7 +20,7 @@ public class HealthPickup : MonoBehaviour, IAgentInteractable
 
         if(player.currentHp<player.maxHp)
         {
-            player.ChangeHpAmount(-healthRestoreValue);
+            player.ChangeHpAmount(healthRestoreValue);
             Destroy(this);
         }            
     }
@@ -50,8 +50,6 @@ public class AmmoPickup : MonoBehaviour, IAgentInteractable
 
 public class TrapPickup : MonoBehaviour, IAgentInteractable
 {
-    public int damage;
-
     public bool CanInteract(Agent agent)
     {
         return (agent is Player);
@@ -63,5 +61,8 @@ public class TrapPickup : MonoBehaviour, IAgentInteractable
             return;
 
         Player player = (Player)agent;
+
+        player.ChangeHpAmount(-player.currentHp);
+        player.animator.SetTrigger("FallingInHoleAnim");
     }
 }
