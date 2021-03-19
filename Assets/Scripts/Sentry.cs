@@ -71,11 +71,6 @@ public class Sentry : Enemy
     public float loadTime = 3f;
     public float fireDuration = 1f;
 
-    public void Start ()
-    {
-        attackDamage = -1;
-    }
-
     public override bool CanAttack (Agent target)
     {
         return (Vector2.Distance (target.transform.position, this.transform.position) < attackRadius);
@@ -115,7 +110,7 @@ public class Sentry : Enemy
                 Agent agent = hitInfo.transform.GetComponent<Agent>();
                 if (agent != null)
                 {
-                    agent.ChangeHpAmount(attackDamage);
+                    agent.ChangeHpAmount(-attackDamage);
                 }
                 lineRenderer.SetPosition(1, Vector3.right * Vector3.Magnitude(firePoint.position - (Vector3)hitInfo.point));
             }

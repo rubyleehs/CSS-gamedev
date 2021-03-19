@@ -22,6 +22,10 @@ public abstract class Agent : MonoBehaviour
         currentHp = maxHp;
     }
 
+    /// <summary>
+    /// Move the <c>Agent</c> in direction
+    /// </summary>
+    /// <param name="direction">Direction in move in</param>
     public virtual void Move(Vector2Int direction)
     {
         if (direction != Vector2Int.zero)

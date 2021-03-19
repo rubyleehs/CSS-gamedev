@@ -108,6 +108,7 @@ public class Player : Agent
         return;
     }
 
+    //prob move to agent
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Interactable")

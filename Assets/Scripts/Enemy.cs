@@ -18,8 +18,9 @@ public abstract class Enemy : Agent
         animator = GetComponent<Animator> ();
     }
 
-    void Start ()
+    protected override void Start ()
     {
+        base.Start();
         actionTimeRemaining = actionWaitPeriod;
     }
 
@@ -41,6 +42,11 @@ public abstract class Enemy : Agent
         }
     }
 
+    /// <summary>
+    /// Calculates the directions the enemy should face
+    /// </summary>
+    /// <param name="target">An Agent that this should face</param>
+    /// <returns>Vector2Int that represents which direction an Agent should face currently</returns>
     public Vector2Int CalculateFaceDirection (Agent target)
     {
         List<Vector2Int> possibleDirectionsToMove = new List<Vector2Int> () { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };

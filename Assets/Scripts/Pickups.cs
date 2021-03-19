@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class HealthPickup : MonoBehaviour, IAgentInteractable
 {
     public int healthRestoreValue = 10;
@@ -26,7 +25,6 @@ public class HealthPickup : MonoBehaviour, IAgentInteractable
         }            
     }
 }
-
 
 public class AmmoPickup : MonoBehaviour, IAgentInteractable
 {
@@ -65,8 +63,5 @@ public class TrapPickup : MonoBehaviour, IAgentInteractable
             return;
 
         Player player = (Player)agent;
-
     }
-
-    
 }

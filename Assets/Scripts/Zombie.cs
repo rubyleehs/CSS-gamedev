@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class Zombie : Enemy
 {
-    public void Start()
-    {
-        attackDamage = -1;
-    }
     public override void Attack (Agent target)
     {
         animator.SetTrigger ("Attacking");
-        target.ChangeHpAmount (attackDamage);
+        target.ChangeHpAmount (-attackDamage);
     }
 
     public override bool CanAttack (Agent target)
