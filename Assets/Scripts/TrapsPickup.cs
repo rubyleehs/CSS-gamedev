@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class HealthPickup : MonoBehaviour, IAgentInteractable
+public class TrapPickup : MonoBehaviour, IAgentInteractable
 {
-    public int healthRestoreValue = 10;
-
     public bool CanInteract(Agent agent)
     {
         return (agent is Player);
@@ -19,10 +16,7 @@ public class HealthPickup : MonoBehaviour, IAgentInteractable
 
         Player player = (Player)agent;
 
-        if (player.currentHp < player.maxHp)
-        {
-            player.ChangeHpAmount(healthRestoreValue);
-            Destroy(this);
-        }
+        player.ChangeHpAmount(-player.currentHp);
+        player.animator.SetTrigger("FallingInHoleAnim");
     }
 }

@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class HealthPickup : MonoBehaviour, IAgentInteractable
+public class AmmoPickup : MonoBehaviour, IAgentInteractable
 {
-    public int healthRestoreValue = 10;
-
     public bool CanInteract(Agent agent)
     {
         return (agent is Player);
@@ -19,9 +16,9 @@ public class HealthPickup : MonoBehaviour, IAgentInteractable
 
         Player player = (Player)agent;
 
-        if (player.currentHp < player.maxHp)
+        if (player.currentAmmo < 5)
         {
-            player.ChangeHpAmount(healthRestoreValue);
+            player.ChangeAmmoAmount(5); //change player ammo
             Destroy(this);
         }
     }
