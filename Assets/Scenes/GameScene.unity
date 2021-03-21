@@ -1327,6 +1327,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
+      propertyPath: pickups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
+        type: 3}
       propertyPath: enemies.Array.data[1]
       value: 
       objectReference: {fileID: 8305296094202067444, guid: bc6a2e2151640724a9aed6c62e406846,
@@ -1336,6 +1341,18 @@ PrefabInstance:
       propertyPath: floorTiles.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
+        type: 3}
+      propertyPath: pickups.Array.data[0]
+      value: 
+      objectReference: {fileID: 2554397931736185336, guid: e118f43464c87ad4ebf0a07fdeb16bfe,
+        type: 3}
+    - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
+        type: 3}
+      propertyPath: pickups.Array.data[1]
+      value: 
+      objectReference: {fileID: 4047142805114388541, guid: 70fea5d08d55c3c4ba0b9721cc90e986,
+        type: 3}
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
       propertyPath: arenaChunks.Array.size
