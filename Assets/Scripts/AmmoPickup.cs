@@ -28,12 +28,12 @@ public class AmmoPickup : MonoBehaviour, IAgentInteractable
 
         Player player = (Player)agent;
 
-        if (player.currentAmmo < 5)
+        if (player.currentAmmo < player.maxAmmo)
         {
             //change player ammo
-            player.ChangeAmmoAmount(5); 
+            player.ChangeAmmoAmount(ammoRestoreValue); 
             //destroy item
-            Destroy(this);
+            Destroy(this.gameObject);
         }
     }
 }

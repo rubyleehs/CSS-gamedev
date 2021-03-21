@@ -22,10 +22,10 @@ public class Player : Agent
 
     public LineRenderer lineRenderer;
     public Transform firePoint;
-    public int maxAmmo = 5;
+    public int maxAmmo = 10;
 
     [HideInInspector]
-    public int currentAmmo = 5;
+    public int currentAmmo = 10;
 
     public new Transform camera;
     public int cameraSpeed = 8;
@@ -164,14 +164,13 @@ public class Player : Agent
     //prob move to agent
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Interactable")
+
+        IAgentInteractable playerInteractable = other.gameObject.GetComponent<IAgentInteractable>();
+        if (playerInteractable != null)
         {
-            IAgentInteractable playerInteractable = other.gameObject.GetComponent<IAgentInteractable>();
-            if (playerInteractable != null)
-            {
-                playerInteractable.Interact(this);
-            }
+            playerInteractable.Interact(this);
         }
+        
     }
 
     /// <summary>
@@ -181,6 +180,7 @@ public class Player : Agent
     public void ChangeAmmoAmount(int delta)
     {
         currentAmmo += delta;
+        currentAmmo = Mathf.Min(currentAmmo, maxAmmo);
         ammoText.text = "Ammo: " + currentAmmo;
 
         string deltaString = "";

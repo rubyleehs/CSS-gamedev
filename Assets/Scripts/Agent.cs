@@ -88,7 +88,8 @@ public abstract class Agent : MonoBehaviour
     /// <param name="delta"> Amount to change by. </param>
     public virtual void ChangeHpAmount(int delta)
     {
-        currentHp = Mathf.Min(currentHp + delta, maxHp);
+        currentHp += delta;
+        currentHp = Mathf.Min(currentHp, maxHp);
         if (currentHp <= 0)
         {
             Die();

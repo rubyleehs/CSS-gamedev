@@ -498,7 +498,7 @@ MonoBehaviour:
     type: 3}
   lineRenderer: {fileID: 303861604}
   firePoint: {fileID: 1151637694}
-  maxAmmo: 5
+  maxAmmo: 10
   currentAmmo: 5
   camera: {fileID: 437907138}
   cameraSpeed: 10

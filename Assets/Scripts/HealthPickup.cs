@@ -36,7 +36,7 @@ public class HealthPickup : MonoBehaviour, IAgentInteractable
         if (player.currentHp < player.maxHp)
         {
             player.ChangeHpAmount(healthRestoreValue);
-            Destroy(this);
+            Destroy(this.gameObject);
         }
     }
 }
