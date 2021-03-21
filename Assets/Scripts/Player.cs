@@ -132,6 +132,8 @@ public class Player : Agent
     public override void Die()
     {
         // Overriden so player dont get destroyed
+        Debug.Log("test");
+        StartCoroutine(DyingAnimation());
 
         isDead = true;
 
@@ -255,5 +257,14 @@ public class Player : Agent
         yield return new WaitForSeconds(0.02f);
 
         lineRenderer.enabled = false;
+    }
+
+    IEnumerator DyingAnimation()
+    {
+
+        animator.SetTrigger("Dead");
+
+        yield return new WaitForSeconds(1.5f);
+
     }
 }
