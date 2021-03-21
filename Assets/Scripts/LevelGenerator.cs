@@ -9,13 +9,14 @@ public class LevelGenerator : MonoBehaviour
     public GameObject[] battleChunks;
     public GameObject[] obstacleChunks;
     public GameObject[] enemies;
+    public GameObject[] pickups;
 
     [HideInInspector] public int chunkCount = 0;
     [HideInInspector] public int chunksDestroyed = 0;
 
     private int chunksBeforeBattle = 3;
     private List<Vector3> availableTiles = new List<Vector3>();
-    private List<Vector3> enemyTiles = new List<Vector3>();
+    private List<Vector3> entityTiles = new List<Vector3>();
     private List<GameObject> chunkList = new List<GameObject>();
 
     public int CHUNK_ROWS = 15;
@@ -56,11 +57,16 @@ public class LevelGenerator : MonoBehaviour
         // Gets the entity list of the spawned chunk
         Transform entityList = chunkInstance.transform.Find("Entities");
 
-        // Spawns in enemies
-        GenerateEnemyPositions(enemiesToSpawn);
-        for (int i = 0; i < enemyTiles.Count; i++) {
+        // TODO: Decides how many pickups to spawn, this is a placeholder
+        int pickupsToSpawn = 1;
 
-            Vector3 enemyPos = enemyTiles[i];
+        // Generates positions for spawning enemies and pickups.
+        GenerateEntityPositions(enemiesToSpawn + pickupsToSpawn);
+
+        // Spawns in enemies
+        for (int i = 0; i < enemiesToSpawn; i++) {
+
+            Vector3 enemyPos = entityTiles[i];
             GameObject spawnedEnemy = enemies[Random.Range(0, enemies.Length)];
 
             enemyPos.y += (chunkCount * CHUNK_ROWS);
@@ -69,6 +75,19 @@ public class LevelGenerator : MonoBehaviour
 
             enemyInstance.transform.SetParent(entityList);
             
+        }
+
+        // Spawns in pickups
+        for (int i = enemiesToSpawn; i < entityTiles.Count; i++) {
+
+            Vector3 pickupPos = entityTiles[i];
+            GameObject spawnedPickup = pickups[Random.Range(0, enemies.Length)];
+
+            pickupPos.y += (chunkCount * CHUNK_ROWS);
+
+            GameObject pickupInstance = Instantiate(spawnedPickup, pickupPos, Quaternion.identity) as GameObject;
+
+            pickupInstance.transform.SetParent(entityList);
         }
 
         chunkCount++;
@@ -109,19 +128,19 @@ public class LevelGenerator : MonoBehaviour
     }
 
     // Generates enemy positions from available tiles
-    void GenerateEnemyPositions(int enemiesToSpawn) {
+    void GenerateEntityPositions(int entitiesToSpawn) {
 
-        enemyTiles.Clear();
+        entityTiles.Clear();
  
-        for(int i = 0; i < enemiesToSpawn; i++) {
+        for(int i = 0; i < entitiesToSpawn; i++) {
 
             // Gets a random tile 
-            Vector3 enemySpawnLocation = availableTiles[Random.Range(0, availableTiles.Count)];
-            
-            enemyTiles.Add(enemySpawnLocation);
+            Vector3 entitySpawnLocation = availableTiles[Random.Range(0, availableTiles.Count)];
+           
+            entityTiles.Add(entitySpawnLocation);
            
             // Removes tile from pool
-            availableTiles.Remove(enemySpawnLocation);
+            availableTiles.Remove(entitySpawnLocation);
         }
     
     }

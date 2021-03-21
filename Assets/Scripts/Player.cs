@@ -68,7 +68,9 @@ public class Player : Agent
         // Player movement.
         Vector2Int curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
         Move(curInputDir);
+        
     }
+
 
     /// <summary>
     /// Moves the <c>Player</c> in a given direction.

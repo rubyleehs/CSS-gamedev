@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AmmoPickup : MonoBehaviour, IAgentInteractable
 {
+    public int ammoRestoreValue;
+
     /// <summary>
     /// Checks if it's player on same tile as ammo pickup item
     /// </summary>
