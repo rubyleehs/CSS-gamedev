@@ -6,35 +6,35 @@ using UnityEngine;
 
 public class HealthPickup : MonoBehaviour, IAgentInteractable
 {
-    // 
     public int healthRestoreValue = 10;
 
     /// <summary>
-    /// Checks if it's player on same tile as health pickup item
+    /// Checks if the given <c>Agent</c> is able to interact with this in current conditions.
+    /// Currently, only <c>Player</c> is able to interact.
     /// </summary>
-    /// <param name="agent">The agent is player</param>
-    /// <returns>If agent is the player</returns>
-
+    /// <param name="agent"> The <c>Agent</c> to check. </param>
+    /// <returns> If the <c>Agent</c> is able to interact with this. </returns>
     public bool CanInteract(Agent agent)
     {
-        return (agent is Player);
+        if (!(agent is Player)) return false;
+
+        Player player = (Player)agent;
+        return (player.currentHp < player.maxHp);
     }
 
     /// <summary>
-    /// Changes player's hp if agent is player and on same tile as pickups item
+    /// Changes the given <c>Player</c> health by <c>healthRestoreValue</c>.
     /// </summary>
-    /// <param name="agent">The agent is player</param>
-
+    /// <param name="agent">The <c>Agent</c> to give health to.</param>
     public void Interact(Agent agent)
     {
-        //If boolean returns false, ends function
         if (!CanInteract(agent))
             return;
 
-        Player player = (Player)agent;
-
-        if (player.currentHp < player.maxHp)
+        if (agent is Player)
         {
+            Player player = (Player)agent;
+            
             player.ChangeHpAmount(healthRestoreValue);
             Destroy(this.gameObject);
         }

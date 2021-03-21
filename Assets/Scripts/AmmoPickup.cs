@@ -7,33 +7,35 @@ public class AmmoPickup : MonoBehaviour, IAgentInteractable
     public int ammoRestoreValue;
 
     /// <summary>
-    /// Checks if it's player on same tile as ammo pickup item
+    /// Checks if the given <c>Agent</c> is able to interact with this in current conditions.
+    /// Currently, only <c>Player</c> is able to interact.
     /// </summary>
-    /// <param name="agent">The agent is player</param>
-    /// <returns>Agent is the player</returns>
+    /// <param name="agent"> The <c>Agent</c> to check. </param>
+    /// <returns> If the <c>Agent</c> is able to interact with this. </returns>
     public bool CanInteract(Agent agent)
     {
-        return (agent is Player);
+        if (! (agent is Player)) return false;
+
+        Player player = (Player)agent;
+        return (player.currentAmmo < player.maxAmmo);
     }
 
     /// <summary>
-    /// Changes player's ammo count if agent is player and on same tile as pickups item
+    /// Changes the given <c>Player</c> ammo by <c>ammoRestoreValue</c>.
+    /// 
     /// </summary>
-    /// <param name="agent">The agent is player</param>
-
+    /// <param name="agent">The <c>Agent</c> to give ammo to.</param>
     public void Interact(Agent agent)
     {
         if (!CanInteract(agent))
             return;
 
-        Player player = (Player)agent;
-
-        if (player.currentAmmo < player.maxAmmo)
+        if (agent is Player)
         {
-            //change player ammo
-            player.ChangeAmmoAmount(ammoRestoreValue); 
-            //destroy item
-            Destroy(this.gameObject);
+            Player player = (Player)agent;
+
+            player.ChangeAmmoAmount(ammoRestoreValue);
+            Destroy(this.gameObject);            
         }
     }
 }

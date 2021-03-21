@@ -2,34 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrapPickup : MonoBehaviour, IAgentInteractable
+public class PitfallTrap : MonoBehaviour, IAgentInteractable
 {
     /// <summary>
-    /// Checks if it's player on same tile as traps pickup item
+    /// Always return true as all (currently implemented) agents should be able to fall into pitfall traps. 
     /// </summary>
-    /// <param name="agent">The agent is player</param>
-    /// <returns>If agent is the player</returns>
-
+    /// <param name="agent"> Agent to check if it is able to interact with this under current conditions. </param>
+    /// <returns> If the agent is able to interact with this. </returns>
     public bool CanInteract(Agent agent)
     {
-        return (agent is Player);
+        return true;
     }
 
     /// <summary>
-    /// Changes Player ammo if agent is player and on same tile as traps pickup item
+    /// Kills any agent interacting with this.
     /// </summary>
-    /// <param name="agent">The agent is player</param>
-    /// <returns>If agent is the player</returns>
-    
+    /// <param name="agent">The agent interact with this. </param>
     public void Interact(Agent agent)
     {
         if (!CanInteract(agent))
             return;
 
-        Player player = (Player)agent;
+        agent.ChangeHpAmount(-agent.currentHp);
 
-        //kills player
-        player.ChangeHpAmount(-player.currentHp);
-        player.animator.SetTrigger("FallingInHoleAnim");
+        // Ideally, player should have flags for death (aka it knows what kills/damage it)
+        // And based on that, lookup what sort of animation should play.
+        if (agent is Player)
+        {
+            ((Player)agent).animator.SetTrigger("FallingInHoleAnim");
+        }
     }
 }
