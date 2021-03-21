@@ -299,6 +299,6 @@ MonoBehaviour:
   actionTimeRemaining: 1
   firePoint: {fileID: 8935905400105034518}
   lineRenderer: {fileID: 3210386964826988050}
-  attackRadius: 15
+  attackRadius: 10
   loadTime: 1
   fireDuration: 1

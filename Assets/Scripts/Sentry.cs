@@ -8,52 +8,50 @@ public class Sentry : Enemy
     public Transform firePoint;
     public LineRenderer lineRenderer;
 
-    public float attackRadius = 15f;
+    public float attackRadius = 10f;
     public float loadTime = 3f;
     public float fireDuration = 1f;
 
     /// <summary>
-    /// if the sentry is facing directly vertical or horizontal from the sentry it will allow damages to the player during the sentry shooting phase.
+    /// Checks if this can attack the target under current conditions.
     /// </summary>
-    /// <param name="target"></param>
-    /// <returns>a boolean to determine if damage should be applied to the player</returns>
+    /// <param name="target"> The Agent to attack. </param>
+    /// <returns> If this is able to attack the target under current conditions. </returns>
     public override bool CanAttack (Agent target)
     {
         return (Vector2.Distance (target.transform.position, this.transform.position) < attackRadius);
     }
 
     /// <summary>
-    /// this is for the attacking sequence to begin.
+    /// Starts a new attack sequence against a given target.
     /// </summary>
-    /// <param name="target"></param>
+    /// <param name="target"> Agent to attack </param>
     public override void Attack (Agent target)
     {
         StartCoroutine (AttackAnim ());
     }
 
     /// <summary>
-    /// This is for
+    /// Overriden to instead intitate another action immediately.
     /// </summary>
-    /// <param name="delta"></param>
+    /// <param name="delta"> Amount to change by. </param>
     public override void ChangeHpAmount (int delta)
     {
         actionTimeRemaining = 0;
     }
 
     /// <summary>
-    /// since the sentry is stationary then this function is just being overided to do nothing.
+    /// Overriden to do nothing as the sentry is not able to move (on its own).
     /// </summary>
-    /// <param name="direction"></param>
-    public override void Move (Vector2Int direction)
+    /// <param name="direction"> Direction to move in. </param>
+    protected override bool CanMove(Vector2Int direction)
     {
-        //Prevent Moving
-        return;
+        return false;
     }
 
     /// <summary>
-    /// This is for the sentry attack animation
+    /// Attack animation/sequence.
     /// </summary>
-    /// <param name="target"></param>
     public IEnumerator AttackAnim ()
     {
         animator.SetTrigger ("Loading");
