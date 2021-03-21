@@ -147,16 +147,11 @@ public class Player : Agent
     public override void Die()
     {
         // Overriden so player dont get destroyed
-        Debug.Log("test");
         StartCoroutine(DyingAnimation());
 
         isDead = true;
-
-
         //Show die animation
         //wait for animation to end then show gameover screen
-        
-        return;
     }
 
     /// <summary>
