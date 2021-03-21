@@ -12,6 +12,14 @@ public class Sentry : Enemy
     public float loadTime = 3f;
     public float fireDuration = 1f;
 
+    public AudioSource loadingSound;
+    public AudioSource shootingSound;
+
+    private void Start()
+    {
+        loadingSound = sounds[0];
+        shootingSound = sounds[1];
+    }
     /// <summary>
     /// Checks if this can attack the target under current conditions.
     /// </summary>
@@ -55,8 +63,10 @@ public class Sentry : Enemy
     public IEnumerator AttackAnim ()
     {
         animator.SetTrigger ("Loading");
+        loadingSound.Play();
         yield return new WaitForSeconds (loadTime);
         animator.SetTrigger("Shooting");
+        shootingSound.Play();
 
         float laserStartTime = Time.time;
         while (Time.time - laserStartTime < fireDuration)

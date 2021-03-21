@@ -17,6 +17,7 @@ public class Player : Agent
     public AudioSource[] sounds;
     public AudioSource moveSound;
     public AudioSource shootingSound;
+    public AudioSource enemyDamagedSound;
 
     public GameObject statDeltaTextGO;
 
@@ -56,6 +57,8 @@ public class Player : Agent
         sounds = GetComponents<AudioSource>();
         moveSound = sounds[0];
         shootingSound = sounds[1];
+        enemyDamagedSound = sounds[2];
+
         ChangeHpAmount(0);
         ChangeAmmoAmount(0);
     }
@@ -257,7 +260,10 @@ public class Player : Agent
         {
             Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
             if (enemy != null)
-                enemy.ChangeHpAmount(1);
+            {
+                enemy.ChangeHpAmount(-1);
+                enemyDamagedSound.Play();
+            }
             lineRenderer.SetPosition(1, hitInfo.point);
         }
         else

@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Zombie : Enemy
 {
+    public AudioSource attackingSound;
+
+    private void Start()
+    {
+        attackingSound = sounds[0];
+    }
     /// <summary>
     /// Makes this attack the target.
     /// </summary>
@@ -11,6 +17,7 @@ public class Zombie : Enemy
     public override void Attack (Agent target)
     {
         animator.SetTrigger ("Attacking");
+        attackingSound.Play();
         target.ChangeHpAmount (-attackDamage);
     }
 

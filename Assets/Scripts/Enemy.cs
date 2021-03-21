@@ -13,9 +13,12 @@ public abstract class Enemy : Agent
     [HideInInspector]
     public float actionTimeRemaining;
 
+    public AudioSource[] sounds;
+
     private void Awake ()
     {
         animator = GetComponent<Animator> ();
+        sounds = GetComponents<AudioSource>();
     }
 
     protected override void Start ()
