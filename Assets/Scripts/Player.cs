@@ -7,12 +7,13 @@ public class Player : Agent
 {
     public static Player instance;
 
-    public int pointsPerAmmo = 1;
-    public int pointsPerHealthKit = 1;
+    public Vector2 startingPosition = new Vector2(7, 2);
+
     public Text healthText;
     public Text ammoText;
     public Text addingAmmo;
     public Text addingHealth;
+
     public LineRenderer lineRenderer;
     public Transform firePoint;
     public int maxAmmo = 5;
@@ -20,7 +21,6 @@ public class Player : Agent
     [HideInInspector]
     public int currentAmmo = 5;
 
-    // Camera control is given to the Player
     public new Transform camera;
     public int cameraSpeed = 8;
 
@@ -37,13 +37,12 @@ public class Player : Agent
 
     private void Awake()
     {
-        // this is called a singleton design pattern
+        // Singleton design pattern.
         if (instance != null)
             Destroy(this);
         else instance = this;
     }
 
-    // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
@@ -52,29 +51,29 @@ public class Player : Agent
         ChangeAmmoAmount(0);
     }
 
-    // Update is called once per frame
+    // Update is called once per frame.
     void Update()
     {
-        // Check if the current position of the player is more than 1 higher than that of the camera
+        // Checks if the current position of the player is more than 1 higher than that of the camera.
         if (gameObject.transform.position.y > camera.position.y + 1) {
-            // Moves the camera by deltatime
             camera.position += Vector3.up * Time.deltaTime * cameraSpeed;
         }
 
-        // shooting projectile
+        // Player shooting.
         if (Input.GetButtonDown("Fire1") && currentAmmo != 0)
         {
             StartCoroutine(Shoot());
         }
 
+        // Player movement.
         Vector2Int curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
         Move(curInputDir);
     }
 
     /// <summary>
-    /// this causes the player to move to the direction being inputted via keyboard
+    /// Moves the <c>Player</c> in a given direction.
     /// </summary>
-    /// <param name="direction"></param>
+    /// <param name="direction"> Direction to move. </param>
     public override void Move(Vector2Int direction)
     {
         base.Move(direction);
@@ -85,10 +84,10 @@ public class Player : Agent
     }
 
     /// <summary>
-    /// This ensures that the player could not move to a BlockingLayer
+    /// Checks if <c>Player</c> is able to move in a given direction.
     /// </summary>
-    /// <param name="direction"></param>
-    /// <returns>true or false if it could move to the direction or no</returns>
+    /// <param name="direction"> Direction to check. </param>
+    /// <returns> If this is able to move in the given direction. </returns>
     protected override bool CanMove(Vector2Int direction)
     {
         if (isDead)
@@ -101,9 +100,9 @@ public class Player : Agent
     }
 
     /// <summary>
-    /// 
+    /// Alters the <c>Player</c> current HP.
     /// </summary>
-    /// <param name="delta"></param>
+    /// <param name="delta"> Amount to change by. </param>
     public override void ChangeHpAmount(int delta)
     {
         base.ChangeHpAmount(delta);
@@ -111,11 +110,11 @@ public class Player : Agent
     }
 
     /// <summary>
-    /// Game Over
+    /// Initiates the stuff necessary for the Game Over screen.
     /// </summary>
     public override void Die()
     {
-        //override so player dont get destroyed
+        // Overriden so player dont get destroyed
 
         isDead = true;
 
@@ -127,15 +126,16 @@ public class Player : Agent
     }
 
     /// <summary>
-    /// for all the pick up items
+    /// Called when the player's collider enters a trigger.
+    /// Attempts to interact with any <c>IAgentInteractable</c> it collides with.
     /// </summary>
-    /// <param name="collision"></param>
+    /// <param name="other"> The collider of the object this collided with. </param>
     //prob move to agent
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if(collision.tag == "Interactable")
+        if(other.tag == "Interactable")
         {
-            IAgentInteractable playerInteractable = collision.gameObject.GetComponent<IAgentInteractable>();
+            IAgentInteractable playerInteractable = other.gameObject.GetComponent<IAgentInteractable>();
             if (playerInteractable != null)
             {
                 playerInteractable.Interact(this);
@@ -153,7 +153,7 @@ public class Player : Agent
         base.ResetStats();
         isDead = false;
         currentAmmo = maxAmmo;
-        gameObject.transform.position = new Vector3(7, 2, 0f);
+        gameObject.transform.position = startingPosition;
     }
 
     IEnumerator AnimateHealthChange(int delta)
@@ -166,6 +166,7 @@ public class Player : Agent
         {
             addingHealth.text = "" + delta;
             animator.SetTrigger("Damaged");
+            StartCoroutine(MainCamera.instance.ShakeCamera(0.04f, 0.1f));
         }
         yield return new WaitForSeconds(statChangeAnimationDuration);
         addingHealth.text = "";
@@ -192,6 +193,7 @@ public class Player : Agent
         lineRenderer.SetPosition(0, firePoint.position);
 
         animator.SetTrigger("Shooting");
+        StartCoroutine(MainCamera.instance.ShakeCamera(0.02f,0.03f));
 
         if (hitInfo)
         {

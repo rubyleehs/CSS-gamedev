@@ -338,7 +338,7 @@ LineRenderer:
   - {x: 1, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.5
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -483,8 +483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHp: 3
   maxHp: 100
-  pointsPerAmmo: 1
-  pointsPerHealthKit: 1
+  startingPosition: {x: 7, y: 2}
   healthText: {fileID: 302917723}
   ammoText: {fileID: 1496119670}
   addingAmmo: {fileID: 572017066}
