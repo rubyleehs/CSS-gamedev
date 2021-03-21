@@ -12,6 +12,8 @@ public abstract class Agent : MonoBehaviour
     public int currentHp = 10;
     public int maxHp = 10;
 
+    public LayerMask blockingLayerMask;
+
     protected virtual void Start()
     {
         ResetStats();
@@ -51,7 +53,7 @@ public abstract class Agent : MonoBehaviour
     {
         lock (moveLock)
         {
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 1, ~9);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 1, blockingLayerMask);
 
             if (hits.Length > 0)
             {

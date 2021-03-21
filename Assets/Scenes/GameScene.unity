@@ -483,6 +483,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHp: 3
   maxHp: 100
+  blockingLayerMask:
+    serializedVersion: 2
+    m_Bits: 6656
   startingPosition: {x: 7, y: 2}
   healthText: {fileID: 302917723}
   ammoText: {fileID: 1496119670}

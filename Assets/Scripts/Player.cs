@@ -210,7 +210,7 @@ public class Player : Agent
         //Try to seperate logic and animation
         ChangeAmmoAmount(-1);
 
-        RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
+        RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right, Mathf.Infinity, blockingLayerMask);
         lineRenderer.SetPosition(0, firePoint.position);
 
         animator.SetTrigger("Shooting");

@@ -99,6 +99,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHp: 10
   maxHp: 10
+  blockingLayerMask:
+    serializedVersion: 2
+    m_Bits: 6656
   attackDamage: 1
   actionWaitPeriod: 1.2
   actionTimeRemaining: 1

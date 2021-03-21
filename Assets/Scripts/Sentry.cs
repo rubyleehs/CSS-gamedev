@@ -61,8 +61,7 @@ public class Sentry : Enemy
         float laserStartTime = Time.time;
         while (Time.time - laserStartTime < fireDuration)
         {
-            LayerMask mask = LayerMask.GetMask("BlockingLayer");
-            RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, transform.right, Mathf.Infinity, ~mask);//add Contact filter if want go though walls
+            RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, transform.right, Mathf.Infinity, blockingLayerMask);//add Contact filter if want go though walls
             lineRenderer.SetPosition(0, Vector3.zero);
            
             if (hitInfo.transform)
