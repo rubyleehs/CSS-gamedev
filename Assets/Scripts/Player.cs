@@ -14,6 +14,10 @@ public class Player : Agent
     public Text healthDeltaInfo;
     public Text ammoDeltaInfo;
 
+    public AudioSource[] sounds;
+    public AudioSource moveSound;
+    public AudioSource shootingSound;
+
     public GameObject statDeltaTextGO;
 
     public LineRenderer lineRenderer;
@@ -49,6 +53,9 @@ public class Player : Agent
     {
         base.Start();
         animator = GetComponent<Animator>();
+        sounds = GetComponents<AudioSource>();
+        moveSound = sounds[0];
+        shootingSound = sounds[1];
         ChangeHpAmount(0);
         ChangeAmmoAmount(0);
     }
@@ -56,6 +63,7 @@ public class Player : Agent
     // Update is called once per frame.
     void Update()
     {
+        Vector2Int curInputDir = Vector2Int.zero;
         // Checks if the current position of the player is more than 1 higher than that of the camera.
         if (gameObject.transform.position.y > camera.position.y + 1) {
             camera.position += Vector3.up * Time.deltaTime * cameraSpeed;
@@ -68,9 +76,13 @@ public class Player : Agent
         }
 
         // Player movement.
-        Vector2Int curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
+        curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
         Move(curInputDir);
-        
+        if (canMoveSound)
+        {
+            moveSound.Play();
+            canMoveSound = false;
+        }
     }
 
 
@@ -238,6 +250,7 @@ public class Player : Agent
         lineRenderer.SetPosition(0, firePoint.position);
 
         animator.SetTrigger("Shooting");
+        shootingSound.Play();
         StartCoroutine(MainCamera.instance.ShakeCamera(0.02f,0.03f));
 
         if (hitInfo)

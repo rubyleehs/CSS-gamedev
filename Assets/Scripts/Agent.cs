@@ -14,6 +14,7 @@ public abstract class Agent : MonoBehaviour
 
     public LayerMask blockingLayerMask;
 
+    public bool canMoveSound;
     protected virtual void Start()
     {
         ResetStats();
@@ -41,6 +42,8 @@ public abstract class Agent : MonoBehaviour
         if (CanMove(direction))
         {
             transform.position += (Vector3Int)direction;
+            if (direction != Vector2Int.zero)
+                canMoveSound = true;
         }
     }
 
