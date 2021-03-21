@@ -293,12 +293,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHp: 3
-  maxHp: 10
+  maxHp: 15
   blockingLayerMask:
     serializedVersion: 2
-    m_Bits: 6656
+    m_Bits: 6144
   attackDamage: 1
-  actionWaitPeriod: 4
+  actionWaitPeriod: 3.5
   actionTimeRemaining: 1
   firePoint: {fileID: 8935905400105034518}
   lineRenderer: {fileID: 3210386964826988050}

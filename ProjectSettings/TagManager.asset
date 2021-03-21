@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - Floor
-  - BlockingLayer
+  - Wall
   - Interactable
   - Player
   - Enemy

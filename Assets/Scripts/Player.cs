@@ -7,12 +7,14 @@ public class Player : Agent
 {
     public static Player instance;
 
-    public Vector2 startingPosition = new Vector2(7, 2);
+    public Vector2 playerSpawnPosition = new Vector2(7, 2);
 
     public Text healthText;
     public Text ammoText;
-    public Text addingAmmo;
-    public Text addingHealth;
+    public Text healthDeltaInfo;
+    public Text ammoDeltaInfo;
+
+    public GameObject statDeltaTextGO;
 
     public LineRenderer lineRenderer;
     public Transform firePoint;
@@ -108,7 +110,20 @@ public class Player : Agent
     public override void ChangeHpAmount(int delta)
     {
         base.ChangeHpAmount(delta);
-        StartCoroutine(AnimateHealthChange(delta));
+        healthText.text = "Health: " + currentHp;
+
+        string deltaString = "";
+
+        if (delta > 0)
+            deltaString = "+" + delta;
+        else if (delta < 0)
+        {
+            deltaString = "" + delta;
+            animator.SetTrigger("Damaged");
+            StartCoroutine(MainCamera.instance.ShakeCamera(0.04f, 0.1f));
+        }
+
+        StartCoroutine(AnimateDeltaText(deltaString, healthDeltaInfo.transform.position, Vector3.up * 12,healthDeltaInfo.color, 2,healthDeltaInfo.transform.parent));
     }
 
     /// <summary>
@@ -154,7 +169,16 @@ public class Player : Agent
     public void ChangeAmmoAmount(int delta)
     {
         currentAmmo += delta;
-        StartCoroutine(AnimateAmmoChange(delta));
+        ammoText.text = "Ammo: " + currentAmmo;
+
+        string deltaString = "";
+
+        if (delta > 0)
+            deltaString = "+" + delta;
+        else if (delta < 0)
+            deltaString = "" + delta;
+
+        StartCoroutine(AnimateDeltaText(deltaString, ammoDeltaInfo.transform.position, Vector3.up * 12, ammoDeltaInfo.color, 2, ammoDeltaInfo.transform.parent));
     }
 
     /// <summary>
@@ -164,45 +188,41 @@ public class Player : Agent
         base.ResetStats();
         isDead = false;
         currentAmmo = maxAmmo;
-        gameObject.transform.position = startingPosition;
+        gameObject.transform.position = playerSpawnPosition;
     }
 
     /// <summary>
-    /// Health animation above the healthText
+    /// Instantiates a new text object and animates its color and position.
+    /// Currently used to anima changes in player stats.
     /// </summary>
-    /// <param name="delta"></param>
-    /// <returns>flashes the health change ("+1" or "-1")</returns>
-    IEnumerator AnimateHealthChange(int delta)
+    /// <param name="s">String the text should have.</param>
+    /// <param name="startPosition">Starting position of the animation.</param>
+    /// <param name="deltaPosition">Where the text object should move during the animation.</param>
+    /// <param name="startColor">Starting text color.</param>
+    /// <param name="duration">How long the animation should take.</param>
+    /// <param name="parent">Parent Transform to temporarily hold the text object</param>
+    IEnumerator AnimateDeltaText(string s, Vector3 startPosition, Vector3 deltaPosition, Color startColor, float duration, Transform parent)
     {
-        healthText.text = "Health: " + currentHp;
+        Text text = Instantiate(statDeltaTextGO, startPosition, Quaternion.identity, parent).GetComponent<Text>();
 
-        if (delta > 0)
-            addingHealth.text = "+" + delta;
-        else if (delta < 0)
+        text.text = s;
+        text.color = startColor;
+
+
+        float startTime = Time.time;
+        float progress = 0;
+        Color endColor = startColor;
+        endColor.a = 0;
+        while (progress < 1)
         {
-            addingHealth.text = "" + delta;
-            animator.SetTrigger("Damaged");
-            StartCoroutine(MainCamera.instance.ShakeCamera(0.04f, 0.1f));
+            progress = Mathf.SmoothStep(0, 1, (Time.time - startTime) / duration);
+            text.color = Color.Lerp(startColor, endColor, progress);
+            text.transform.position = Vector3.Lerp(startPosition, startPosition + deltaPosition, progress);
+
+            yield return new WaitForEndOfFrame();
         }
-        yield return new WaitForSeconds(statChangeAnimationDuration);
-        addingHealth.text = "";
-    }
 
-    /// <summary>
-    /// Ammo animation above the ammoText
-    /// </summary>
-    /// <param name="delta"></param>
-    /// <returns>flashes the ammo change ("+1" or "-1")</returns>
-    IEnumerator AnimateAmmoChange(int delta)
-    {
-        ammoText.text = "Ammo: " + currentAmmo;
-
-        if (delta > 0)
-            addingAmmo.text = "+" + delta;
-        else if (delta < 0)
-            addingAmmo.text = "" + delta;
-        yield return new WaitForSeconds(statChangeAnimationDuration);
-        addingAmmo.text = "";
+        Destroy(text.gameObject);
     }
 
     /// <summary>
