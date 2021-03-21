@@ -143,12 +143,19 @@ public class Player : Agent
         }
     }
 
+    /// <summary>
+    /// Alters the <c>Player</c> currernt ammo. 
+    /// </summary>
+    /// <param name="delta"></param>
     public void ChangeAmmoAmount(int delta)
     {
         currentAmmo += delta;
         StartCoroutine(AnimateAmmoChange(delta));
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public override void ResetStats() {
         base.ResetStats();
         isDead = false;
@@ -156,6 +163,11 @@ public class Player : Agent
         gameObject.transform.position = startingPosition;
     }
 
+    /// <summary>
+    /// Health animation above the healthText
+    /// </summary>
+    /// <param name="delta"></param>
+    /// <returns>flashes the health change ("+1" or "-1")</returns>
     IEnumerator AnimateHealthChange(int delta)
     {
         healthText.text = "Health: " + currentHp;
@@ -172,6 +184,11 @@ public class Player : Agent
         addingHealth.text = "";
     }
 
+    /// <summary>
+    /// Ammo animation above the ammoText
+    /// </summary>
+    /// <param name="delta"></param>
+    /// <returns>flashes the ammo change ("+1" or "-1")</returns>
     IEnumerator AnimateAmmoChange(int delta)
     {
         ammoText.text = "Ammo: " + currentAmmo;
@@ -184,6 +201,10 @@ public class Player : Agent
         addingAmmo.text = "";
     }
 
+    /// <summary>
+    /// decreases the ammo count and emits a raycast to hit or miss the zombie
+    /// </summary>
+    /// <returns>flashes the laser travel line</returns>
     IEnumerator Shoot() 
     {
         //Try to seperate logic and animation
