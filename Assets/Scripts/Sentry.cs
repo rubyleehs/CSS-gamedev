@@ -8,18 +8,14 @@ public class Sentry : Enemy
     public Transform firePoint;
     public LineRenderer lineRenderer;
 
-    public float attackRadius = 10f;
+    public float attackRadius = 20f;
     public float loadTime = 3f;
     public float fireDuration = 1f;
+    public float laserloadingWidth = 0.08f;
+    public float laserWidth = 0.25f;
 
-    public AudioSource loadingSound;
-    public AudioSource shootingSound;
+    public AudioSource loadingSFX;
 
-    private void Start()
-    {
-        loadingSound = sounds[0];
-        shootingSound = sounds[1];
-    }
     /// <summary>
     /// Checks if this can attack the target under current conditions.
     /// </summary>
@@ -45,7 +41,11 @@ public class Sentry : Enemy
     /// <param name="delta"> Amount to change by. </param>
     public override void ChangeHpAmount (int delta)
     {
-        actionTimeRemaining = 0;
+        if (delta < 0)
+        {
+            damagedSFX.Play();
+            actionTimeRemaining = 0;
+        }
     }
 
     /// <summary>
@@ -62,18 +62,28 @@ public class Sentry : Enemy
     /// </summary>
     public IEnumerator AttackAnim ()
     {
-        animator.SetTrigger ("Loading");
-        loadingSound.Play();
-        yield return new WaitForSeconds (loadTime);
-        animator.SetTrigger("Shooting");
-        shootingSound.Play();
-
         float laserStartTime = Time.time;
+        animator.SetTrigger ("Loading");
+        loadingSFX.Play();
+
+        lineRenderer.SetPosition(0, Vector3.zero);
+        lineRenderer.widthMultiplier = laserloadingWidth;
+        lineRenderer.enabled = true;
+        while(Time.time - laserStartTime < loadTime)
+        {
+            lineRenderer.SetPosition(1, Vector3.right * attackRadius);
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        animator.SetTrigger("Shooting");
+        attackSFX.Play();
+
+        laserStartTime = Time.time;
         while (Time.time - laserStartTime < fireDuration)
         {
+            lineRenderer.widthMultiplier = laserWidth;
             RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, transform.right, Mathf.Infinity, blockingLayerMask);//add Contact filter if want go though walls
-            lineRenderer.SetPosition(0, Vector3.zero);
-           
+                       
             if (hitInfo.transform)
             {
                 Agent agent = hitInfo.transform.GetComponent<Agent>();
@@ -85,10 +95,8 @@ public class Sentry : Enemy
             }
             else
             {
-                lineRenderer.SetPosition(1, Vector3.right * 100);
+                lineRenderer.SetPosition(1, Vector3.right * attackRadius);
             }
-
-            lineRenderer.enabled = true;
             yield return new WaitForSeconds(0.1f);
         }
     

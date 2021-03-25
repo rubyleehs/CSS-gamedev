@@ -14,11 +14,6 @@ public class Player : Agent
     public Text healthDeltaInfo;
     public Text ammoDeltaInfo;
 
-    public AudioSource[] sounds;
-    public AudioSource moveSound;
-    public AudioSource shootingSound;
-    public AudioSource enemyDamagedSound;
-
     public GameObject statDeltaTextGO;
 
     public LineRenderer lineRenderer;
@@ -54,10 +49,6 @@ public class Player : Agent
     {
         base.Start();
         animator = GetComponent<Animator>();
-        sounds = GetComponents<AudioSource>();
-        moveSound = sounds[0];
-        shootingSound = sounds[1];
-        enemyDamagedSound = sounds[2];
 
         ChangeHpAmount(0);
         ChangeAmmoAmount(0);
@@ -81,11 +72,6 @@ public class Player : Agent
         // Player movement.
         curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
         Move(curInputDir);
-        if (canMoveSound)
-        {
-            moveSound.Play();
-            canMoveSound = false;
-        }
     }
 
 
@@ -98,8 +84,9 @@ public class Player : Agent
         base.Move(direction);
 
         prevMoveDir = direction;
-        if (direction != Vector2Int.zero)
+        if (direction != Vector2Int.zero) {
             lastMoveTime = Time.time;
+        }
     }
 
     /// <summary>
@@ -135,6 +122,7 @@ public class Player : Agent
         {
             deltaString = "" + delta;
             animator.SetTrigger("Damaged");
+            damagedSFX.Play();
             StartCoroutine(MainCamera.instance.ShakeCamera(0.04f, 0.1f));
         }
 
@@ -162,13 +150,11 @@ public class Player : Agent
     //prob move to agent
     private void OnTriggerEnter2D(Collider2D other)
     {
-
         IAgentInteractable playerInteractable = other.gameObject.GetComponent<IAgentInteractable>();
         if (playerInteractable != null)
         {
             playerInteractable.Interact(this);
-        }
-        
+        }   
     }
 
     /// <summary>
@@ -248,7 +234,7 @@ public class Player : Agent
         lineRenderer.SetPosition(0, firePoint.position);
 
         animator.SetTrigger("Shooting");
-        shootingSound.Play();
+        attackSFX.Play();
         StartCoroutine(MainCamera.instance.ShakeCamera(0.02f,0.03f));
 
         if (hitInfo)
@@ -257,7 +243,6 @@ public class Player : Agent
             if (enemy != null)
             {
                 enemy.ChangeHpAmount(-1);
-                enemyDamagedSound.Play();
             }
             lineRenderer.SetPosition(1, hitInfo.point);
         }
@@ -275,10 +260,7 @@ public class Player : Agent
 
     IEnumerator DyingAnimation()
     {
-
         animator.SetTrigger("Dead");
-
         yield return new WaitForSeconds(1.5f);
-
     }
 }
