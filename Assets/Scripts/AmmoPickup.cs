@@ -33,7 +33,6 @@ public class AmmoPickup : MonoBehaviour, IAgentInteractable
         if (agent is Player)
         {
             Player player = (Player)agent;
-
             player.ChangeAmmoAmount(ammoRestoreValue);
             Destroy(this.gameObject);            
         }

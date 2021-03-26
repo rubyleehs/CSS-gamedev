@@ -4,6 +4,12 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Class for generating levels.
+/// OOP Challenge:
+/// GameManager is currently very tightly coupled with this.
+/// Try resolving it.
+/// </summary>
 public class LevelGenerator : MonoBehaviour
 {
     public GameObject[] battleChunks;
@@ -142,7 +148,6 @@ public class LevelGenerator : MonoBehaviour
                     availableTiles.Add((Vector3)tileTBAdded);
             }
         }
-
     }
 
     /// <summary>
@@ -164,7 +169,5 @@ public class LevelGenerator : MonoBehaviour
             // Removes tile from pool
             availableTiles.Remove(entitySpawnLocation);
         }
-    
     }
-
 }

@@ -12,9 +12,11 @@ public abstract class Agent : MonoBehaviour
     public int currentHp = 10;
     public int maxHp = 10;
 
-    public LayerMask blockingLayerMask;
+    public AudioSource moveSFX;
+    public AudioSource attackSFX;
+    public AudioSource damagedSFX;
 
-    public bool canMoveSound;
+    public LayerMask blockingLayerMask;
     protected virtual void Start()
     {
         ResetStats();
@@ -42,8 +44,8 @@ public abstract class Agent : MonoBehaviour
         if (CanMove(direction))
         {
             transform.position += (Vector3Int)direction;
-            if (direction != Vector2Int.zero)
-                canMoveSound = true;
+            if (direction != Vector2Int.zero && moveSFX != null)
+                moveSFX.Play();
         }
     }
 
@@ -90,6 +92,10 @@ public abstract class Agent : MonoBehaviour
     {
         currentHp += delta;
         currentHp = Mathf.Min(currentHp, maxHp);
+        if(delta < 0 && damagedSFX != null)
+        {
+            damagedSFX.Play();
+        }
         if (currentHp <= 0)
         {
             Die();
