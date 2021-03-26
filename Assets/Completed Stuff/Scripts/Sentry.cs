@@ -44,9 +44,9 @@ namespace Completed
         /// <param name="delta"> Amount to change by. </param>
         public override void ChangeHpAmount(int delta)
         {
+            base.ChangeHpAmount(delta);
             if (delta < 0)
             {
-                damagedSFX.Play();
                 StopAllCoroutines();
                 actionTimeRemaining = 0;
             }

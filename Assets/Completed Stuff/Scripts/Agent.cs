@@ -9,7 +9,7 @@ namespace Completed
     {
         private static Object moveLock = new Object();
 
-        protected Direction currentFaceDir = Direction.East;
+        protected Vector2Int currentFaceDir = Vector2Int.right;
         [HideInInspector]
         public int currentHp = 10;
         public int maxHp = 10;
@@ -41,7 +41,7 @@ namespace Completed
             if (direction == Vector2Int.zero)
                 return false;
 
-            currentFaceDir = direction.ToEnum();
+            currentFaceDir = direction;
             Face(currentFaceDir);
 
             if (CanMove(direction))
@@ -86,9 +86,9 @@ namespace Completed
         /// Makes this <c>Agent</c> face a given direction.
         /// </summary>
         /// <param name="direction"> Direction to face. </param>
-        public void Face(Direction direction)
+        public void Face(Vector2Int direction)
         {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * (int)direction));
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, Vector2.SignedAngle(Vector2.right, direction)));
         }
 
         /// <summary>

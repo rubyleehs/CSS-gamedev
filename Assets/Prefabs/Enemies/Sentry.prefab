@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHp: 3
-  maxHp: 5
+  maxHp: 70
   moveSFX: {fileID: 1481477781857859050}
   attackSFX: {fileID: -8978996896184800948}
   damagedSFX: {fileID: 8109355663756193707}

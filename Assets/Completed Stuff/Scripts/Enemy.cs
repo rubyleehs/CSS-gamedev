@@ -35,7 +35,7 @@ namespace Completed
 
                 if (CanAttack(target))
                 {
-                    Face(CalculateFaceDirection(target).ToEnum());
+                    Face(CalculateFaceDirection(target));
                     Attack(target);
                 }
                 else Move(CalculateMoveDirection(target));
