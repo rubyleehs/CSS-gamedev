@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    /// <summary>
+    /// Sets up object references and the GameManager.
+    /// </summary>
     void Awake() {
         if (instance == null)
             instance = this;
@@ -49,9 +52,11 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    /// <summary>
+    /// Sets up the game.
+    /// </summary>
     private void InitGame() {
 
-        // Sets up the game
         paused = false;
         infoText.gameObject.SetActive(paused); // paused is always false here
         menuBackdrop.SetActive(paused); // Disables black screen
@@ -71,6 +76,9 @@ public class GameManager : MonoBehaviour
         levelGen.InitLevel();   
     }
 
+    /// <summary>
+    /// Displays game over screen and deletes level.
+    /// </summary>
     private void InitGameOver() {
 
         // Destroys the level
@@ -82,7 +90,9 @@ public class GameManager : MonoBehaviour
         infoText.gameObject.SetActive(true);
     }
 
-    // Pause and resume. Input will be handled by the Player instead.
+    /// <summary>
+    /// Pause and resume. 
+    /// </summary>
     public void TogglePause() {
         paused = !paused;
         infoText.text = "PAUSED";
@@ -90,7 +100,10 @@ public class GameManager : MonoBehaviour
         Time.timeScale = paused ? 0 : 1;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Manages pausing and decides on which gamestate to run.
+    /// (Play, GameOver)
+    /// </summary>
     void Update() {
         // Pause Game
         if (Input.GetKeyDown("p"))
@@ -112,6 +125,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the Player, generates chunks, destroys old chunks and increases difficulty level.
+    /// Active while game is being played, obviously.
+    /// </summary>
     private void Play() {
 
         // Game Over if player HP is less than 0
@@ -135,6 +152,10 @@ public class GameManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Wait for the Enter key to be pressed, then restarts the game.
+    /// Active during the GameOver screen.
+    /// </summary>
     private void GameOver() {
         if (Input.GetKeyDown("return"))
             InitGame();
