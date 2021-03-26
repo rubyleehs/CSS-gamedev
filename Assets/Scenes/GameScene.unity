@@ -505,7 +505,8 @@ MonoBehaviour:
     type: 3}
   lineRenderer: {fileID: 303861604}
   firePoint: {fileID: 1151637694}
-  maxAmmo: 10
+  maxAmmo: 50
+  playerDamage: 15
   currentAmmo: 5
   animator: {fileID: 0}
   moveWaitTime: 0.15
@@ -1905,7 +1906,7 @@ PrefabInstance:
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
       propertyPath: obstacleChunks.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
@@ -1916,7 +1917,7 @@ PrefabInstance:
         type: 3}
       propertyPath: battleChunks.Array.data[0]
       value: 
-      objectReference: {fileID: 7153005623693662157, guid: c792dceffb87a414fad7f25f24d67809,
+      objectReference: {fileID: 6419937656648749094, guid: c792dceffb87a414fad7f25f24d67809,
         type: 3}
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
@@ -1957,13 +1958,13 @@ PrefabInstance:
         type: 3}
       propertyPath: obstacleChunks.Array.data[1]
       value: 
-      objectReference: {fileID: 8466163783964138229, guid: c6ba035e0e93bdc4785f234d2ab33e8c,
+      objectReference: {fileID: 7175858924158578949, guid: c6ba035e0e93bdc4785f234d2ab33e8c,
         type: 3}
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
       propertyPath: obstacleChunks.Array.data[2]
       value: 
-      objectReference: {fileID: 392747590231011979, guid: d1a34d4f5acecde4da71acd8936cbda3,
+      objectReference: {fileID: 1168797412312027002, guid: c1e15c41f0bc5a540be909b0cbda6a49,
         type: 3}
     - target: {fileID: 5966617893194608665, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}

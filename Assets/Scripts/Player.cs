@@ -19,6 +19,7 @@ public class Player : Agent
     public LineRenderer lineRenderer;
     public Transform firePoint;
     public int maxAmmo = 10;
+    public int playerDamage = 15;
 
     [HideInInspector]
     public int currentAmmo = 10;
@@ -263,7 +264,7 @@ public class Player : Agent
             Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.ChangeHpAmount(-1);
+                enemy.ChangeHpAmount(-playerDamage);
             }
             lineRenderer.SetPosition(1, hitInfo.point);
         }
