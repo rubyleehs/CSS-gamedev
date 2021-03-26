@@ -68,9 +68,9 @@ public class Sentry : Enemy
 
         lineRenderer.SetPosition(0, Vector3.zero);
         lineRenderer.widthMultiplier = laserloadingWidth;
-        lineRenderer.enabled = true;
         while(Time.time - laserStartTime < loadTime)
         {
+            lineRenderer.enabled = true;
             lineRenderer.SetPosition(1, Vector3.right * attackRadius);
             yield return new WaitForSeconds(0.1f);
         }
@@ -82,7 +82,7 @@ public class Sentry : Enemy
         while (Time.time - laserStartTime < fireDuration)
         {
             lineRenderer.widthMultiplier = laserWidth;
-            RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, transform.right, Mathf.Infinity, blockingLayerMask);//add Contact filter if want go though walls
+            RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, transform.right, Mathf.Infinity, blockingLayerMask);
                        
             if (hitInfo.transform)
             {

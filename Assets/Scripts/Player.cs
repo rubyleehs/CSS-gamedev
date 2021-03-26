@@ -35,6 +35,9 @@ public class Player : Agent
     public float moveWaitTime = .3f;
     public float statChangeAnimationDuration = 2;
 
+    public AudioSource healSFX;
+    public AudioSource reloadSFX;
+
     private bool isDead = false;
 
     private void Awake()
@@ -116,8 +119,11 @@ public class Player : Agent
 
         string deltaString = "";
 
-        if (delta > 0)
-            deltaString = "+" + delta;
+        if (delta > 0) {
+            deltaString = "+" + delta;            
+            healSFX.Play(); // This can also be on the health pickup itself, would depend on your sound design
+        }
+           
         else if (delta < 0)
         {
             deltaString = "" + delta;
@@ -170,7 +176,10 @@ public class Player : Agent
         string deltaString = "";
 
         if (delta > 0)
+        {
             deltaString = "+" + delta;
+            reloadSFX.Play(); // This can also be on the ammo pickup itself, would depend on your sound design
+        }            
         else if (delta < 0)
             deltaString = "" + delta;
 
