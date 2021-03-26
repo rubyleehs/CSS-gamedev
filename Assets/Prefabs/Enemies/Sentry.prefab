@@ -297,14 +297,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHp: 3
-  maxHp: 15
+  maxHp: 5
   moveSFX: {fileID: 1481477781857859050}
   attackSFX: {fileID: -8978996896184800948}
   damagedSFX: {fileID: 8109355663756193707}
   blockingLayerMask:
     serializedVersion: 2
     m_Bits: 6144
-  attackDamage: 1
+  attackDamage: 3
   actionWaitPeriod: 3
   actionTimeRemaining: 1
   firePoint: {fileID: 8935905400105034518}
