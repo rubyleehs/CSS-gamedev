@@ -143,7 +143,6 @@ public class LevelGenerator : MonoBehaviour
     /// <param name="spawnChunk">The chunk to scan for spawnpoints.</param>
     void GenerateTilePositions (GameObject spawnChunk)
     {
-
         availableTiles.Clear ();
 
         // Gets the walls from the chunk to be spawned
@@ -169,7 +168,6 @@ public class LevelGenerator : MonoBehaviour
     /// <param name="entitiesToSpawn">The number of entities to spawn</param>
     void GenerateEntityPositions (int entitiesToSpawn)
     {
-
         entityTiles.Clear ();
 
         for (int i = 0; i < entitiesToSpawn; i++)
