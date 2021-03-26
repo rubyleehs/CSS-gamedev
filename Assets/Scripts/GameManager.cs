@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         difficultyLevel = startingDifficultyLevel;
 
         // Sets up the level
-        levelGen.InitLevel();   
+        levelGen.InitLevel(0);   
     }
 
     /// <summary>
