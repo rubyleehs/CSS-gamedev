@@ -25,12 +25,21 @@ public class LevelGenerator : MonoBehaviour
     // Stores the level
     public Transform level;
 
+    /// <summary>
+    /// Initializes the level. Spawns an initial chunk. 
+    /// </summary>
+    /// <param name="difficultyLevel">The initial difficulty of the game.</param>
     public void InitLevel(int difficultyLevel) {
         chunkCount = 0;
         chunksDestroyed = 0;
-        SpawnChunk(0);
+        SpawnChunk(difficultyLevel);
     }
 
+    /// <summary>
+    /// Spawns a new level chunk ahead of the player.
+    /// </summary>
+    /// <param name="difficultyLevel">Difficulty level of the chunk to be spawned. 
+    /// Enemies are more numerous as difficulty increases.</param>
     public void SpawnChunk(int difficultyLevel) {
 
         int enemiesToSpawn;
@@ -93,21 +102,30 @@ public class LevelGenerator : MonoBehaviour
         chunkCount++;
     }
 
-    // Destroys the earliest chunk in the list.
+    /// <summary>
+    /// Destroys the rearmost chunk behind the player.
+    /// This is done to avoid clutter.
+    /// </summary>
     public void DestroyEarliestChunk() {
         Destroy(chunkList[0]);
         chunkList.RemoveAt(0);
         chunksDestroyed++;
     }
 
-    // Destroys everything in the level GameObject
+    /// <summary>
+    /// Destroys the entire level.
+    /// </summary>
     public void DestroyLevel() {
         foreach (Transform child in level) {
             GameObject.Destroy(child.gameObject);
         }
     }
 
-    // Generates tile positions for generation in chunks
+    /// <summary>
+    /// Determines where entities can spawn within a chunk by scanning for walls.
+    /// Open tile locations are temporarily stored in the availableTiles list.
+    /// </summary>
+    /// <param name="spawnChunk">The chunk to scan for spawnpoints.</param>
     void GenerateTilePositions(GameObject spawnChunk) {
         
         availableTiles.Clear();
@@ -127,7 +145,11 @@ public class LevelGenerator : MonoBehaviour
 
     }
 
-    // Generates enemy positions from available tiles
+    /// <summary>
+    /// Randomly generates entity spawnpoints from available tiles.
+    /// Tiles to be spawned are temporarily stored in the entityTiles list.
+    /// </summary>
+    /// <param name="entitiesToSpawn">The number of entities to spawn</param>
     void GenerateEntityPositions(int entitiesToSpawn) {
 
         entityTiles.Clear();
