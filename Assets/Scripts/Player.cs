@@ -55,8 +55,7 @@ public class Player : Agent
         base.Start();
         animator = GetComponent<Animator>();
 
-        ChangeHpAmount(0);
-        ChangeAmmoAmount(0);
+        
     }
 
     // Update is called once per frame.
@@ -214,6 +213,9 @@ public class Player : Agent
         isDead = false;
         currentAmmo = maxAmmo;
         gameObject.transform.position = playerSpawnPosition;
+
+        ChangeHpAmount(0);
+        ChangeAmmoAmount(0);
     }
 
     /// <summary>
