@@ -83,9 +83,6 @@ public class Player : Agent
     /// <param name="direction"> Direction to move. </param>
     public override bool Move(Vector2Int direction)
     {
-        
-        //if (direction == Vector2Int.zero)
-        //    return false;
         Vector2Int moveDir = Vector2Int.zero;
 
         if (direction.y > 0)
@@ -97,15 +94,9 @@ public class Player : Agent
         else if (direction.x < 0)
             moveDir = Vector2Int.left;
 
-        //if(moveDir.sqrMagnitude > 1)
-        //{
-        //    moveDir += lastMoveDir;
-        //}
-
         if (base.Move(moveDir))
         {
             lastMoveTime = Time.time;
-            lastMoveDir = moveDir;
             return true;
         }
         return false;

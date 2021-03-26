@@ -44,7 +44,10 @@ public abstract class Agent : MonoBehaviour
 
         if (CanMove(direction))
         {
-            transform.position += new Vector3Int(direction.x, direction.y, 0);
+            lock (moveLock)
+            {
+                transform.position += new Vector3Int(direction.x, direction.y, 0);
+            }
             if (moveSFX != null)
                 moveSFX.Play();
             return true;
