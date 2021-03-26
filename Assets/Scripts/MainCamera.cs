@@ -8,7 +8,12 @@ public class MainCamera : MonoBehaviour
     private Transform camTransform;
     private IEnumerator camShakeIEnum;
 
-    Vector3 originalPos;
+    public float playerTresholdFromCenter = -2;
+    public float baseMoveCreepSpeed = 1;
+    public float moveLerpSpeed = 8;
+
+
+    private Vector3 originalPos;
 
     void Awake()
     {
@@ -21,6 +26,16 @@ public class MainCamera : MonoBehaviour
         {
             Destroy(this);
         }
+    }
+
+    private void Update()
+    {
+        transform.position += Vector3.up * baseMoveCreepSpeed * GameManager.instance.difficultyLevel * Time.deltaTime;
+
+        if (transform.position.y < Player.instance.transform.position.y + playerTresholdFromCenter) 
+            transform.position = new Vector3(transform.position.x, 
+                Mathf.Lerp(transform.position.y, Player.instance.transform.position.y + playerTresholdFromCenter, Time.deltaTime * moveLerpSpeed), 
+                transform.position.z);
     }
 
     /// <summary>

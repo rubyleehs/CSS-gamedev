@@ -109,7 +109,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 6656
   attackDamage: 1
-  actionWaitPeriod: 1.2
+  actionWaitPeriod: 0.5
   actionTimeRemaining: 1
 --- !u!50 &8066433794486936720
 Rigidbody2D:

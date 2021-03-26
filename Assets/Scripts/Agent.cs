@@ -34,19 +34,22 @@ public abstract class Agent : MonoBehaviour
     /// Move the <c>Agent</c> in given direction.
     /// </summary>
     /// <param name="direction"> Direction in move in. </param>
-    public virtual void Move(Vector2Int direction)
+    public virtual bool Move(Vector2Int direction)
     {
-        if (direction != Vector2Int.zero)
-            currentFaceDir = direction.ToEnum();
+        if (direction == Vector2Int.zero)
+            return false;
 
+        currentFaceDir = direction.ToEnum();
         Face(currentFaceDir);
 
         if (CanMove(direction))
         {
-            transform.position += (Vector3Int)direction;
-            if (direction != Vector2Int.zero && moveSFX != null)
+            transform.position += new Vector3Int(direction.x, direction.y, 0);
+            if (moveSFX != null)
                 moveSFX.Play();
+            return true;
         }
+        return false;
     }
 
     /// <summary>

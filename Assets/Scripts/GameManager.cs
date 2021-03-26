@@ -14,7 +14,11 @@ public class GameManager : MonoBehaviour
     // Public variables
     public GameState currentState;
     public LevelGenerator levelGen;
-    public int difficultyLevel = 2;
+    public float startingDifficultyLevel = 2;    
+    public float difficultyScaling = 0.2f;
+
+    [HideInInspector]
+    public float difficultyLevel = 2;
 
     // Private variables
     // private List<Enemy> enemyList;
@@ -61,11 +65,10 @@ public class GameManager : MonoBehaviour
         player.ResetStats();
 
         // Resets difficulty
-        difficultyLevel = 2;
+        difficultyLevel = startingDifficultyLevel;
 
         // Sets up the level
-        levelGen.InitLevel(difficultyLevel);
-        
+        levelGen.InitLevel();   
     }
 
     private void InitGameOver() {
@@ -112,7 +115,7 @@ public class GameManager : MonoBehaviour
     private void Play() {
 
         // Game Over if player HP is less than 0
-        if (player.currentHp <= 0) {
+        if (player.isDead) {
             InitGameOver();
         }
 
@@ -128,7 +131,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Updates difficulty level
-        difficultyLevel = (int)Mathf.Max(2, Mathf.Ceil(levelGen.chunkCount / 8));
+        difficultyLevel = Mathf.Max(difficultyLevel, levelGen.chunkCount * difficultyScaling);
 
     }
 

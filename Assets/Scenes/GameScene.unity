@@ -258,7 +258,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: d90998966353148478e989c37e442d65, type: 3}
-    m_FontSize: 24
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -507,13 +507,13 @@ MonoBehaviour:
   firePoint: {fileID: 1151637694}
   maxAmmo: 10
   currentAmmo: 5
-  camera: {fileID: 437907138}
-  cameraSpeed: 10
   animator: {fileID: 0}
-  moveWaitTime: 0.3
+  moveWaitTime: 0.15
   statChangeAnimationDuration: 2
   healSFX: {fileID: 414700081}
   reloadSFX: {fileID: 414700082}
+  killzoneHeightFromCam: -7.8
+  isDead: 0
 --- !u!50 &414700072
 Rigidbody2D:
   serializedVersion: 4
@@ -1221,6 +1221,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37dc76191e002e4cb6e13eab2a80a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTresholdFromCenter: 1.5
+  baseMoveCreepSpeed: 0.3
+  moveLerpSpeed: 1.4
 --- !u!1 &499180733
 GameObject:
   m_ObjectHideFlags: 0
@@ -1768,7 +1771,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: d90998966353148478e989c37e442d65, type: 3}
-    m_FontSize: 24
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -2182,6 +2185,21 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 414700070}
+    - target: {fileID: 5966617893194608670, guid: 9323e4c66949c894b8e8b337448976fd,
+        type: 3}
+      propertyPath: difficultyLevel
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5966617893194608670, guid: 9323e4c66949c894b8e8b337448976fd,
+        type: 3}
+      propertyPath: difficultyScaling
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5966617893194608670, guid: 9323e4c66949c894b8e8b337448976fd,
+        type: 3}
+      propertyPath: startingDifficultyLevel
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5966617893194608671, guid: 9323e4c66949c894b8e8b337448976fd,
         type: 3}
       propertyPath: m_RootOrder

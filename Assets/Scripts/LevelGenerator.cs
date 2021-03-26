@@ -31,13 +31,13 @@ public class LevelGenerator : MonoBehaviour
     // Stores the level
     public Transform level;
 
-    public void InitLevel(int difficultyLevel) {
+    public void InitLevel() {
         chunkCount = 0;
         chunksDestroyed = 0;
         SpawnChunk(0);
     }
 
-    public void SpawnChunk(int difficultyLevel) {
+    public void SpawnChunk(float difficultyLevel) {
 
         int enemiesToSpawn;
         GameObject spawnChunk;
@@ -45,7 +45,7 @@ public class LevelGenerator : MonoBehaviour
         // Determines type of chunk to spawn and enemy count
         if (chunkCount % chunksBeforeBattle == 0) {
             spawnChunk = battleChunks[Random.Range(0, battleChunks.Length)];
-            enemiesToSpawn = difficultyLevel;
+            enemiesToSpawn = (int) difficultyLevel;
         }
         else {
             spawnChunk = obstacleChunks[Random.Range(0, obstacleChunks.Length)];

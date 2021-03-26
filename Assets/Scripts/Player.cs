@@ -23,22 +23,23 @@ public class Player : Agent
     [HideInInspector]
     public int currentAmmo = 10;
 
-    public new Transform camera;
-    public int cameraSpeed = 8;
-
     [HideInInspector]
     public Animator animator;
     private Vector2Int prevMoveDir = new Vector2Int(0,0);
     private Direction faceDir = Direction.East;
 
     private float lastMoveTime;
+    private Vector2Int lastMoveDir;
     public float moveWaitTime = .3f;
     public float statChangeAnimationDuration = 2;
 
     public AudioSource healSFX;
     public AudioSource reloadSFX;
 
-    private bool isDead = false;
+    public float killzoneHeightFromCam = -8;
+
+    [HideInInspector]
+    public bool isDead = false;
 
     private void Awake()
     {
@@ -60,12 +61,6 @@ public class Player : Agent
     // Update is called once per frame.
     void Update()
     {
-        Vector2Int curInputDir = Vector2Int.zero;
-        // Checks if the current position of the player is more than 1 higher than that of the camera.
-        if (gameObject.transform.position.y > camera.position.y + 1) {
-            camera.position += Vector3.up * Time.deltaTime * cameraSpeed;
-        }
-
         // Player shooting.
         if (Input.GetButtonDown("Fire1") && currentAmmo != 0)
         {
@@ -73,8 +68,13 @@ public class Player : Agent
         }
 
         // Player movement.
-        curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
+        Vector2Int curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
         Move(curInputDir);
+
+        if(transform.position.y < MainCamera.instance.transform.position.y + killzoneHeightFromCam)
+        {
+            Die();
+        }
     }
 
 
@@ -82,14 +82,34 @@ public class Player : Agent
     /// Moves the <c>Player</c> in a given direction.
     /// </summary>
     /// <param name="direction"> Direction to move. </param>
-    public override void Move(Vector2Int direction)
+    public override bool Move(Vector2Int direction)
     {
-        base.Move(direction);
+        
+        //if (direction == Vector2Int.zero)
+        //    return false;
+        Vector2Int moveDir = Vector2Int.zero;
 
-        prevMoveDir = direction;
-        if (direction != Vector2Int.zero) {
+        if (direction.y > 0)
+            moveDir = Vector2Int.up;
+        else if (direction.y < 0)
+            moveDir = Vector2Int.down;
+        if (direction.x > 0)
+            moveDir = Vector2Int.right;
+        else if (direction.x < 0)
+            moveDir = Vector2Int.left;
+
+        //if(moveDir.sqrMagnitude > 1)
+        //{
+        //    moveDir += lastMoveDir;
+        //}
+
+        if (base.Move(moveDir))
+        {
             lastMoveTime = Time.time;
+            lastMoveDir = moveDir;
+            return true;
         }
+        return false;
     }
 
     /// <summary>
@@ -102,9 +122,8 @@ public class Player : Agent
         if (isDead)
             return false;
         //Can hold and move slower or press fast move faster
-        if(direction != prevMoveDir || Time.time - lastMoveTime >= moveWaitTime)
-            if((gameObject.transform.position + (Vector3Int)prevMoveDir).y > (camera.position.y - 6))
-                return base.CanMove(direction);
+        if (Time.time - lastMoveTime >= moveWaitTime)
+            return base.CanMove(direction);
         return false;
     }
 

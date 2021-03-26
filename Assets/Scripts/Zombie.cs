@@ -8,11 +8,12 @@ public class Zombie : Enemy
     /// Makes this attack the target.
     /// </summary>
     /// <param name="target"> The Agent to attack. </param>
-    public override void Attack (Agent target)
+    public override bool Attack (Agent target)
     {
         animator.SetTrigger ("Attacking");
         attackSFX.Play();
         target.ChangeHpAmount (-attackDamage);
+        return true;
     }
 
     /// <summary>

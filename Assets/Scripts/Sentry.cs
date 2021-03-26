@@ -30,9 +30,10 @@ public class Sentry : Enemy
     /// Starts a new attack sequence against a given target.
     /// </summary>
     /// <param name="target"> Agent to attack </param>
-    public override void Attack (Agent target)
+    public override bool Attack (Agent target)
     {
         StartCoroutine (AttackAnim ());
+        return true;
     }
 
     /// <summary>
@@ -44,6 +45,7 @@ public class Sentry : Enemy
         if (delta < 0)
         {
             damagedSFX.Play();
+            StopAllCoroutines();
             actionTimeRemaining = 0;
         }
     }

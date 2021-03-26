@@ -87,5 +87,5 @@ public abstract class Enemy : Agent
     /// <param name="target"></param>
     /// <returns></returns>
     public abstract bool CanAttack (Agent target);
-    public abstract void Attack (Agent target);
+    public abstract bool Attack (Agent target);
 }
