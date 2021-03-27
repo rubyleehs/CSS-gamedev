@@ -117,5 +117,19 @@ namespace Completed
         {
             Destroy(this.gameObject);
         }
+
+        /// <summary>
+        /// Called when the player's collider enters a trigger.
+        /// Attempts to interact with any <c>IAgentInteractable</c> it collides with.
+        /// </summary>
+        /// <param name="other"> The collider of the object this collided with. </param
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            IAgentInteractable agentInteractable = other.gameObject.GetComponent<IAgentInteractable>();
+            if (agentInteractable != null)
+            {
+                agentInteractable.Interact(this);
+            }
+        }
     }
 }

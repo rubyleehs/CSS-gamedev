@@ -26,7 +26,7 @@ namespace Completed
             actionTimeRemaining = actionWaitPeriod;
         }
 
-        void Update()
+        void FixedUpdate()
         {
             actionTimeRemaining -= Time.deltaTime;
             if (actionTimeRemaining <= 0)
