@@ -248,11 +248,11 @@ public class Player : Agent
 
         if (hitInfo)
         {
-            Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.ChangeHpAmount(-playerDamage);
-            }
+            //Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
+            //if (enemy != null)
+            //{
+            //    enemy.ChangeHpAmount(-playerDamage);
+            //}
             lineRenderer.SetPosition(1, hitInfo.point);
         }
         else
