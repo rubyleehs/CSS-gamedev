@@ -30,7 +30,7 @@ public class MainCamera : MonoBehaviour
 
     private void Update()
     {
-        transform.position += Vector3.up * baseMoveCreepSpeed * GameManager.instance.difficultyLevel * Time.deltaTime;
+        //transform.position += Vector3.up * baseMoveCreepSpeed * GameManager.instance.difficultyLevel * Time.deltaTime;
 
         if (transform.position.y < Player.instance.transform.position.y + playerTresholdFromCenter)
             transform.position = new Vector3(transform.position.x,
