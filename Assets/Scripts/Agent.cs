@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//Anythign that can move or have Ai
+// Anything that can interact with the world should be an Agent.
 public abstract class Agent : MonoBehaviour
 {
     private static Object moveLock = new Object();
 
-    protected Vector2Int currentFaceDir = Vector2Int.right;
     [HideInInspector]
     public int currentHp = 10;
     public int maxHp = 10;
@@ -18,9 +17,13 @@ public abstract class Agent : MonoBehaviour
     public AudioSource damagedSFX;
 
     public LayerMask blockingLayerMask;
+
+
+    // This is called before the first frame update.
     protected virtual void Start()
     {
-        ResetStats();
+        // Setup stuff. 
+        // TODO: Reset the stats of the Agent by calling ResetStats()
     }
 
     /// <summary>
@@ -28,30 +31,28 @@ public abstract class Agent : MonoBehaviour
     /// </summary>
     public virtual void ResetStats()
     {
-        currentHp = maxHp;
+        // In this game, the only atribute that all Agents share that needs resetting is hp.
+        // TODO: So lets reset that by making currentHp be equal to the maxHp.
     }
 
     /// <summary>
     /// Move the <c>Agent</c> in given direction.
     /// </summary>
     /// <param name="direction"> Direction in move in. </param>
+    /// <returns> If <c>Agent</c> was sucessful in moving in given direction </returns>
     public virtual bool Move(Vector2Int direction)
     {
-        if (direction == Vector2Int.zero)
-            return false;
+        // TODO: Immediately return false if direction given is stationary/zero.
+        // Can create a new zero vector with: new Vector2Int(0,0) 
+        // Or use Vector2Int.zero
 
-        currentFaceDir = direction;
-        Face(currentFaceDir);
+        // TODO: Face the direction we are moving in by calling Face(direction)
 
-        if (CanMove(direction))
+        lock (moveLock)
         {
-            lock (moveLock)
-            {
-                transform.position += new Vector3Int(direction.x, direction.y, 0);
-            }
-            if (moveSFX != null)
-                moveSFX.Play();
-            return true;
+            // TODO: Check if we can move in the direction with CanMove(direction)
+            // TODO: If so, move the transform the the new position. If moveSFX is given, play it too.
+            // Remember to return true if the move was sucessful.
         }
         return false;
     }
@@ -63,22 +64,16 @@ public abstract class Agent : MonoBehaviour
     /// <returns> If <c>Agent</c> is able to move in given direction in currenct conditions. </returns>
     protected virtual bool CanMove(Vector2Int direction)
     {
-        lock (moveLock)
-        {
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 1, blockingLayerMask);
+        // We want to check if we can move in a particular direction.
+        // If there is an obstacle in our way, this should return false. Otherwise, true.
+        // An easy way to do so is to litterally check if there is an obstacle by firing a Ray and see if it collides with anything.
+        // TODO: Uncomment out the following line below.
+        // RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, direction.magnitude, blockingLayerMask);
 
-            if (hits.Length > 0)
-            {
-                for (int x = 0; x < hits.Length; x++)
-                {
-                    if (hits[x].transform != this.transform)
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
+        // TODO: Check if the ray has hit something other than itself. If so, return false.
+        // HINT: RaycastHit2D has a field called 'transform' that contains a reference to the transform the ray hit.
+
+        return true;        
     }
 
     /// <summary>
@@ -87,7 +82,11 @@ public abstract class Agent : MonoBehaviour
     /// <param name="direction"> Direction to face. </param>
     public void Face(Vector2Int direction)
     {
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, Vector2.SignedAngle(Vector2.right, direction)));
+        // TODO: Set the rotation of this transform so the right of the transform is facing the given direction.
+        // HINT: Unity uses Quaternions to represent rotations. Quarternion.Euler() function can convert a Vector3 to a Quartenion.
+        // HINT: Vector2.SignedAngle() returns the angular difference between two given vectors.
+        // HINT: The axis of rotation for our case would be the z axis, aka the axis perpendicular your screen.
+
     }
 
     /// <summary>
@@ -97,16 +96,11 @@ public abstract class Agent : MonoBehaviour
     /// <param name="delta"> Amount to change by. </param>
     public virtual void ChangeHpAmount(int delta)
     {
-        currentHp += delta;
-        currentHp = Mathf.Min(currentHp, maxHp);
-        if (delta < 0 && damagedSFX != null)
-        {
-            damagedSFX.Play();
-        }
-        if (currentHp <= 0)
-        {
-            Die();
-        }
+        // TODO: Change currentHp by delta. Make sure it is capped by maxHp.
+
+        // TODO: If the agent takes damaged and damagedSFX is given, play it.
+
+        // TODO: Call Die() if the agent ends up dying from the change.
     }
 
     /// <summary>
@@ -114,21 +108,18 @@ public abstract class Agent : MonoBehaviour
     /// </summary>
     public virtual void Die()
     {
-        Destroy(this.gameObject);
+        // TODO: Destroy the game object this script is currently on.
     }
 
     /// <summary>
     /// Called when the player's collider enters a trigger.
     /// Attempts to interact with any <c>IAgentInteractable</c> it collides with.
     /// </summary>
-    /// <param name="other"> The collider of the object this collided with. </param
+    /// <param name="other"> The collider of the object this collided with. </param>
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //IAgentInteractable agentInteractable = other.gameObject.GetComponent<IAgentInteractable>();
-        //if (agentInteractable != null)
-        //{
-        //    agentInteractable.Interact(this);
-        //}
+        // TODO: Check if the thing this has collided with has a component that implements IAgentInteractable. If so, if it is able to interact with it, do so.
+        // HINT: thing.GetComponent<TheTypeYouAreLookingFor>() will return a component that thing has, or null if thing does not have said component.
     }
 }
 

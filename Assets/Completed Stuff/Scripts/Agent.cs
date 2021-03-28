@@ -9,7 +9,6 @@ namespace Completed
     {
         private static Object moveLock = new Object();
 
-        protected Vector2Int currentFaceDir = Vector2Int.right;
         [HideInInspector]
         public int currentHp = 10;
         public int maxHp = 10;
@@ -41,18 +40,18 @@ namespace Completed
             if (direction == Vector2Int.zero)
                 return false;
 
-            currentFaceDir = direction;
-            Face(currentFaceDir);
+            Face(direction);
 
-            if (CanMove(direction))
+            lock (moveLock)
             {
-                lock (moveLock)
+                if (CanMove(direction))
                 {
                     transform.position += new Vector3Int(direction.x, direction.y, 0);
+
+                    if (moveSFX != null)
+                        moveSFX.Play();
+                    return true;
                 }
-                if (moveSFX != null)
-                    moveSFX.Play();
-                return true;
             }
             return false;
         }
@@ -64,22 +63,19 @@ namespace Completed
         /// <returns> If <c>Agent</c> is able to move in given direction in currenct conditions. </returns>
         protected virtual bool CanMove(Vector2Int direction)
         {
-            lock (moveLock)
-            {
-                RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 1, blockingLayerMask);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, direction.magnitude, blockingLayerMask);
 
-                if (hits.Length > 0)
+            if (hits.Length > 0)
+            {
+                for (int x = 0; x < hits.Length; x++)
                 {
-                    for (int x = 0; x < hits.Length; x++)
+                    if (hits[x].transform != this.transform)
                     {
-                        if (hits[x].transform != this.transform)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                 }
-                return true;
             }
+            return true;           
         }
 
         /// <summary>
@@ -88,7 +84,7 @@ namespace Completed
         /// <param name="direction"> Direction to face. </param>
         public void Face(Vector2Int direction)
         {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, Vector2.SignedAngle(Vector2.right, direction)));
+            transform.rotation = Quaternion.Euler(Vector3.forward * Vector2.SignedAngle(Vector2.right, direction));
         }
 
         /// <summary>
@@ -122,13 +118,14 @@ namespace Completed
         /// Called when the player's collider enters a trigger.
         /// Attempts to interact with any <c>IAgentInteractable</c> it collides with.
         /// </summary>
-        /// <param name="other"> The collider of the object this collided with. </param
+        /// <param name="other"> The collider of the object this collided with. </param>
         private void OnTriggerEnter2D(Collider2D other)
         {
-            IAgentInteractable agentInteractable = other.gameObject.GetComponent<IAgentInteractable>();
+            IAgentInteractable agentInteractable = other.GetComponent<IAgentInteractable>();
             if (agentInteractable != null)
             {
-                agentInteractable.Interact(this);
+                if(agentInteractable.CanInteract(this))
+                    agentInteractable.Interact(this);
             }
         }
     }

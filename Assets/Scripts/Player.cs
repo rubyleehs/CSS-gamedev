@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-
 public class Player : Agent
 {
     public static Player instance;
@@ -48,22 +47,31 @@ public class Player : Agent
         if (instance != null)
             Destroy(this);
         else instance = this;
-        ResetStats();
+
+        animator = GetComponent<Animator>();
     }
 
-    protected override void Start()
+    /// <summary>
+    /// Rests the stats of the player 
+    /// </summary>
+    public override void ResetStats()
     {
-        base.Start();
-        animator = GetComponent<Animator>();
+        base.ResetStats();
+        isDead = false;
+        currentAmmo = maxAmmo;
+        gameObject.transform.position = playerSpawnPosition;
+
+        ChangeHpAmount(0);
+        ChangeAmmoAmount(0);
     }
 
     // Update is called once per frame.
     void Update()
     {
         // Player shooting.
-        if (Input.GetButtonDown("Fire1") && currentAmmo != 0)
+        if (Input.GetButtonDown("Fire1"))
         {
-            StartCoroutine(Shoot());
+            Shoot();
         }
 
         // Player movement.
@@ -158,11 +166,10 @@ public class Player : Agent
         //wait for animation to end then show gameover screen
     }
 
-
     /// <summary>
     /// Alters the <c>Player</c> currernt ammo. 
     /// </summary>
-    /// <param name="delta"></param>
+    /// <param name="delta">Amount to change by. </param>
     public void ChangeAmmoAmount(int delta)
     {
         currentAmmo += delta;
@@ -182,19 +189,6 @@ public class Player : Agent
         StartCoroutine(AnimateDeltaText(deltaString, ammoDeltaInfo.transform.position, Vector3.up * 12, ammoDeltaInfo.color, 2, ammoDeltaInfo.transform.parent));
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public override void ResetStats()
-    {
-        base.ResetStats();
-        isDead = false;
-        currentAmmo = maxAmmo;
-        gameObject.transform.position = playerSpawnPosition;
-
-        ChangeHpAmount(0);
-        ChangeAmmoAmount(0);
-    }
 
     /// <summary>
     /// Instantiates a new text object and animates its color and position.
@@ -230,22 +224,13 @@ public class Player : Agent
         Destroy(text.gameObject);
     }
 
-    /// <summary>
-    /// decreases the ammo count and emits a raycast to hit or miss the zombie
-    /// </summary>
-    /// <returns>flashes the laser travel line</returns>
-    IEnumerator Shoot()
+    public void Shoot()
     {
-        //Try to seperate logic and animation
+        if (currentAmmo <= 0)
+            return;
+
         ChangeAmmoAmount(-1);
-
         RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right, Mathf.Infinity, blockingLayerMask);
-        lineRenderer.SetPosition(0, firePoint.position);
-
-        animator.SetTrigger("Shooting");
-        attackSFX.Play();
-        StartCoroutine(MainCamera.instance.ShakeCamera(0.02f, 0.03f));
-
         if (hitInfo)
         {
             //Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
@@ -253,13 +238,29 @@ public class Player : Agent
             //{
             //    enemy.ChangeHpAmount(-playerDamage);
             //}
-            lineRenderer.SetPosition(1, hitInfo.point);
+            StartCoroutine(ShootAnim(hitInfo.point));
         }
         else
         {
-            lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
+            StartCoroutine(ShootAnim(firePoint.position + firePoint.right * 100));
         }
+    }
 
+    /// <summary>
+    /// decreases the ammo count and emits a raycast to hit or miss the zombie
+    /// </summary>
+    /// <param name="hitInfo"> Information regarding the thing it hit</param>
+    IEnumerator ShootAnim(Vector3 endPosition)
+    {
+        if (attackSFX != null)
+            attackSFX.Play();
+
+        StartCoroutine(MainCamera.instance.ShakeCamera(0.02f, 0.03f));
+
+        lineRenderer.SetPosition(0, firePoint.position);
+        lineRenderer.SetPosition(1, endPosition);
+
+        animator.SetTrigger("Shooting");
         lineRenderer.enabled = true;
 
         yield return new WaitForSeconds(0.02f);
@@ -273,4 +274,3 @@ public class Player : Agent
         yield return new WaitForSeconds(1.5f);
     }
 }
-

@@ -22,9 +22,6 @@ namespace Completed
         /// <param name="agent">The agent interact with this. </param>
         public void Interact(Agent agent)
         {
-            if (!CanInteract(agent))
-                return;
-
             agent.ChangeHpAmount(-agent.currentHp);
 
             // Ideally, player should have flags for death (aka it knows what kills/damage it)

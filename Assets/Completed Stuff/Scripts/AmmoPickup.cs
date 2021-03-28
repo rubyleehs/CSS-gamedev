@@ -29,9 +29,6 @@ namespace Completed
         /// <param name="agent">The <c>Agent</c> to give ammo to.</param>
         public void Interact(Agent agent)
         {
-            if (!CanInteract(agent))
-                return;
-
             if (agent is Player)
             {
                 Player player = (Player)agent;
