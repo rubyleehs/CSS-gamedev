@@ -37,23 +37,20 @@ namespace Completed
         /// <param name="direction"> Direction in move in. </param>
         public virtual bool Move(Vector2Int direction)
         {
-            if (direction == Vector2Int.zero)
-                return false;
-
-            Face(direction);
-
             lock (moveLock)
             {
-                if (CanMove(direction))
-                {
-                    transform.position += new Vector3Int(direction.x, direction.y, 0);
+                if (direction == Vector2Int.zero)
+                return false;
 
-                    if (moveSFX != null)
-                        moveSFX.Play();
-                    return true;
-                }
-            }
-            return false;
+                Face(direction);
+            
+                transform.position += new Vector3Int(direction.x, direction.y, 0);
+
+                if (moveSFX != null)
+                    moveSFX.Play();
+
+                return true;
+            } 
         }
 
         /// <summary>
@@ -63,19 +60,22 @@ namespace Completed
         /// <returns> If <c>Agent</c> is able to move in given direction in currenct conditions. </returns>
         protected virtual bool CanMove(Vector2Int direction)
         {
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, direction.magnitude, blockingLayerMask);
-
-            if (hits.Length > 0)
+            lock (moveLock)
             {
-                for (int x = 0; x < hits.Length; x++)
+                RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, direction.magnitude, blockingLayerMask);
+
+                if (hits.Length > 0)
                 {
-                    if (hits[x].transform != this.transform)
+                    for (int x = 0; x < hits.Length; x++)
                     {
-                        return false;
+                        if (hits[x].transform != this.transform)
+                        {
+                            return false;
+                        }
                     }
                 }
+                return true;
             }
-            return true;           
         }
 
         /// <summary>
