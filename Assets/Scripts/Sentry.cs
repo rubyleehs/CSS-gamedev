@@ -23,8 +23,6 @@ using UnityEngine;
         /// <returns> If this is able to attack the target under current conditions. </returns>
         public override bool CanAttack(Agent target)
         {
-            // TODO: ensure that the player is within the shooting range of the sentry.
-            // HINT: an attackRadius (float) is provided
             return (Vector2.Distance(target.transform.position, this.transform.position) < attackRadius);
         }
 
