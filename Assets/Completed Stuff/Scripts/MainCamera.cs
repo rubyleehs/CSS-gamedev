@@ -7,7 +7,6 @@ namespace Completed
     public class MainCamera : MonoBehaviour
     {
         public static MainCamera instance;
-        private Transform camTransform;
         private IEnumerator camShakeIEnum;
 
         public float playerTresholdFromCenter = -2;
@@ -19,25 +18,22 @@ namespace Completed
 
         void Awake()
         {
+            // Singleton Design Pattern.
             if (instance == null)
-            {
-                instance = this;
-                camTransform = this.transform;
-            }
+                instance = this; 
             else
-            {
                 Destroy(this);
-            }
         }
 
         private void Update()
         {
-            transform.position += Vector3.up * baseMoveCreepSpeed * GameManager.instance.difficultyLevel * Time.deltaTime;
-
+            // Smoothly speed up the camera movement if player is moving fast / current position is high up on the screen.
             if (transform.position.y < Player.instance.transform.position.y + playerTresholdFromCenter)
                 transform.position = new Vector3(transform.position.x,
                     Mathf.Lerp(transform.position.y, Player.instance.transform.position.y + playerTresholdFromCenter, Time.deltaTime * moveLerpSpeed),
                     transform.position.z);
+
+            transform.position += Vector3.up * baseMoveCreepSpeed * GameManager.instance.difficultyLevel * Time.deltaTime;
         }
 
         /// <summary>
@@ -47,16 +43,16 @@ namespace Completed
         /// <param name="magnitude"> Magnitude of the shake in local space. </param>
         public IEnumerator ShakeCamera(float duration, float magnitude = 0.7f)
         {
-            originalPos = camTransform.localPosition;
+            originalPos = transform.localPosition;
             while (duration > 0)
             {
-                camTransform.localPosition = originalPos + Random.insideUnitSphere * magnitude;
+                transform.localPosition = originalPos + Random.insideUnitSphere * magnitude;
 
                 duration -= Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
 
-            camTransform.localPosition = originalPos;
+            transform.localPosition = originalPos;
         }
     }
 }

@@ -19,7 +19,7 @@ public abstract class Agent : MonoBehaviour
     public LayerMask blockingLayerMask;
 
 
-    // This is called before the first frame update.
+    // Start() is called before the first frame update.
     protected virtual void Start()
     {
         // Setup stuff. 
@@ -42,19 +42,18 @@ public abstract class Agent : MonoBehaviour
     /// <returns> If <c>Agent</c> was sucessful in moving in given direction </returns>
     public virtual bool Move(Vector2Int direction)
     {
-        // TODO: Immediately return false if direction given is stationary/zero.
-        // Can create a new zero vector with: new Vector2Int(0,0) 
-        // Or use Vector2Int.zero
-
-        // TODO: Face the direction we are moving in by calling Face(direction)
-
         lock (moveLock)
         {
-            // TODO: Check if we can move in the direction with CanMove(direction)
-            // TODO: If so, move the transform the the new position. If moveSFX is given, play it too.
-            // Remember to return true if the move was sucessful.
-        }
-        return false;
+            // TODO: Immediately return false if direction given is stationary/zero.
+            // HINT: Can create a new zero vector with: new Vector2Int(0,0) or use Vector2Int.zero
+
+            // TODO: Face the direction we are moving in by calling Face(direction)
+
+            // TODO: Move the transform to the new position. 
+            // TODO: If moveSFX is given, play it.
+
+            return true;
+        }        
     }
 
     /// <summary>
@@ -64,16 +63,20 @@ public abstract class Agent : MonoBehaviour
     /// <returns> If <c>Agent</c> is able to move in given direction in currenct conditions. </returns>
     protected virtual bool CanMove(Vector2Int direction)
     {
-        // We want to check if we can move in a particular direction.
-        // If there is an obstacle in our way, this should return false. Otherwise, true.
-        // An easy way to do so is to litterally check if there is an obstacle by firing a Ray and see if it collides with anything.
-        // TODO: Uncomment out the following line below.
-        // RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, direction.magnitude, blockingLayerMask);
+        lock (moveLock)
+        {
+            // We want to check if we can move in a particular direction.
+            // If there is an obstacle in our way, this should return false. Otherwise, true.
+            // An easy way to do so is to litterally check if there is an obstacle by firing a Ray and see if it collides with anything.
 
-        // TODO: Check if the ray has hit something other than itself. If so, return false.
-        // HINT: RaycastHit2D has a field called 'transform' that contains a reference to the transform the ray hit.
+            // TODO: Uncomment out the following line below.
+            // RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, direction.magnitude, blockingLayerMask);
 
-        return true;        
+            // TODO: Check if the ray has hit something other than itself. If so, return false.
+            // HINT: RaycastHit2D has a field called 'transform' that contains a reference to the transform the ray hit.
+
+            return true;
+        }            
     }
 
     /// <summary>

@@ -41,6 +41,8 @@ public class Player : Agent
     [HideInInspector]
     public bool isDead = false;
 
+    // Awake() is called before Start(), while the script instance is being loaded.
+    // Normally used to initalize values.
     private void Awake()
     {
         // Singleton design pattern.
@@ -56,11 +58,11 @@ public class Player : Agent
     /// </summary>
     public override void ResetStats()
     {
-        base.ResetStats();
-        isDead = false;
-        currentAmmo = maxAmmo;
-        gameObject.transform.position = playerSpawnPosition;
+        // TODO: call base.ResetStats() to the stuff from Agent will also execute.
 
+        // TODO: set isDead to false, max out currentAmmo and set the player position to playerSpawnPosition.
+
+        // Call the methods below with no change so that UI and stuff will properly reflect any changes made above.
         ChangeHpAmount(0);
         ChangeAmmoAmount(0);
     }
@@ -68,20 +70,26 @@ public class Player : Agent
     // Update is called once per frame.
     void Update()
     {
-        // Player shooting.
-        if (Input.GetButtonDown("Fire1"))
-        {
-            Shoot();
-        }
+        // TODO: If player isDead, return immediately.
 
-        // Player movement.
-        Vector2Int curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
-        Move(curInputDir);
+        // Player Attack.
+        // TODO: Make the player Shoot() if the left mouse button is pressed.
+        // HINT: Unity has an input system that allows you to cofigure key mappings. The LMB is mapped to "Fire1"
+        // HINT: Input.GetButtonDown("TheButtonName")
 
+        // Player Movement.
+        // TODO: Get the direction the player want to move in.
+        // HINT: Input.GetAxisRaw("Horizontal")
+
+        // TODO: Process the direction so its a Vector2Int Up/Down/Left/Right.
+        // HINT: While keyboards buttons only have 2 distinct states - pressed(1) or not pressed(0), joysticks/other controllers may have more/be continuous.
+        // HINT: if (curentInputDirection.y > 0.5f) moveDirection = Vector2Int.up;
+
+        // TODO: Check if it CanMove() in the processed direction. If so, pass it to Move().
+
+        // Kills the player if the player is below the camera by killZoneHeightFromCam
         if (transform.position.y < MainCamera.instance.transform.position.y + killzoneHeightFromCam)
-        {
-            Die();
-        }
+            Die();        
     }
 
 
@@ -91,20 +99,10 @@ public class Player : Agent
     /// <param name="direction"> Direction to move. </param>
     public override bool Move(Vector2Int direction)
     {
-        Vector2Int moveDir = Vector2Int.zero;
-
-        if (direction.y > 0)
-            moveDir = Vector2Int.up;
-        else if (direction.y < 0)
-            moveDir = Vector2Int.down;
-        if (direction.x > 0)
-            moveDir = Vector2Int.right;
-        else if (direction.x < 0)
-            moveDir = Vector2Int.left;
-
-        if (base.Move(moveDir))
+        if (base.Move(direction))
         {
-            lastMoveTime = Time.time;
+            // TODO: The player have sucessfully moved, set lastMoveTime to the current time with Time.time
+
             return true;
         }
         return false;
@@ -117,12 +115,28 @@ public class Player : Agent
     /// <returns> If this is able to move in the given direction. </returns>
     protected override bool CanMove(Vector2Int direction)
     {
-        if (isDead)
-            return false;
-        //Can hold and move slower or press fast move faster
-        if (Time.time - lastMoveTime >= moveWaitTime)
-            return base.CanMove(direction);
-        return false;
+        // TODO: Return false if the player isDead or if lastMoveTime is less than moveWaitTime.
+
+        return base.CanMove(direction);
+    }
+
+    public void Shoot()
+    {
+        // TODO: Check if currentAmmo is less than or equal 0. If so, play noAmmoSFX if it exist before returning.
+        // TODO: Otherwise use up an ammo by calling ChangeAmmoAmount()
+
+        RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right, Mathf.Infinity, blockingLayerMask);
+        if (hitInfo)
+        {
+            // TODO: Check if the ray have hit an Enemy, if so deal damage to it equivalent to playerDamage with enemy.ChangeHpAmount()
+            // HINT: Get the transform of the hit, then GetComponent<Enemy>() which will either return an Enemy or null
+            //Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
+
+
+            StartCoroutine(ShootAnim(hitInfo.point));
+        }
+        else
+            StartCoroutine(ShootAnim(firePoint.position + firePoint.right * 100));
     }
 
     /// <summary>
@@ -132,16 +146,15 @@ public class Player : Agent
     public override void ChangeHpAmount(int delta)
     {
         base.ChangeHpAmount(delta);
-        healthText.text = "Health: " + currentHp;
+
+        //TODO: Update healthText.text with the current hp.
 
         string deltaString = "";
-
         if (delta > 0)
         {
             deltaString = "+" + delta;
-            healSFX.Play(); // This can also be on the health pickup itself, would depend on your sound design
+            healSFX.Play();
         }
-
         else if (delta < 0)
         {
             deltaString = "" + delta;
@@ -150,20 +163,7 @@ public class Player : Agent
             StartCoroutine(MainCamera.instance.ShakeCamera(0.04f, 0.1f));
         }
 
-        StartCoroutine(AnimateDeltaText(deltaString, healthDeltaInfo.transform.position, Vector3.up * 12, healthDeltaInfo.color, 2, healthDeltaInfo.transform.parent));
-    }
-
-    /// <summary>
-    /// Initiates the stuff necessary for the Game Over screen.
-    /// </summary>
-    public override void Die()
-    {
-        // Overriden so player dont get destroyed
-        StartCoroutine(DyingAnimation());
-
-        isDead = true;
-        //Show die animation
-        //wait for animation to end then show gameover screen
+        StartCoroutine(DeltaTextAnim(deltaString, healthDeltaInfo.transform.position, Vector3.up * 12, healthDeltaInfo.color, 2, healthDeltaInfo.transform.parent));
     }
 
     /// <summary>
@@ -172,8 +172,10 @@ public class Player : Agent
     /// <param name="delta">Amount to change by. </param>
     public void ChangeAmmoAmount(int delta)
     {
-        currentAmmo += delta;
-        currentAmmo = Mathf.Min(currentAmmo, maxAmmo);
+        // TODO: Change currentAmmo by delta amount, Make sure it is capped by maxAmmo.
+        // HINT: You have done this for health in the Agent class!
+
+        // Update ammoText.text with currentAmmo
         ammoText.text = "Ammo: " + currentAmmo;
 
         string deltaString = "";
@@ -181,12 +183,23 @@ public class Player : Agent
         if (delta > 0)
         {
             deltaString = "+" + delta;
-            reloadSFX.Play(); // This can also be on the ammo pickup itself, would depend on your sound design
+            reloadSFX.Play();
         }
         else if (delta < 0)
             deltaString = "" + delta;
 
-        StartCoroutine(AnimateDeltaText(deltaString, ammoDeltaInfo.transform.position, Vector3.up * 12, ammoDeltaInfo.color, 2, ammoDeltaInfo.transform.parent));
+        StartCoroutine(DeltaTextAnim(deltaString, ammoDeltaInfo.transform.position, Vector3.up * 12, ammoDeltaInfo.color, 2, ammoDeltaInfo.transform.parent));
+    }
+
+    /// <summary>
+    /// Initiates the stuff necessary for the Game Over screen.
+    /// </summary>
+    public override void Die()
+    {
+        // We do NOT call base.Die() coz we dont want the player to get destoyed after dying.
+        
+        // TODO: Set isDead to true.
+        // TODO: Start the Coroutine for DeathAnim()
     }
 
 
@@ -200,13 +213,12 @@ public class Player : Agent
     /// <param name="startColor">Starting text color.</param>
     /// <param name="duration">How long the animation should take.</param>
     /// <param name="parent">Parent Transform to temporarily hold the text object</param>
-    IEnumerator AnimateDeltaText(string s, Vector3 startPosition, Vector3 deltaPosition, Color startColor, float duration, Transform parent)
+    IEnumerator DeltaTextAnim(string s, Vector3 startPosition, Vector3 deltaPosition, Color startColor, float duration, Transform parent)
     {
         Text text = Instantiate(statDeltaTextGO, startPosition, Quaternion.identity, parent).GetComponent<Text>();
 
         text.text = s;
         text.color = startColor;
-
 
         float startTime = Time.time;
         float progress = 0;
@@ -222,28 +234,6 @@ public class Player : Agent
         }
 
         Destroy(text.gameObject);
-    }
-
-    public void Shoot()
-    {
-        if (currentAmmo <= 0)
-            return;
-
-        ChangeAmmoAmount(-1);
-        RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right, Mathf.Infinity, blockingLayerMask);
-        if (hitInfo)
-        {
-            //Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
-            //if (enemy != null)
-            //{
-            //    enemy.ChangeHpAmount(-playerDamage);
-            //}
-            StartCoroutine(ShootAnim(hitInfo.point));
-        }
-        else
-        {
-            StartCoroutine(ShootAnim(firePoint.position + firePoint.right * 100));
-        }
     }
 
     /// <summary>
@@ -268,9 +258,14 @@ public class Player : Agent
         lineRenderer.enabled = false;
     }
 
-    IEnumerator DyingAnimation()
+    IEnumerator DieAnim()
     {
         animator.SetTrigger("Dead");
+
+        // Wait for a bit before showing gameover screen
         yield return new WaitForSeconds(1.5f);
+
+        // TODO: Uncomment out the following line
+        // GameManager.instance.InitGameOver();
     }
 }

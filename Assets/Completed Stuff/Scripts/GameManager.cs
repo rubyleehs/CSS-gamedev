@@ -84,9 +84,8 @@ namespace Completed
         /// <summary>
         /// Displays game over screen and deletes level.
         /// </summary>
-        private void InitGameOver()
+        public void InitGameOver()
         {
-
             // Destroys the level
             levelGen.DestroyLevel();
 
@@ -141,13 +140,6 @@ namespace Completed
         /// </summary>
         private void Play()
         {
-
-            // Game Over if player HP is less than 0
-            if (player.isDead)
-            {
-                InitGameOver();
-            }
-
             // Generates new chunks ahead of the camera
             if (levelGen.chunkCount * levelGen.CHUNK_ROWS < camera.position.y + levelGen.CHUNK_ROWS)
             {

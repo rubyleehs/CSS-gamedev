@@ -36,6 +36,7 @@ namespace Completed
         public float statChangeAnimationDuration = 2;
 
         public AudioSource healSFX;
+        public AudioSource noAmmoSFX;
         public AudioSource reloadSFX;
 
         public float killzoneHeightFromCam = -8;
@@ -70,15 +71,30 @@ namespace Completed
         // Update is called once per frame.
         void Update()
         {
+            if (isDead)
+                return;
+
             // Player shooting.
             if (Input.GetButtonDown("Fire1"))
-            {
                 Shoot();
-            }
+            
 
             // Player movement.
-            Vector2Int curInputDir = new Vector2Int((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
-            Move(curInputDir);
+            Vector2 curInputDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            Vector2Int moveDir = Vector2Int.zero;
+
+            if (curInputDir.y > 0.5f)
+                moveDir = Vector2Int.up;
+            else if (curInputDir.y < -0.5f)
+                moveDir = Vector2Int.down;
+
+            if (curInputDir.x > 0.5f)
+                moveDir = Vector2Int.right;
+            else if (curInputDir.x < -0.5f)
+                moveDir = Vector2Int.left;
+
+            if(CanMove(moveDir))
+                Move(moveDir);
 
             if (transform.position.y < MainCamera.instance.transform.position.y + killzoneHeightFromCam)
             {
@@ -93,18 +109,7 @@ namespace Completed
         /// <param name="direction"> Direction to move. </param>
         public override bool Move(Vector2Int direction)
         {
-            Vector2Int moveDir = Vector2Int.zero;
-
-            if (direction.y > 0)
-                moveDir = Vector2Int.up;
-            else if (direction.y < 0)
-                moveDir = Vector2Int.down;
-            if (direction.x > 0)
-                moveDir = Vector2Int.right;
-            else if (direction.x < 0)
-                moveDir = Vector2Int.left;
-
-            if (base.Move(moveDir))
+            if (base.Move(direction))
             {
                 lastMoveTime = Time.time;
                 return true;
@@ -119,12 +124,37 @@ namespace Completed
         /// <returns> If this is able to move in the given direction. </returns>
         protected override bool CanMove(Vector2Int direction)
         {
-            if (isDead)
+            if (isDead || Time.time - lastMoveTime < moveWaitTime)
                 return false;
-            //Can hold and move slower or press fast move faster
-            if (Time.time - lastMoveTime >= moveWaitTime)
-                return base.CanMove(direction);
-            return false;
+
+
+            return base.CanMove(direction);
+        }
+
+        public void Shoot()
+        {
+            if (currentAmmo <= 0)
+            {
+                if (noAmmoSFX != null)
+                    noAmmoSFX.Play();
+                return;
+            }
+
+            ChangeAmmoAmount(-1);
+            RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right, Mathf.Infinity, blockingLayerMask);
+            if (hitInfo)
+            {
+                Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
+                if (enemy != null)
+                {
+                    enemy.ChangeHpAmount(-playerDamage);
+                }
+                StartCoroutine(ShootAnim(hitInfo.point));
+            }
+            else
+            {
+                StartCoroutine(ShootAnim(firePoint.position + firePoint.right * 100));
+            }
         }
 
         /// <summary>
@@ -152,20 +182,16 @@ namespace Completed
                 StartCoroutine(MainCamera.instance.ShakeCamera(0.04f, 0.1f));
             }
 
-            StartCoroutine(AnimateDeltaText(deltaString, healthDeltaInfo.transform.position, Vector3.up * 12, healthDeltaInfo.color, 2, healthDeltaInfo.transform.parent));
+            StartCoroutine(DeltaTextAnim(deltaString, healthDeltaInfo.transform.position, Vector3.up * 12, healthDeltaInfo.color, 2, healthDeltaInfo.transform.parent));
         }
 
         /// <summary>
-        /// Initiates the stuff necessary for the Game Over screen.
+        /// Makes the player die, prepare for game over screen.
         /// </summary>
         public override void Die()
         {
-            // Overriden so player dont get destroyed
-            StartCoroutine(DyingAnimation());
-
             isDead = true;
-            //Show die animation
-            //wait for animation to end then show gameover screen
+            StartCoroutine(DieAnim());
         }
 
         /// <summary>
@@ -188,7 +214,7 @@ namespace Completed
             else if (delta < 0)
                 deltaString = "" + delta;
 
-            StartCoroutine(AnimateDeltaText(deltaString, ammoDeltaInfo.transform.position, Vector3.up * 12, ammoDeltaInfo.color, 2, ammoDeltaInfo.transform.parent));
+            StartCoroutine(DeltaTextAnim(deltaString, ammoDeltaInfo.transform.position, Vector3.up * 12, ammoDeltaInfo.color, 2, ammoDeltaInfo.transform.parent));
         }
 
 
@@ -202,7 +228,7 @@ namespace Completed
         /// <param name="startColor">Starting text color.</param>
         /// <param name="duration">How long the animation should take.</param>
         /// <param name="parent">Parent Transform to temporarily hold the text object</param>
-        IEnumerator AnimateDeltaText(string s, Vector3 startPosition, Vector3 deltaPosition, Color startColor, float duration, Transform parent)
+        IEnumerator DeltaTextAnim(string s, Vector3 startPosition, Vector3 deltaPosition, Color startColor, float duration, Transform parent)
         {
             Text text = Instantiate(statDeltaTextGO, startPosition, Quaternion.identity, parent).GetComponent<Text>();
 
@@ -224,28 +250,6 @@ namespace Completed
             }
 
             Destroy(text.gameObject);
-        }
-
-        public void Shoot()
-        {
-            if (currentAmmo <= 0)
-                return;
-
-            ChangeAmmoAmount(-1);
-            RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right, Mathf.Infinity, blockingLayerMask);
-            if (hitInfo)
-            {
-                Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
-                if (enemy != null)
-                {
-                    enemy.ChangeHpAmount(-playerDamage);
-                }
-                StartCoroutine(ShootAnim(hitInfo.point));
-            }
-            else
-            {
-                StartCoroutine(ShootAnim(firePoint.position + firePoint.right * 100));
-            }            
         }
 
         /// <summary>
@@ -270,10 +274,12 @@ namespace Completed
             lineRenderer.enabled = false;
         }
 
-        IEnumerator DyingAnimation()
+        IEnumerator DieAnim()
         {
             animator.SetTrigger("Dead");
+            // Wait for a bit before showing gameover screen
             yield return new WaitForSeconds(1.5f);
+            GameManager.instance.InitGameOver();
         }
     }
 }
