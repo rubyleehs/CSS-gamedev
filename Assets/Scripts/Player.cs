@@ -26,14 +26,13 @@ public class Player : Agent
 
     [HideInInspector]
     public Animator animator;
-    private Vector2Int prevMoveDir = new Vector2Int(0, 0);
 
     private float lastMoveTime;
-    private Vector2Int lastMoveDir;
     public float moveWaitTime = .3f;
     public float statChangeAnimationDuration = 2;
 
     public AudioSource healSFX;
+    public AudioSource noAmmoSFX;
     public AudioSource reloadSFX;
 
     public float killzoneHeightFromCam = -8;
@@ -59,8 +58,12 @@ public class Player : Agent
     public override void ResetStats()
     {
         // TODO: call base.ResetStats() to the stuff from Agent will also execute.
+        base.ResetStats();
 
         // TODO: set isDead to false, max out currentAmmo and set the player position to playerSpawnPosition.
+        isDead = false;
+        transform.position = playerSpawnPosition;
+        currentAmmo = maxAmmo;
 
         // Call the methods below with no change so that UI and stuff will properly reflect any changes made above.
         ChangeHpAmount(0);
@@ -71,21 +74,42 @@ public class Player : Agent
     void Update()
     {
         // TODO: If player isDead, return immediately.
+        if (isDead)
+            return;
 
         // Player Attack.
         // TODO: Make the player Shoot() if the left mouse button is pressed.
         // HINT: Unity has an input system that allows you to cofigure key mappings. The LMB is mapped to "Fire1"
         // HINT: Input.GetButtonDown("TheButtonName")
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Shoot();
+        }
 
         // Player Movement.
         // TODO: Get the direction the player want to move in.
         // HINT: Input.GetAxisRaw("Horizontal")
+        Vector2 inputDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         // TODO: Process the direction so its a Vector2Int Up/Down/Left/Right.
         // HINT: While keyboards buttons only have 2 distinct states - pressed(1) or not pressed(0), joysticks/other controllers may have more/be continuous.
         // HINT: if (curentInputDirection.y > 0.5f) moveDirection = Vector2Int.up;
+        Vector2Int moveDir = Vector2Int.zero;
+
+        if (inputDir.y > 0.5f)
+            moveDir = Vector2Int.up;
+        else if (inputDir.y < -0.5f)
+            moveDir = Vector2Int.down;
+
+        if (inputDir.x > 0.5f)
+            moveDir = Vector2Int.right;
+        else if (inputDir.x < -0.5f)
+            moveDir = Vector2Int.left;
 
         // TODO: Check if it CanMove() in the processed direction. If so, pass it to Move().
+
+        if (CanMove(moveDir))
+            Move(moveDir);
 
         // Kills the player if the player is below the camera by killZoneHeightFromCam
         if (transform.position.y < MainCamera.instance.transform.position.y + killzoneHeightFromCam)
@@ -102,6 +126,7 @@ public class Player : Agent
         if (base.Move(direction))
         {
             // TODO: The player have sucessfully moved, set lastMoveTime to the current time with Time.time
+            lastMoveTime = Time.time;
 
             return true;
         }
@@ -116,6 +141,11 @@ public class Player : Agent
     protected override bool CanMove(Vector2Int direction)
     {
         // TODO: Return false if the player isDead or if lastMoveTime is less than moveWaitTime.
+        if (isDead)
+            return false;
+
+        if (Time.time - lastMoveTime < moveWaitTime)
+            return false;
 
         return base.CanMove(direction);
     }
@@ -124,14 +154,24 @@ public class Player : Agent
     {
         // TODO: Check if currentAmmo is less than or equal 0. If so, play noAmmoSFX if it exist before returning.
         // TODO: Otherwise use up an ammo by calling ChangeAmmoAmount()
+        if(currentAmmo <= 0)
+        {
+            if (noAmmoSFX != null)
+                noAmmoSFX.Play();
+
+            return;
+        }
 
         RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right, Mathf.Infinity, blockingLayerMask);
         if (hitInfo)
         {
             // TODO: Check if the ray have hit an Enemy, if so deal damage to it equivalent to playerDamage with enemy.ChangeHpAmount()
             // HINT: Get the transform of the hit, then GetComponent<Enemy>() which will either return an Enemy or null
-            //Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
-
+            Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
+            if(enemy != null)
+            {
+                enemy.ChangeHpAmount(-playerDamage);
+            }
 
             StartCoroutine(ShootAnim(hitInfo.point));
         }
@@ -148,6 +188,7 @@ public class Player : Agent
         base.ChangeHpAmount(delta);
 
         //TODO: Update healthText.text with the current hp.
+        healthText.text = "Health: " + currentHp;
 
         string deltaString = "";
         if (delta > 0)
@@ -174,6 +215,8 @@ public class Player : Agent
     {
         // TODO: Change currentAmmo by delta amount, Make sure it is capped by maxAmmo.
         // HINT: You have done this for health in the Agent class!
+        currentAmmo += delta;
+        currentAmmo = Mathf.Min(currentAmmo, maxAmmo);
 
         // Update ammoText.text with currentAmmo
         ammoText.text = "Ammo: " + currentAmmo;
@@ -197,9 +240,11 @@ public class Player : Agent
     public override void Die()
     {
         // We do NOT call base.Die() coz we dont want the player to get destoyed after dying.
-        
+
         // TODO: Set isDead to true.
         // TODO: Start the Coroutine for DeathAnim()
+        isDead = true;
+        StartCoroutine(DieAnim());
     }
 
 

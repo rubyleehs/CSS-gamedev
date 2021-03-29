@@ -34,7 +34,7 @@ public class MainCamera : MonoBehaviour
             // TODO: Implement it.
             // HINT: Mathf.Lerp(current, target, % to move by per frame)
             // HINT: May want to multiply by Time.delta time.
-
+            this.transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.x, Player.instance.transform.position.y + playerTresholdFromCenter,moveLerpSpeed * Time.deltaTime), transform.position.z);
         }
 
 
