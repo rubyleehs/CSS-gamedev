@@ -14,12 +14,11 @@ using UnityEngine;
         /// <returns> If the <c>Agent</c> is able to interact with this. </returns>
         public bool CanInteract(Agent agent)
         {
-        //TODO: If agent IS NOT a Player, return false.
-        return false;
-        //TODO: Otherwise, agent is player
-        //HINT: Use (Player)agent
-        //return (player.currentAmmo < player.maxAmmo);
+            //TODO: If agent IS NOT a Player, return false.
+            //TODO: Otherwise, agent is player
+            //HINT: Use (Player)agent
 
+            return (player.currentAmmo < player.maxAmmo);
         }
 
         /// <summary>

@@ -16,12 +16,11 @@ using UnityEngine;
 
         public bool CanInteract(Agent agent) 
         {
-        //TODO: If agent IS NOT a Player, return false.
-        return false;
-        //TODO: Otherwise, agent is player
-        //HINT: Use (Player)agent
-        //return (player.currentHp < player.maxHp);
-    }
+            //TODO: If agent IS NOT a Player, return false.
+            //TODO: Otherwise, agent is player
+            //HINT: Use (Player)agent
+            return (player.currentHp < player.maxHp);
+        }
 
         /// <summary>
         /// Changes the given <c>Player</c> health by <c>healthRestoreValue</c>.
