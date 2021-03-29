@@ -28,7 +28,7 @@ public abstract class Enemy : Agent
     void FixedUpdate()
     {
         // TODO: create a timer for the enemy to move and input all what it's going to do once the timer is over.
-        // HINT: remember instance in Player class and also you should be adding in the enemy facing direction (Face() which inherit from agent), and etc
+        // HINT: remember instance in Player class and also you should be adding in the enemy facing direction (Face() which inherit from agent), Attack(), and Move().
         
     }
 
