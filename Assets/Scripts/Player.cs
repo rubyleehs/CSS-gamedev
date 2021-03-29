@@ -26,10 +26,8 @@ public class Player : Agent
 
     [HideInInspector]
     public Animator animator;
-    private Vector2Int prevMoveDir = new Vector2Int(0, 0);
 
     private float lastMoveTime;
-    private Vector2Int lastMoveDir;
     public float moveWaitTime = .3f;
     public float statChangeAnimationDuration = 2;
 
@@ -78,12 +76,23 @@ public class Player : Agent
         // HINT: Input.GetButtonDown("TheButtonName")
 
         // Player Movement.
-        // TODO: Get the direction the player want to move in.
-        // HINT: Input.GetAxisRaw("Horizontal")
+        // Get the direction the player want to move in by uncommenting out the line below
+        Vector2 curInputDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        // TODO: Process the direction so its a Vector2Int Up/Down/Left/Right.
-        // HINT: While keyboards buttons only have 2 distinct states - pressed(1) or not pressed(0), joysticks/other controllers may have more/be continuous.
-        // HINT: if (curentInputDirection.y > 0.5f) moveDirection = Vector2Int.up;
+
+        // While keyboards buttons only have 2 distinct states - pressed(1) or not pressed(0), joysticks/other controllers may have more/be continuous.
+        Vector2Int moveDir = Vector2Int.zero;
+
+        if (curInputDir.y > 0.5f)
+            moveDir = Vector2Int.up;
+        else if (curInputDir.y < -0.5f)
+            moveDir = Vector2Int.down;
+
+        if (curInputDir.x > 0.5f)
+            moveDir = Vector2Int.right;
+        else if (curInputDir.x < -0.5f)
+            moveDir = Vector2Int.left;
+
 
         // TODO: Check if it CanMove() in the processed direction. If so, pass it to Move().
 
@@ -172,10 +181,9 @@ public class Player : Agent
     /// <param name="delta">Amount to change by. </param>
     public void ChangeAmmoAmount(int delta)
     {
-        // TODO: Change currentAmmo by delta amount, Make sure it is capped by maxAmmo.
-        // HINT: You have done this for health in the Agent class!
+        currentAmmo += delta;
+        currentAmmo = Mathf.Min(currentAmmo, maxAmmo);
 
-        // Update ammoText.text with currentAmmo
         ammoText.text = "Ammo: " + currentAmmo;
 
         string deltaString = "";
@@ -199,7 +207,7 @@ public class Player : Agent
         // We do NOT call base.Die() coz we dont want the player to get destoyed after dying.
         
         // TODO: Set isDead to true.
-        // TODO: Start the Coroutine for DeathAnim()
+        // TODO: Start the Coroutine for DieAnim()
     }
 
 

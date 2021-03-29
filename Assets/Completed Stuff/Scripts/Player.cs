@@ -28,10 +28,8 @@ namespace Completed
 
         [HideInInspector]
         public Animator animator;
-        private Vector2Int prevMoveDir = new Vector2Int(0, 0);
 
         private float lastMoveTime;
-        private Vector2Int lastMoveDir;
         public float moveWaitTime = .3f;
         public float statChangeAnimationDuration = 2;
 

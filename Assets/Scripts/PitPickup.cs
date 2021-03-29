@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-    / public class PitfallTrap : MonoBehaviour, IAgentInteractable
+    public class PitfallTrap : MonoBehaviour, IAgentInteractable
     {
         /// <summary>
         /// Always return true as all (currently implemented) agents should be able to fall into pitfall traps. 

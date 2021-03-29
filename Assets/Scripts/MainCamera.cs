@@ -31,15 +31,15 @@ public class MainCamera : MonoBehaviour
             // We do not want a flat increase - what if player somehow move faster than that?
             // Ideally, the further the camera is from the position we want it to be, the faster it should move.
             // A simple way to do so is just move the camera by a % of the difference between the target position and current position.
-            // TODO: Implement it.
-            // HINT: Mathf.Lerp(current, target, % to move by per frame)
-            // HINT: May want to multiply by Time.delta time.
 
+            if (transform.position.y < Player.instance.transform.position.y + playerTresholdFromCenter)
+                transform.position = new Vector3(transform.position.x,
+                    Mathf.Lerp(transform.position.y, Player.instance.transform.position.y + playerTresholdFromCenter, Time.deltaTime * moveLerpSpeed),
+                    transform.position.z);
         }
 
 
         // Make the camera creep upwards, speed dependant on current difficulty
-        // TODO: Uncomment out the follwoing line.
         // transform.position += Vector3.up * baseMoveCreepSpeed * GameManager.instance.difficultyLevel * Time.deltaTime;
     }
 

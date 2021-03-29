@@ -24,7 +24,8 @@ public abstract class Enemy : Agent
         base.Start();
         actionTimeRemaining = actionWaitPeriod;
     }
-
+    //Update is called once a frame. -> reliant on FPS.
+    //FixedUpdate -> not reliaint on FPS. called at fixed intervals.
     void FixedUpdate()
     {
         // TODO: create a timer for the enemy to move and input all what it's going to do once the timer is over.
@@ -57,11 +58,11 @@ public abstract class Enemy : Agent
     /// <returns>Vector2Int that represents which direction an Agent should face currently</returns>
     public Vector2Int CalculateFaceDirection(Agent target)
     {
-        List<Vector2Int> possibleDirectionsToMove = new List<Vector2Int>() { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };
+        List<Vector2Int> possibleDirectionsToFace = new List<Vector2Int>() { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };
         Vector2Int delta = new Vector2Int((int)(target.transform.position.x - transform.position.x), (int)(target.transform.position.y - transform.position.y));
-        possibleDirectionsToMove.Sort((v1, v2) => (delta - v1).sqrMagnitude.CompareTo((delta - v2).sqrMagnitude));
+        possibleDirectionsToFace.Sort((v1, v2) => (delta - v1).sqrMagnitude.CompareTo((delta - v2).sqrMagnitude));
 
-        return possibleDirectionsToMove[0];
+        return possibleDirectionsToFace[0];
     }
 
     /// <summary>

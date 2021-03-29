@@ -122,8 +122,12 @@ public abstract class Agent : MonoBehaviour
     /// <param name="other"> The collider of the object this collided with. </param>
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // TODO: Check if the thing this has collided with has a component that implements IAgentInteractable. If so, if it is able to interact with it, do so.
-        // HINT: thing.GetComponent<TheTypeYouAreLookingFor>() will return a component that thing has, or null if thing does not have said component.
+        IAgentInteractable agentInteractable = other.GetComponent<IAgentInteractable>();
+        if (agentInteractable != null)
+        {
+            if (agentInteractable.CanInteract(this))
+                agentInteractable.Interact(this);
+        }
     }
 }
 
