@@ -46,7 +46,7 @@ using UnityEngine;
         public override void ChangeHpAmount(int delta)
         {
             // TODO: most (possibly all) logic from the ChangeHpAmount is needed so determine if it should be 
-            //       called here. and also remember the actionTimeRemaining at Enemy class.
+            //       called here. when the sentry received damage it will then cause the current attack to end and cause reloading phase.
         }
 
         /// <summary>
