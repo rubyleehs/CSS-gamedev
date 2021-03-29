@@ -32,9 +32,8 @@ using UnityEngine;
         /// <param name="target"> Agent to attack </param>
         public override bool Attack(Agent target)
         {
-        // TODO: call the function AttackAnim with...
-        // HINT: remember during the Player class
-            StartCoroutine(AttackAnim());
+            // TODO: call the function AttackAnim with...
+            // HINT: remember during the Player class
             return true;
         }
 
@@ -44,14 +43,8 @@ using UnityEngine;
         /// <param name="delta"> Amount to change by. </param>
         public override void ChangeHpAmount(int delta)
         {
-        // TODO: most (possibly all) logic from the Agent.ChangeHpAmount is needed so determine if it should be 
-        //       called here. when the sentry received damage it will then cause the current attack to end and cause reloading phase.
-        base.ChangeHpAmount(delta);
-        if(delta < 0)
-        {
-            StopAllCoroutines();
-            actionTimeRemaining = 0;
-        }
+            // TODO: most (possibly all) logic from the Agent.ChangeHpAmount is needed so determine if it should be 
+            //       called here. when the sentry received damage it will then cause the current attack to end and cause reloading phase.
         }
 
         /// <summary>

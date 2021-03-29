@@ -30,25 +30,7 @@ public abstract class Enemy : Agent
     {
         // TODO: create a timer for the enemy to move and input all what it's going to do once the timer is over.
         // HINT: remember instance in Player class and also you should be adding in the enemy facing direction (Face() which inherit from agent), Attack(), if it can't attack face() and Move().
-        actionTimeRemaining = Time.deltaTime;
-        if(actionTimeRemaining <= 0)
-        {
-            Agent target = Player.instance;
-
-            if (CanAttack(target))
-            {
-                Face(CalculateFaceDirection(target));
-                Attack(target);
-            }
-            else
-            {
-                Vector2Int moveDir = CalculateMoveDirection(target);
-                Face(moveDir);
-                Move(moveDir);
-            }
-
-            actionTimeRemaining = actionWaitPeriod;
-        }
+        
     }
 
     /// <summary>
@@ -82,8 +64,6 @@ public abstract class Enemy : Agent
             }
         }
         // TODO: refer from CalculateFaceDirection() and try to extract what should be taken from the said function for this part to ensure the enemy is moving towards the player.
-        Vector2Int delta = new Vector2Int((int)(target.transform.position.x - transform.position.x), (int)(target.transform.position.y - transform.position.y));
-        possibleDirectionsToMove.Sort((v1, v2) => (delta - v1).sqrMagnitude.CompareTo((delta - v2).sqrMagnitude));
 
         if (possibleDirectionsToMove.Count == 0)
             return Vector2Int.zero;

@@ -26,7 +26,7 @@ namespace Completed
         public override bool CanAttack(Agent target)
         {
             //Can attack if player is adjacent
-            return Mathf.Abs((int)target.transform.position.x - (int)transform.position.x) + Mathf.Abs((int)target.transform.position.y - (int)transform.position.y) == 1;
+            return Mathf.Abs((int)target.transform.position.x - (int)transform.position.x) + Mathf.Abs((int)target.transform.position.y - (int)transform.position.y) <= 1;
         }
     }
 }
