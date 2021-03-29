@@ -81,37 +81,11 @@ namespace Completed
             // TODO: Decides how many pickups to spawn, this is a placeholder
             int pickupsToSpawn = 1;
 
-            // Generates positions for spawning enemies and pickups.
-            GenerateEntityPositions(enemiesToSpawn + pickupsToSpawn);
-
             // Spawns in enemies
-            for (int i = 0; i < enemiesToSpawn; i++)
-            {
-
-                Vector3 enemyPos = entityTiles[i];
-                GameObject spawnedEnemy = enemies[Random.Range(0, enemies.Length)];
-
-                enemyPos.y += (chunkCount * CHUNK_ROWS);
-
-                GameObject enemyInstance = Instantiate(spawnedEnemy, enemyPos, Quaternion.identity) as GameObject;
-
-                enemyInstance.transform.SetParent(entityList);
-
-            }
+            spawnEnemies(enemiesToSpawn, entityList);
 
             // Spawns in pickups
-            for (int i = enemiesToSpawn; i < entityTiles.Count; i++)
-            {
-
-                Vector3 pickupPos = entityTiles[i];
-                GameObject spawnedPickup = pickups[Random.Range(0, enemies.Length)];
-
-                pickupPos.y += (chunkCount * CHUNK_ROWS);
-
-                GameObject pickupInstance = Instantiate(spawnedPickup, pickupPos, Quaternion.identity) as GameObject;
-
-                pickupInstance.transform.SetParent(entityList);
-            }
+            spawnPickups(pickupsToSpawn, entityList);
 
             chunkCount++;
         }
@@ -182,6 +156,53 @@ namespace Completed
 
                 // Removes tile from pool
                 availableTiles.Remove(entitySpawnLocation);
+            }
+        }
+
+        /// <summary>
+        /// Spawns enemies into the current chunk.
+        /// </summary>
+        /// <param name="enemiesToSpawn">Number of enemies to spawn.</param>
+        /// <param name="entityList">Transform which is to parent the spawned Enemies.</param>
+        void spawnEnemies(int enemiesToSpawn, Transform entityList) {
+
+            // Generates positions for spawning enemies.
+            GenerateEntityPositions(enemiesToSpawn);
+
+            for (int i = 0; i < enemiesToSpawn; i++) {
+
+                Vector3 enemyPos = entityTiles[i];
+                GameObject spawnedEnemy = enemies[Random.Range(0, enemies.Length)];
+
+                enemyPos.y += (chunkCount * CHUNK_ROWS);
+
+                GameObject enemyInstance = Instantiate(spawnedEnemy, enemyPos, Quaternion.identity) as GameObject;
+
+                enemyInstance.transform.SetParent(entityList);
+
+            }
+        }
+
+        /// <summary>
+        /// Spawns pickups into a given chunk.
+        /// </summary>
+        /// <param name="pickupsToSpawn">Number of pickups to spawn.</param>
+        /// <param name="entityList">Transform which is to parent the spawned Pickups.</param>
+        void spawnPickups(int pickupsToSpawn, Transform entityList) {
+
+            // Generates positions for spawning enemies.
+            GenerateEntityPositions(pickupsToSpawn);
+
+            for (int i = 0; i < entityTiles.Count; i++) {
+
+                Vector3 pickupPos = entityTiles[i];
+                GameObject spawnedPickup = pickups[Random.Range(0, pickups.Length)];
+
+                pickupPos.y += (chunkCount * CHUNK_ROWS);
+
+                GameObject pickupInstance = Instantiate(spawnedPickup, pickupPos, Quaternion.identity) as GameObject;
+
+                pickupInstance.transform.SetParent(entityList);
             }
         }
     }
