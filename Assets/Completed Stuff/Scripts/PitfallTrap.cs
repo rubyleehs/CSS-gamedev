@@ -23,13 +23,6 @@ namespace Completed
         public void Interact(Agent agent)
         {
             agent.ChangeHpAmount(-agent.currentHp);
-
-            // Ideally, player should have flags for death (aka it knows what kills/damage it)
-            // And based on that, lookup what sort of animation should play.
-            if (agent is Player)
-            {
-                ((Player)agent).animator.SetTrigger("FallingInHoleAnim");
-            }
         }
     }
 }

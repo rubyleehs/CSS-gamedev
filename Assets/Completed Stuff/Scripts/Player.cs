@@ -93,7 +93,9 @@ namespace Completed
             else if (curInputDir.x < -0.5f)
                 moveDir = Vector2Int.left;
 
-            if(CanMove(moveDir))
+            Face(moveDir);
+
+            if (CanMove(moveDir))
                 Move(moveDir);
 
             if (transform.position.y < MainCamera.instance.transform.position.y + killzoneHeightFromCam)

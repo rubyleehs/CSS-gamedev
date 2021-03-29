@@ -61,7 +61,6 @@ namespace Completed
         /// </summary>
         private void InitGame()
         {
-
             paused = false;
             infoText.gameObject.SetActive(paused); // paused is always false here
             menuBackdrop.SetActive(paused); // Disables black screen

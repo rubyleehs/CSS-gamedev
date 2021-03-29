@@ -85,6 +85,7 @@ public abstract class Agent : MonoBehaviour
     /// <param name="direction"> Direction to face. </param>
     public void Face(Vector2Int direction)
     {
+        // TODO: Return if direction is zero.
         // TODO: Set the rotation of this transform so the right of the transform is facing the given direction.
         // HINT: Unity uses Quaternions to represent rotations. Quarternion.Euler() function can convert a Vector3 to a Quartenion.
         // HINT: Vector2.SignedAngle() returns the angular difference between two given vectors.

@@ -38,7 +38,12 @@ namespace Completed
                     Face(CalculateFaceDirection(target));
                     Attack(target);
                 }
-                else Move(CalculateMoveDirection(target));
+                else
+                {
+                    Vector2Int moveDir = CalculateMoveDirection(target);
+                    Face(moveDir);
+                    Move(moveDir);
+                }
 
                 actionTimeRemaining = actionWaitPeriod;
             }

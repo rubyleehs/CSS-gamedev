@@ -41,8 +41,6 @@ namespace Completed
             {
                 if (direction == Vector2Int.zero)
                 return false;
-
-                Face(direction);
             
                 transform.position += new Vector3Int(direction.x, direction.y, 0);
 
@@ -84,6 +82,8 @@ namespace Completed
         /// <param name="direction"> Direction to face. </param>
         public void Face(Vector2Int direction)
         {
+            if (direction == Vector2Int.zero)
+                return;
             transform.rotation = Quaternion.Euler(Vector3.forward * Vector2.SignedAngle(Vector2.right, direction));
         }
 
