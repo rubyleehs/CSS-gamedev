@@ -62,7 +62,7 @@ public abstract class Enemy : Agent
                 i--;
             }
         }
-        // TODO: refer from CalculateFaceDirection and try to extract what should be taken from the said function for this part.
+        // TODO: refer from CalculateFaceDirection() and try to extract what should be taken from the said function for this part to ensure the enemy is moving towards the player.
 
         if (possibleDirectionsToMove.Count == 0)
             return Vector2Int.zero;
