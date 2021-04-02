@@ -19,12 +19,10 @@ using UnityEngine;
         //TODO: Otherwise, agent is player
         //HINT: Use (Player)agent
         //return (player.currentAmmo < player.maxAmmo);
-
         }
 
         /// <summary>
         /// Changes the given <c>Player</c> ammo by <c>ammoRestoreValue</c>.
-        /// 
         /// </summary>
         /// <param name="agent">The <c>Agent</c> to give ammo to.</param>
         public void Interact(Agent agent)

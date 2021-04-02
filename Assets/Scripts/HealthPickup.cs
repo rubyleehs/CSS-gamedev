@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
     public class HealthPickup : MonoBehaviour, IAgentInteractable
     {
         public int healthRestoreValue = 10;
@@ -13,7 +12,6 @@ using UnityEngine;
         /// </summary>
         /// <param name="agent"> The <c>Agent</c> to check. </param>
         /// <returns> If the <c>Agent</c> is able to interact with this. </returns>
-
         public bool CanInteract(Agent agent) 
         {
         //TODO: If agent IS NOT a Player, return false.
@@ -21,7 +19,7 @@ using UnityEngine;
         //TODO: Otherwise, agent is player
         //HINT: Use (Player)agent
         //return (player.currentHp < player.maxHp);
-    }
+        }
 
         /// <summary>
         /// Changes the given <c>Player</c> health by <c>healthRestoreValue</c>.

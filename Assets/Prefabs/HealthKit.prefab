@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4047142805114388538}
   - component: {fileID: 4047142805114388539}
   - component: {fileID: 4047142805114388540}
-  - component: {fileID: 9183859291306764842}
+  - component: {fileID: 187306750933842359}
   m_Layer: 10
   m_Name: HealthKit
   m_TagString: Untagged
@@ -109,7 +109,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9183859291306764842
+--- !u!114 &187306750933842359
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4047142805114388541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c26be615c4c6c7429ec39fc2fd1d49a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ccd9df6f5e54814699baa656fee92c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthRestoreValue: 10
