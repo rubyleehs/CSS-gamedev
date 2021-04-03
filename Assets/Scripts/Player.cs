@@ -32,6 +32,7 @@ public class Player : Agent
     public float statChangeAnimationDuration = 2;
 
     public AudioSource healSFX;
+    public AudioSource noAmmoSFX;
     public AudioSource reloadSFX;
 
     public float killzoneHeightFromCam = -8;
@@ -132,6 +133,7 @@ public class Player : Agent
     public void Shoot()
     {
         // TODO: Check if currentAmmo is less than or equal 0. If so, play noAmmoSFX if it exist before returning.
+
         // TODO: Otherwise use up an ammo by calling ChangeAmmoAmount()
 
         RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right, Mathf.Infinity, blockingLayerMask);
