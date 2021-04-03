@@ -27,8 +27,6 @@ namespace Completed
         // private List<Enemy> enemyList;
         private bool paused = false;
         private Text infoText;
-        private new Transform camera;
-        private Player player;
         private GameObject menuBackdrop;
 
         public static GameManager instance;
@@ -48,12 +46,12 @@ namespace Completed
 
             // Inits references
             infoText = GameObject.Find("InfoText").GetComponent<Text>();
-            menuBackdrop = GameObject.Find("MenuBackdrop");
-            camera = GameObject.Find("Main Camera").GetComponent<Transform>();
-            player = GameObject.Find("Player").GetComponent<Player>();
+            menuBackdrop = GameObject.Find("MenuBackdrop");         
+        }
 
+        private void Start()
+        {
             InitGame();
-            Time.timeScale = 1;
         }
 
         /// <summary>
@@ -62,16 +60,17 @@ namespace Completed
         private void InitGame()
         {
             paused = false;
+            Time.timeScale = 1;
             infoText.gameObject.SetActive(paused); // paused is always false here
             menuBackdrop.SetActive(paused); // Disables black screen
 
             currentState = GameState.Play;
 
             // Sets up the camera
-            camera.position = new Vector3(10, 5, -10f);
+            GameCamera.instance.ResetStats(); //GameCamera.instance is null if you are doing it in the workshop scene coz this code is in the completed namespace
 
             // Sets up the player
-            player.ResetStats();
+            Player.instance.ResetStats();
 
             // Resets difficulty
             difficultyLevel = startingDifficultyLevel;
@@ -140,14 +139,14 @@ namespace Completed
         private void Play()
         {
             // Generates new chunks ahead of the camera
-            if (levelGen.chunkCount * levelGen.CHUNK_ROWS < camera.position.y + levelGen.CHUNK_ROWS)
+            if (levelGen.chunkCount * levelGen.CHUNK_ROWS < GameCamera.instance.transform.position.y + levelGen.CHUNK_ROWS)
             {
                 levelGen.SpawnChunk(difficultyLevel);
             }
 
             // Destroys chunks that go behind the camera
             // TODO: THIS IS AN MVP METHOD. NOT ELEGANT AT ALL.
-            if (camera.position.y - (levelGen.CHUNK_ROWS * 2) > levelGen.chunksDestroyed * levelGen.CHUNK_ROWS)
+            if (GameCamera.instance.transform.position.y - (levelGen.CHUNK_ROWS * 2) > levelGen.chunksDestroyed * levelGen.CHUNK_ROWS)
             {
                 levelGen.DestroyEarliestChunk();
             }

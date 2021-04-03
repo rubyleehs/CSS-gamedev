@@ -96,7 +96,7 @@ namespace Completed
             if (CanMove(moveDir))
                 Move(moveDir);
 
-            if (transform.position.y < MainCamera.instance.transform.position.y + killzoneHeightFromCam)
+            if (transform.position.y < GameCamera.instance.transform.position.y + killzoneHeightFromCam)
             {
                 Die();
             }
@@ -179,7 +179,7 @@ namespace Completed
                 deltaString = "" + delta;
                 animator.SetTrigger("Damaged");
                 damagedSFX.Play();
-                StartCoroutine(MainCamera.instance.ShakeCamera(0.04f, 0.1f));
+                StartCoroutine(GameCamera.instance.ShakeCamera(0.04f, 0.1f));
             }
 
             StartCoroutine(DeltaTextAnim(deltaString, healthDeltaInfo.transform.position, Vector3.up * 12, healthDeltaInfo.color, 2, healthDeltaInfo.transform.parent));
@@ -261,7 +261,7 @@ namespace Completed
             if (attackSFX != null)
                 attackSFX.Play();
 
-            StartCoroutine(MainCamera.instance.ShakeCamera(0.02f, 0.03f));
+            StartCoroutine(GameCamera.instance.ShakeCamera(0.02f, 0.03f));
 
             lineRenderer.SetPosition(0, firePoint.position);
             lineRenderer.SetPosition(1, endPosition);

@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &95477069
 RectTransform:
   m_ObjectHideFlags: 0
@@ -357,6 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd86d19d82a1554b83a42b72a5f9021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startPos: {x: 10, y: 5, z: -10}
   playerTresholdFromCenter: 1.5
   baseMoveCreepSpeed: 0.3
   moveLerpSpeed: 1.4
@@ -656,7 +657,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1162938317
 RectTransform:
   m_ObjectHideFlags: 0
