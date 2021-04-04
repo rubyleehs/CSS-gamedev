@@ -76,10 +76,10 @@ using UnityEngine.Tilemaps;
             int pickupsToSpawn = 1;
 
             // Spawns in enemies
-            spawnEnemies(enemiesToSpawn, entityList);
+
 
             // Spawns in pickups
-            spawnPickups(pickupsToSpawn, entityList);
+
 
             chunkCount++;
         }

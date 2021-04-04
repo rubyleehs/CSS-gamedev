@@ -89,10 +89,7 @@ public class GameManager : MonoBehaviour {
     /// Pause and resume. 
     /// </summary>
     public void TogglePause() {
-        paused = !paused;
-        infoText.text = "PAUSED";
-        infoText.gameObject.SetActive(paused);
-        Time.timeScale = paused ? 0 : 1;
+
     }
 
     /// <summary>
@@ -100,24 +97,7 @@ public class GameManager : MonoBehaviour {
     /// (Play, GameOver)
     /// </summary>
     void Update() {
-        // Pause Game
-        if (Input.GetKeyDown("p"))
-            TogglePause();
 
-        // Game is simply not updated when paused
-        if (paused)
-            return;
-        else {
-            // Updates current game state
-            switch (currentState) {
-                case GameState.Play:
-                    Play();
-                    break;
-                case GameState.GameOver:
-                    GameOver();
-                    break;
-            }
-        }
     }
 
     /// <summary>
@@ -147,8 +127,7 @@ public class GameManager : MonoBehaviour {
     /// Active during the GameOver screen.
     /// </summary>
     private void GameOver() {
-        if (Input.GetKeyDown("return"))
-            InitGame();
+
     }
 }
 
