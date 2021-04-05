@@ -13,8 +13,8 @@ namespace Completed
         public override bool Attack(Agent target)
         {
             animator.SetTrigger("Attacking");
-            attackSFX.Play();
             target.ChangeHpAmount(-attackDamage);
+            attackSFX.Play();
             return true;
         }
 

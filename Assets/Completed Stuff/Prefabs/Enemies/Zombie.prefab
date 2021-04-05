@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2932457559222767612}
   - component: {fileID: 3140537446937189736}
   - component: {fileID: -7202253807092635322}
-  - component: {fileID: -92252464995916372}
+  - component: {fileID: -6028301625462790540}
   m_Layer: 12
   m_Name: Zombie
   m_TagString: Untagged
@@ -442,7 +442,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &-92252464995916372
+--- !u!114 &-6028301625462790540
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -451,14 +451,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8066433794486936724}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b431e2b92c13734f8748b2f9cd586f2, type: 3}
+  m_Script: {fileID: 11500000, guid: a7d6b9972b6c5464c8cce35c1fe73bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentHp: 10
   maxHp: 40
-  moveSFX: {fileID: 0}
-  attackSFX: {fileID: 0}
-  damagedSFX: {fileID: 0}
+  moveSFX: {fileID: 2932457559222767612}
+  attackSFX: {fileID: 2932457559222767612}
+  damagedSFX: {fileID: 2932457559222767612}
   blockingLayerMask:
     serializedVersion: 2
     m_Bits: 6656
