@@ -58,8 +58,12 @@ public class Player : Agent
     public override void ResetStats()
     {
         // TODO: call base.ResetStats() to the stuff from Agent will also execute.
+        base.ResetStats();
 
         // TODO: set isDead to false, max out currentAmmo and set the player position to playerSpawnPosition.
+        isDead = false;
+        currentAmmo = maxAmmo;
+        transform.position = playerSpawnPosition;
 
         // Call the methods below with no change so that UI and stuff will properly reflect any changes made above.
         ChangeHpAmount(0);
@@ -70,11 +74,16 @@ public class Player : Agent
     void Update()
     {
         // TODO: If player isDead, return immediately.
+        if (isDead)
+            return;
 
         // Player Attack.
         // TODO: Make the player Shoot() if the left mouse button is pressed.
         // HINT: Unity has an input system that allows you to cofigure key mappings. The LMB is mapped to "Fire1"
         // HINT: Input.GetButtonDown("TheButtonName")
+        if (Input.GetButtonDown("Fire1")) {
+            Shoot();
+        }
 
         // Player Movement.
         // Get the direction the player want to move in by uncommenting out the line below
@@ -96,6 +105,10 @@ public class Player : Agent
 
 
         // TODO: Check if it CanMove() in the processed direction. If so, pass it to Move().
+        if (CanMove(moveDir))
+        {
+            Move(moveDir);
+        }
 
         // Kills the player if the player is below the camera by killZoneHeightFromCam
         if (transform.position.y < GameCamera.instance.transform.position.y + killzoneHeightFromCam)
@@ -112,7 +125,7 @@ public class Player : Agent
         if (base.Move(direction))
         {
             // TODO: The player have sucessfully moved, set lastMoveTime to the current time with Time.time
-
+            lastMoveTime = Time.time;
             return true;
         }
         return false;
@@ -126,6 +139,11 @@ public class Player : Agent
     protected override bool CanMove(Vector2Int direction)
     {
         // TODO: Return false if the player isDead or if lastMoveTime is less than moveWaitTime.
+        if (isDead)
+            return false;
+
+        if (Time.time - lastMoveTime < moveWaitTime)
+            return false;
 
         return base.CanMove(direction);
     }
@@ -133,16 +151,26 @@ public class Player : Agent
     public void Shoot()
     {
         // TODO: Check if currentAmmo is less than or equal 0. If so, play noAmmoSFX if it exist before returning.
+        if (currentAmmo <= 0)
+        {
+            if (noAmmoSFX != null)
+                noAmmoSFX.Play();
+            return;
+        }
 
         // TODO: Otherwise use up an ammo by calling ChangeAmmoAmount()
+        ChangeAmmoAmount(-1);
 
         RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right, Mathf.Infinity, blockingLayerMask);
         if (hitInfo)
         {
             // TODO: Check if the ray have hit an Enemy, if so deal damage to it equivalent to playerDamage with enemy.ChangeHpAmount()
             // HINT: Get the transform of the hit, then GetComponent<Enemy>() which will either return an Enemy or null
-            //Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
-
+            Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
+            if(enemy != null)
+            {
+                enemy.ChangeHpAmount(playerDamage);
+            }
 
             StartCoroutine(ShootAnim(hitInfo.point));
         }
@@ -159,6 +187,7 @@ public class Player : Agent
         base.ChangeHpAmount(delta);
 
         //TODO: Update healthText.text with the current hp.
+        healthText.text = "Health: " + currentHp;
 
         string deltaString = "";
         if (delta > 0)
@@ -207,9 +236,11 @@ public class Player : Agent
     public override void Die()
     {
         // We do NOT call base.Die() coz we dont want the player to get destoyed after dying.
-        
+
         // TODO: Set isDead to true.
+        isDead = true;
         // TODO: Start the Coroutine for DieAnim()
+        StartCoroutine(DieAnim());
     }
 
 
@@ -276,6 +307,6 @@ public class Player : Agent
         yield return new WaitForSeconds(1.5f);
 
         // TODO: Uncomment out the following line
-        // GameManager.instance.InitGameOver();
+        GameManager.instance.InitGameOver();
     }
 }
