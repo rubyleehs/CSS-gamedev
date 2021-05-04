@@ -327,6 +327,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7309336618136663981}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &414700072 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7309336617728976286, guid: 6ae4fd2b87b652945ae81c66e7e914c4,
+    type: 3}
+  m_PrefabInstance: {fileID: 7309336618136663981}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &437907138 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3770850126327663039, guid: 3a5bccfe0571c0544a7f7120f2fa2662,
@@ -1427,6 +1433,11 @@ PrefabInstance:
       propertyPath: ammoText
       value: 
       objectReference: {fileID: 1496119670}
+    - target: {fileID: 7309336617728976266, guid: 6ae4fd2b87b652945ae81c66e7e914c4,
+        type: 3}
+      propertyPath: noAmmoSFX
+      value: 
+      objectReference: {fileID: 414700072}
     - target: {fileID: 7309336617728976266, guid: 6ae4fd2b87b652945ae81c66e7e914c4,
         type: 3}
       propertyPath: healthText
