@@ -46,7 +46,7 @@ public class GameCamera : MonoBehaviour
 
 
         // Make the camera creep upwards, speed dependant on current difficulty
-        transform.position += Vector3.up * baseMoveCreepSpeed * GameManager.instance.difficultyLevel * Time.deltaTime;
+        // transform.position += Vector3.up * baseMoveCreepSpeed * GameManager.instance.difficultyLevel * Time.deltaTime;
     }
 
     /// <summary>

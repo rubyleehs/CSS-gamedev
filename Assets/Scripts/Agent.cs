@@ -24,7 +24,6 @@ public abstract class Agent : MonoBehaviour
     {
         // Setup stuff. 
         // TODO: Reset the stats of the Agent by calling ResetStats()
-        ResetStats();
     }
 
     /// <summary>
@@ -34,7 +33,6 @@ public abstract class Agent : MonoBehaviour
     {
         // In this game, the only atribute that all Agents share that needs resetting is hp.
         // TODO: So lets reset that by making currentHp be equal to the maxHp.
-        currentHp = maxHp;
     }
 
     /// <summary>
@@ -48,18 +46,11 @@ public abstract class Agent : MonoBehaviour
         {
             // TODO: Immediately return false if direction given is stationary/zero.
             // HINT: Can create a new zero vector with: new Vector2Int(0,0) or use Vector2Int.zero
-            if (direction == Vector2Int.zero)
-                return false;
 
             // TODO: Face the direction we are moving in by calling Face(direction)
-            Face(direction);
 
             // TODO: Move the transform to the new position. 
             // TODO: If moveSFX is given, play it.
-            transform.position += new Vector3(direction.x,direction.y);
-
-            if (moveSFX != null)
-                moveSFX.Play();
 
             return true;
         }        
@@ -79,20 +70,11 @@ public abstract class Agent : MonoBehaviour
             // An easy way to do so is to litterally check if there is an obstacle by firing a Ray and see if it collides with anything.
 
             // TODO: Uncomment out the following line below.
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, direction.magnitude, blockingLayerMask);
+            // RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, direction.magnitude, blockingLayerMask);
 
             // TODO: Check if the ray has hit something other than itself. If so, return false.
             // HINT: RaycastHit2D has a field called 'transform' that contains a reference to the transform the ray hit.
-            if (hits.Length > 0)
-            {
-                for(int i = 0; i < hits.Length; i++)
-                {
-                    if(hits[i].transform != this.transform)
-                    {
-                        return false;
-                    }
-                }              
-            }
+
             return true;
         }            
     }
@@ -104,14 +86,11 @@ public abstract class Agent : MonoBehaviour
     public void Face(Vector2Int direction)
     {
         // TODO: Return if direction is zero.
-        if (direction == Vector2Int.zero)
-            return;
-
         // TODO: Set the rotation of this transform so the right of the transform is facing the given direction.
         // HINT: Unity uses Quaternions to represent rotations. Quarternion.Euler() function can convert a Vector3 to a Quartenion.
         // HINT: Vector2.SignedAngle() returns the angular difference between two given vectors.
         // HINT: The axis of rotation for our case would be the z axis, aka the axis perpendicular your screen.
-        transform.rotation = Quaternion.Euler(Vector3.forward * Vector2.SignedAngle(Vector2.right, direction));
+
     }
 
     /// <summary>
@@ -122,18 +101,10 @@ public abstract class Agent : MonoBehaviour
     public virtual void ChangeHpAmount(int delta)
     {
         // TODO: Change currentHp by delta. Make sure it is capped by maxHp.
-        currentHp += delta;
-        currentHp = Mathf.Min(currentHp, maxHp);
 
         // TODO: If the agent takes damaged and damagedSFX is given, play it.
-        if(delta < 0 && damagedSFX != null)
-        {
-            damagedSFX.Play();
-        }
 
         // TODO: Call Die() if the agent ends up dying from the change.
-        if (currentHp <= 0)
-            Die();
     }
 
     /// <summary>
@@ -142,7 +113,6 @@ public abstract class Agent : MonoBehaviour
     public virtual void Die()
     {
         // TODO: Destroy the game object this script is currently on.
-        Destroy(this.gameObject);
     }
 
     /// <summary>
