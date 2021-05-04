@@ -24,32 +24,13 @@ public abstract class Enemy : Agent
         base.Start();
         actionTimeRemaining = actionWaitPeriod;
     }
-
     //Update is called once a frame. -> reliant on FPS.
     //FixedUpdate -> not reliaint on FPS. called at fixed intervals.
     void FixedUpdate()
     {
         // TODO: create a timer for the enemy to move and input all what it's going to do once the timer is over.
         // HINT: remember instance in Player class and also you should be adding in the enemy facing direction (Face() which inherit from agent), Attack(), if it can't attack face() and Move().
-        actionTimeRemaining -= Time.deltaTime;
-        if (actionTimeRemaining <= 0)
-        {
-            Agent target = Player.instance;
-
-            if (CanAttack(target))
-            {
-                Face(CalculateFaceDirection(target));
-                Attack(target);
-            }
-            else
-            {
-                Vector2Int moveDir = CalculateMoveDirection(target);
-                Face(moveDir);
-                Move(moveDir);
-            }
-
-            actionTimeRemaining = actionWaitPeriod;
-        }
+        
     }
 
     /// <summary>
@@ -60,11 +41,7 @@ public abstract class Enemy : Agent
     public Vector2Int CalculateFaceDirection(Agent target)
     {
         List<Vector2Int> possibleDirectionsToFace = new List<Vector2Int>() { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };
-
-        //Difference between enemy pos and target
         Vector2Int delta = new Vector2Int((int)(target.transform.position.x - transform.position.x), (int)(target.transform.position.y - transform.position.y));
-
-        // Sort so the direction you move to minimizes delta
         possibleDirectionsToFace.Sort((v1, v2) => (delta - v1).sqrMagnitude.CompareTo((delta - v2).sqrMagnitude));
 
         return possibleDirectionsToFace[0];
